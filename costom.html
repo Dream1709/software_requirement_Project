@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>เมนูตามสั่ง - เพิ่มข้าว</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Kanit', 'sans-serif'],
+                    },
+                    colors: {
+                        orange: {
+                            500: '#F97316',
+                            600: '#EA580C',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* ซ่อน Radio Button ดั้งเดิม */
+        input[type="radio"] {
+            appearance: none;
+            -webkit-appearance: none;
+        }
+        
+        /* สไตล์เมื่อเลือก Radio เมนูเนื้อสัตว์ (กรอบส้ม) */
+        input[name="meat"]:checked + div {
+            border-color: #F97316;
+            background-color: #FFF7ED; /* orange-50 */
+        }
+
+        /* สไตล์ตัวเลือกวงกลมในเมนูเนื้อสัตว์ */
+        input[name="meat"]:checked + div .radio-circle {
+            border-color: #F97316;
+            background-color: transparent;
+        }
+        input[name="meat"]:checked + div .radio-circle::after {
+            content: '';
+            display: block;
+            width: 10px;
+            height: 10px;
+            background-color: #F97316;
+            border-radius: 50%;
+            margin: 3px;
+        }
+
+        /* สไตล์ Checkbox จำลอง (ที่ทำงานเป็น Radio) สำหรับเมนูเพิ่มเติม */
+        input[name="addon"]:checked + div .checkbox-sq {
+            background-color: #F97316;
+            border-color: #F97316;
+        }
+        input[name="addon"]:checked + div .checkbox-sq svg {
+            display: block;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800 font-sans pb-20">
+
+    <nav class="bg-white border-b border-gray-200 sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center gap-2">
+                <span class="text-xl font-bold">▼ เพิ่มข้าว</span>
+            </div>
+            <div class="flex gap-4 text-sm font-medium">
+                <a href="#" class="text-gray-600 hover:text-black mt-2">เมนู</a>
+                <a href="#" class="bg-orange-500 text-white px-4 py-2 rounded-lg hover:bg-orange-600 shadow-sm">สั่งเลย</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="max-w-6xl mx-auto px-4 py-8 grid grid-cols-1 lg:grid-cols-3 gap-8">
+        
+        <div class="lg:col-span-2 space-y-6">
+            <h1 class="text-3xl font-bold mb-4">เมนูตามสั่ง</h1>
+            
+            <div class="rounded-xl overflow-hidden shadow-sm h-64 md:h-96 w-full relative group">
+                <img src="https://images.unsplash.com/photo-1593967858208-67aaa5b28e6c?q=80&w=2000&auto=format&fit=crop" alt="กะเพรา" class="w-full h-full object-cover transform group-hover:scale-105 transition duration-500">
+            </div>
+
+            <div>
+                <h2 class="text-lg font-bold mb-4">ผัดกะเพรา</h2>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                    <label class="cursor-pointer group">
+                        <input type="radio" name="meat" value="35" data-name="หมู" class="hidden" checked>
+                        <div class="border border-gray-200 rounded-lg p-3 flex items-start gap-3 hover:border-orange-300 transition bg-white h-full">
+                            <div class="radio-circle w-5 h-5 border-2 border-gray-300 rounded-full flex-shrink-0 mt-0.5"></div>
+                            <div class="flex flex-col">
+                                <span class="text-sm font-medium">หมู</span>
+                                <span class="text-xs text-orange-600 font-bold">฿35</span>
+                            </div>
+                        </div>
+                    </label>
+
+                    <label class="cursor-pointer group">
+                        <input type="radio" name="meat" value="35" data-name="หมูสับ" class="hidden">
+                        <div class="border border-gray-200 rounded-lg p-3 flex items-start gap-3 hover:border-orange-300 transition bg-white h-full">
+                            <div class="radio-circle w-5 h-5 border-2 border-gray-300 rounded-full flex-shrink-0 mt-0.5"></div>
+                            <div class="flex flex-col">
+                                <span class="text-sm font-medium">หมูสับ</span>
+                                <span class="text-xs text-orange-600 font-bold">฿35</span>
+                            </div>
+                        </div>
+                    </label>
+
+                    <label class="cursor-pointer group">
+                        <input type="radio" name="meat" value="35" data-name="ไก่" class="hidden">
+                        <div class="border border-gray-200 rounded-lg p-3 flex items-start gap-3 hover:border-orange-300 transition bg-white h-full">
+                            <div class="radio-circle w-5 h-5 border-2 border-gray-300 rounded-full flex-shrink-0 mt-0.5"></div>
+                            <div class="flex flex-col">
+                                <span class="text-sm font-medium">ไก่</span>
+                                <span class="text-xs text-orange-600 font-bold">฿35</span>
+                            </div>
+                        </div>
+                    </label>
+
+                    <label class="cursor-pointer group">
+                        <input type="radio" name="meat" value="35" data-name="เครื่องในไก่" class="hidden">
+                        <div class="border border-gray-200 rounded-lg p-3 flex items-start gap-3 hover:border-orange-300 transition bg-white h-full">
+                            <div class="radio-circle w-5 h-5 border-2 border-gray-300 rounded-full flex-shrink-0 mt-0.5"></div>
+                            <div class="flex flex-col">
+                                <span class="text-sm font-medium">เครื่องในไก่</span>
+                                <span class="text-xs text-orange-600 font-bold">฿35</span>
+                            </div>
+                        </div>
+                    </label>
+
+                    <label class="cursor-pointer group">
+                        <input type="radio" name="meat" value="50" data-name="ลูกชิ้น" class="hidden">
+                        <div class="border border-gray-200 rounded-lg p-3 flex items-start gap-3 hover:border-orange-300 transition bg-white h-full">
+                            <div class="radio-circle w-5 h-5 border-2 border-gray-300 rounded-full flex-shrink-0 mt-0.5"></div>
+                            <div class="flex flex-col">
+                                <span class="text-sm font-medium">ลูกชิ้น</span>
+                                <span class="text-xs text-orange-600">฿50</span>
+                            </div>
+                        </div>
+                    </label>
+
+                    <label class="cursor-pointer group">
+                        <input type="radio" name="meat" value="50" data-name="ปลาทู" class="hidden">
+                        <div class="border border-gray-200 rounded-lg p-3 flex items-start gap-3 hover:border-orange-300 transition bg-white h-full">
+                            <div class="radio-circle w-5 h-5 border-2 border-gray-300 rounded-full flex-shrink-0 mt-0.5"></div>
+                            <div class="flex flex-col">
+                                <span class="text-sm font-medium">ปลาทู</span>
+                                <span class="text-xs text-orange-600">+ ฿50</span>
+                            </div>
+                        </div>
+                    </label>
+
+                    <label class="cursor-pointer group">
+                        <input type="radio" name="meat" value="50" data-name="ปลาดุก" class="hidden">
+                        <div class="border border-gray-200 rounded-lg p-3 flex items-start gap-3 hover:border-orange-300 transition bg-white h-full">
+                            <div class="radio-circle w-5 h-5 border-2 border-gray-300 rounded-full flex-shrink-0 mt-0.5"></div>
+                            <div class="flex flex-col">
+                                <span class="text-sm font-medium">ปลาดุก</span>
+                                <span class="text-xs text-orange-600">+ ฿50</span>
+                            </div>
+                        </div>
+                    </label>
+
+                     <label class="cursor-pointer group">
+                        <input type="radio" name="meat" value="50" data-name="หมูกรอบ" class="hidden">
+                        <div class="border border-gray-200 rounded-lg p-3 flex items-start gap-3 hover:border-orange-300 transition bg-white h-full">
+                            <div class="radio-circle w-5 h-5 border-2 border-gray-300 rounded-full flex-shrink-0 mt-0.5"></div>
+                            <div class="flex flex-col">
+                                <span class="text-sm font-medium">หมูกรอบ</span>
+                                <span class="text-xs text-orange-600">+ ฿50</span>
+                            </div>
+                        </div>
+                    </label>
+
+                    <label class="cursor-pointer group">
+                        <input type="radio" name="meat" value="50" data-name="ไข่เยี่ยวม้า" class="hidden">
+                        <div class="border border-gray-200 rounded-lg p-3 flex items-start gap-3 hover:border-orange-300 transition bg-white h-full">
+                            <div class="radio-circle w-5 h-5 border-2 border-gray-300 rounded-full flex-shrink-0 mt-0.5"></div>
+                            <div class="flex flex-col">
+                                <span class="text-sm font-medium">ไข่เยี่ยวม้า</span>
+                                <span class="text-xs text-orange-600">+ ฿50</span>
+                            </div>
+                        </div>
+                    </label>
+                    
+                    <label class="cursor-pointer group">
+                        <input type="radio" name="meat" value="50" data-name="ทะเล" class="hidden">
+                        <div class="border border-gray-200 rounded-lg p-3 flex items-start gap-3 hover:border-orange-300 transition bg-white h-full">
+                            <div class="radio-circle w-5 h-5 border-2 border-gray-300 rounded-full flex-shrink-0 mt-0.5"></div>
+                            <div class="flex flex-col">
+                                <span class="text-sm font-medium">ทะเล</span>
+                                <span class="text-xs text-orange-600">+ ฿50</span>
+                            </div>
+                        </div>
+                    </label>
+
+                     <label class="cursor-pointer group">
+                        <input type="radio" name="meat" value="50" data-name="เนื้อ" class="hidden">
+                        <div class="border border-gray-200 rounded-lg p-3 flex items-start gap-3 hover:border-orange-300 transition bg-white h-full">
+                            <div class="radio-circle w-5 h-5 border-2 border-gray-300 rounded-full flex-shrink-0 mt-0.5"></div>
+                            <div class="flex flex-col">
+                                <span class="text-sm font-medium">เนื้อ</span>
+                                <span class="text-xs text-orange-600">+ ฿50</span>
+                            </div>
+                        </div>
+                    </label>
+
+                    <label class="cursor-pointer group">
+                        <input type="radio" name="meat" value="50" data-name="กุ้ง" class="hidden">
+                        <div class="border border-gray-200 rounded-lg p-3 flex items-start gap-3 hover:border-orange-300 transition bg-white h-full">
+                            <div class="radio-circle w-5 h-5 border-2 border-gray-300 rounded-full flex-shrink-0 mt-0.5"></div>
+                            <div class="flex flex-col">
+                                <span class="text-sm font-medium">กุ้ง</span>
+                                <span class="text-xs text-orange-600">+ ฿50</span>
+                            </div>
+                        </div>
+                    </label>
+                </div>
+            </div>
+
+            <hr class="border-gray-100">
+
+            <div>
+                <h2 class="text-lg font-bold mb-4">เพิ่มเติม</h2>
+                <div class="space-y-3">
+                    
+                    <label class="cursor-pointer block">
+                        <input type="radio" name="addon" value="7" data-name="ไข่ดาว" class="hidden">
+                        <div class="flex items-center gap-3">
+                            <div class="checkbox-sq w-5 h-5 border border-gray-300 rounded flex items-center justify-center transition bg-white">
+                                <svg class="w-3 h-3 text-white hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
+                            </div>
+                            <span class="text-sm">ไข่ดาว + ฿ 7</span>
+                        </div>
+                    </label>
+
+                    <label class="cursor-pointer block">
+                        <input type="radio" name="addon" value="10" data-name="ไข่เจียว" class="hidden">
+                        <div class="flex items-center gap-3">
+                            <div class="checkbox-sq w-5 h-5 border border-gray-300 rounded flex items-center justify-center transition bg-white">
+                                <svg class="w-3 h-3 text-white hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
+                            </div>
+                            <span class="text-sm">ไข่เจียว + ฿ 10</span>
+                        </div>
+                    </label>
+
+                    <label class="cursor-pointer block">
+                        <input type="radio" name="addon" value="7" data-name="ไข่ต้ม" class="hidden">
+                        <div class="flex items-center gap-3">
+                            <div class="checkbox-sq w-5 h-5 border border-gray-300 rounded flex items-center justify-center transition bg-white">
+                                <svg class="w-3 h-3 text-white hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
+                            </div>
+                            <span class="text-sm">ไข่ต้ม + ฿ 7</span>
+                        </div>
+                    </label>
+
+                    <label class="cursor-pointer block">
+                        <input type="radio" name="addon" value="10" data-name="พิเศษ" class="hidden">
+                        <div class="flex items-center gap-3">
+                            <div class="checkbox-sq w-5 h-5 border border-gray-300 rounded flex items-center justify-center transition bg-white">
+                                <svg class="w-3 h-3 text-white hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
+                            </div>
+                            <span class="text-sm">พิเศษ + ฿ 10</span>
+                        </div>
+                    </label>
+
+                     <label class="cursor-pointer block mt-2">
+                        <input type="radio" name="addon" value="0" data-name="" class="hidden" checked>
+                        <div class="flex items-center gap-3">
+                            <div class="checkbox-sq w-5 h-5 border border-gray-300 rounded flex items-center justify-center transition bg-white">
+                                <svg class="w-3 h-3 text-white hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
+                            </div>
+                            <span class="text-sm text-gray-500">ไม่รับเพิ่มเติม</span>
+                        </div>
+                    </label>
+
+                </div>
+            </div>
+
+        </div>
+
+        <div class="lg:col-span-1">
+            <div class="sticky top-24 bg-white p-6 rounded-lg shadow-sm border border-gray-100">
+                <h2 class="text-lg font-bold mb-4">สรุปรายการสั่งซื้อ</h2>
+                <div class="mb-6">
+                    <p class="text-sm text-gray-600 mb-1">กะเพรา</p>
+                    <div id="summary-details" class="text-sm font-medium space-y-1">
+                        <div class="flex justify-between">
+                            <span>หมู</span>
+                            <span>฿35</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="border-t border-gray-100 pt-4 mb-4">
+                     <div class="flex justify-between font-bold text-lg">
+                        <span>ยอดรวม</span>
+                        <span id="total-price" class="text-orange-600">฿35</span>
+                    </div>
+                </div>
+
+                <button id="add-to-cart-btn" class="w-full bg-gray-200 text-gray-500 font-bold py-3 rounded-lg cursor-not-allowed transition hover:bg-orange-500 hover:text-white hover:shadow-lg">
+                    เพิ่มลงตะกร้า
+                </button>
+            </div>
+        </div>
+
+    </main>
+
+    <script>
+        // DOM Elements
+        const meatRadios = document.querySelectorAll('input[name="meat"]');
+        const addonRadios = document.querySelectorAll('input[name="addon"]');
+        const summaryDetails = document.getElementById('summary-details');
+        const totalPriceEl = document.getElementById('total-price');
+        const addToCartBtn = document.getElementById('add-to-cart-btn');
+
+        // State
+        let selectedMeat = { name: 'หมู', price: 35 }; // Default selection
+        let selectedAddon = { name: '', price: 0 };
+
+        // Functions
+        function updateSummary() {
+            // Clear current summary
+            summaryDetails.innerHTML = '';
+
+            // Add meat
+            if (selectedMeat.name) {
+                const meatRow = document.createElement('div');
+                meatRow.className = 'flex justify-between text-gray-800';
+                meatRow.innerHTML = `<span>${selectedMeat.name}</span><span>฿${selectedMeat.price}</span>`;
+                summaryDetails.appendChild(meatRow);
+            }
+
+            // Add addon if selected
+            if (selectedAddon.name && selectedAddon.price > 0) {
+                const addonRow = document.createElement('div');
+                addonRow.className = 'flex justify-between text-gray-500 text-xs';
+                addonRow.innerHTML = `<span>+ ${selectedAddon.name}</span><span>฿${selectedAddon.price}</span>`;
+                summaryDetails.appendChild(addonRow);
+            }
+
+            // Calculate Total
+            const total = parseInt(selectedMeat.price) + parseInt(selectedAddon.price);
+            totalPriceEl.textContent = `฿${total}`;
+
+            // Update Button State
+            if (selectedMeat.name) {
+                addToCartBtn.classList.remove('bg-gray-200', 'text-gray-500', 'cursor-not-allowed');
+                addToCartBtn.classList.add('bg-orange-500', 'text-white', 'cursor-pointer');
+                addToCartBtn.disabled = false;
+            } else {
+                addToCartBtn.classList.add('bg-gray-200', 'text-gray-500', 'cursor-not-allowed');
+                addToCartBtn.classList.remove('bg-orange-500', 'text-white', 'cursor-pointer');
+                addToCartBtn.disabled = true;
+            }
+        }
+
+        // Event Listeners for Meat
+        meatRadios.forEach(radio => {
+            radio.addEventListener('change', (e) => {
+                selectedMeat = {
+                    name: e.target.getAttribute('data-name'),
+                    price: parseInt(e.target.value)
+                };
+                updateSummary();
+            });
+        });
+
+        // Event Listeners for Addons
+        addonRadios.forEach(radio => {
+            radio.addEventListener('change', (e) => {
+                selectedAddon = {
+                    name: e.target.getAttribute('data-name'),
+                    price: parseInt(e.target.value)
+                };
+                updateSummary();
+            });
+        });
+
+        // Initial render
+        updateSummary();
+
+        // Button Click Effect
+        addToCartBtn.addEventListener('click', () => {
+            if (!addToCartBtn.disabled) {
+                alert(`สั่งซื้อ: กะเพรา${selectedMeat.name} ${selectedAddon.name ? '+ ' + selectedAddon.name : ''}\nราคา: ${totalPriceEl.textContent}`);
+            }
+        });
+
+    </script>
+</body>
+</html>
