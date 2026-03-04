@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ล็อกอิน - ร้านเพิ่มข้าว</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Kanit', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            orange: '#fd6e3b',
+                            darkOrange: '#e55a2b',
+                            inputBg: '#f8ece7',
+                            textMuted: '#b1745f',
+                            bgWhite: '#fcfbf9'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-100 flex justify-center min-h-screen font-sans">
+
+    <div class="w-full max-w-5xl bg-brand-bgWhite shadow-sm relative overflow-hidden min-h-screen flex flex-col">
+        
+        <div class="px-8 py-5 border-b border-gray-100 bg-white flex items-center gap-2">
+            <span class="text-xl leading-none mt-0.5 text-gray-800">✦</span>
+            <span class="font-bold text-gray-800 text-lg">ล็อกอิน</span>
+        </div>
+
+        <div class="p-8 md:p-12 flex-1 flex flex-col items-center">
+            
+            <div class="w-full max-w-4xl">
+                
+                <div class="w-full h-[220px] md:h-[320px] rounded-2xl overflow-hidden shadow-sm mb-10">
+                    <img src="https://images.unsplash.com/photo-1559314809-0d155014e29e?q=80&w=2000&auto=format&fit=crop" alt="ร้านเพิ่มข้าว" class="w-full h-full object-cover">
+                </div>
+
+                <div class="w-full max-w-md">
+                    <h1 class="text-2xl font-bold text-gray-900 mb-6">ยินดีต้อนรับ</h1>
+                    
+                    <form id="login-form" class="space-y-5" onsubmit="event.preventDefault(); validateLogin();">
+                        
+                        <div>
+                            <input type="text" id="username" placeholder="ชื่อ" class="w-full bg-brand-inputBg text-gray-800 placeholder-brand-textMuted/80 rounded-xl px-5 py-4 focus:outline-none focus:ring-2 focus:ring-brand-orange/50 transition font-medium">
+                        </div>
+
+                        <div>
+                            <input type="password" id="password" placeholder="รหัสผ่าน" class="w-full bg-brand-inputBg text-gray-800 placeholder-brand-textMuted/80 rounded-xl px-5 py-4 focus:outline-none focus:ring-2 focus:ring-brand-orange/50 transition font-medium">
+                        </div>
+
+                        <div class="pt-2">
+                            <button type="submit" class="w-full bg-brand-orange hover:bg-brand-darkOrange text-white font-bold rounded-xl px-5 py-4 transition shadow-sm">
+                                ล็อกอิน
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+
+        <div id="error-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm transition-opacity duration-300" onclick="closeModal(event)">
+            <div class="bg-white rounded-[2rem] p-10 max-w-sm w-[90%] md:w-[450px] shadow-2xl flex flex-col items-center relative transform transition-transform scale-100" onclick="event.stopPropagation()">
+                
+                <div class="w-16 h-16 bg-orange-50 rounded-full flex items-center justify-center mb-6">
+                    <svg class="w-8 h-8 text-brand-orange" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+                    </svg>
+                </div>
+                
+                <h3 id="modal-title" class="text-2xl font-bold text-gray-900 mb-2">ชื่อหรือรหัสผ่าน</h3>
+                
+                <p id="modal-desc" class="text-gray-500 text-base mb-2 text-center">กรุณาลองใหม่อีกครั้ง</p>
+                
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // ข้อมูลจำลองสำหรับทดสอบล็อกอิน
+        const validUsername = "สมปอง";
+        const validPassword = "092*****91eiei";
+
+        function validateLogin() {
+            const usernameInput = document.getElementById('username').value.trim();
+            const passwordInput = document.getElementById('password').value.trim();
+
+            // 1. เช็คว่ากรอกข้อมูลครบหรือไม่
+            if (!usernameInput || !passwordInput) {
+                showModal("ข้อมูลไม่ครบถ้วน", "กรุณากรอกทั้ง username และ รหัสผ่าน");
+                return;
+            }
+
+            // 2. เช็คว่าชื่อผู้ใช้หรือรหัสผ่านถูกต้องหรือไม่
+            if (usernameInput !== validUsername || passwordInput !== validPassword) {
+                showModal("ชื่อหรือรหัสผ่านผิด", "กรุณาลองใหม่อีกครั้ง");
+                return;
+            }
+
+            // หากข้อมูลถูกต้อง
+            alert("เข้าสู่ระบบสำเร็จ!");
+            // สามารถเพิ่มโค้ดเพื่อเปลี่ยนหน้า (Redirect) ได้ที่นี่
+        }
+
+        function showModal(title, description) {
+            document.getElementById('modal-title').textContent = title;
+            document.getElementById('modal-desc').textContent = description;
+            
+            const modal = document.getElementById('error-modal');
+            modal.classList.remove('hidden');
+        }
+
+        function closeModal(event) {
+            const modal = document.getElementById('error-modal');
+            modal.classList.add('hidden');
+        }
+    </script>
+</body>
+</html>
