@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>สร้างบัญชี - ร้านเพิ่มข้าว</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Kanit', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            orange: '#fd6e3b',
+                            darkOrange: '#e55a2b',
+                            inputBg: '#f8ece7',
+                            textMuted: '#b1745f',
+                            bgWhite: '#fcfbf9'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-100 flex justify-center min-h-screen font-sans">
+
+    <div class="w-full max-w-4xl bg-brand-bgWhite shadow-sm relative overflow-hidden min-h-screen flex flex-col">
+        
+        <div class="flex items-center justify-between px-8 py-4 border-b border-gray-100 bg-white sticky top-0 z-10">
+            <div class="flex items-center gap-2 text-gray-800 font-bold text-lg">
+                <span class="text-xl leading-none mt-1">✦</span>
+                สร้างบัญชี
+            </div>
+            <button class="bg-brand-orange hover:bg-brand-darkOrange text-white px-6 py-2 rounded-lg text-sm font-medium transition shadow-sm">
+                เข้าสู่ระบบ
+            </button>
+        </div>
+
+        <div class="p-8 md:p-12 flex-1 flex flex-col items-center">
+            
+            <div class="w-full max-w-2xl h-[200px] md:h-[280px] rounded-2xl overflow-hidden shadow-sm mb-10">
+                <img src="https://images.unsplash.com/photo-1559314809-0d155014e29e?q=80&w=2000&auto=format&fit=crop" alt="ร้านเพิ่มข้าว" class="w-full h-full object-cover">
+            </div>
+
+            <div class="w-full max-w-lg">
+                <h1 class="text-2xl font-bold text-gray-900 mb-6">สร้างบัญชีผู้ใช้</h1>
+                
+                <form id="register-form" class="space-y-4" onsubmit="event.preventDefault(); validateForm();">
+                    
+                    <div>
+                        <input type="text" id="name" placeholder="ชื่อ" class="w-full bg-brand-inputBg text-gray-800 placeholder-brand-textMuted/70 rounded-xl px-5 py-3.5 focus:outline-none focus:ring-2 focus:ring-brand-orange/50 transition font-medium">
+                    </div>
+
+                    <div>
+                        <input type="password" id="password" placeholder="รหัสผ่าน" class="w-full bg-brand-inputBg text-gray-800 placeholder-brand-textMuted/70 rounded-xl px-5 py-3.5 focus:outline-none focus:ring-2 focus:ring-brand-orange/50 transition font-medium">
+                    </div>
+
+                    <div class="pt-4">
+                        <button type="submit" class="w-full bg-brand-orange hover:bg-brand-darkOrange text-white font-bold rounded-xl px-5 py-4 transition shadow-md">
+                            สมัครสมาชิก
+                        </button>
+                    </div>
+                </form>
+
+                <div class="text-center mt-6">
+                    <a href="#" class="text-brand-textMuted hover:text-brand-orange text-sm font-medium transition">
+                        มีบัญชีอยู่แล้ว? เข้าสู่ระบบ
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div id="error-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm transition-opacity duration-300" onclick="closeModal(event)">
+            <div class="bg-white rounded-[2rem] p-10 max-w-sm w-[90%] md:w-[400px] shadow-2xl flex flex-col items-center relative transform transition-transform scale-100" onclick="event.stopPropagation()">
+                
+                <div class="w-16 h-16 bg-orange-50 rounded-full flex items-center justify-center mb-6">
+                    <svg class="w-8 h-8 text-brand-orange" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+                    </svg>
+                </div>
+                
+                <h3 id="modal-title" class="text-2xl font-bold text-gray-900 mb-2">ชื่อไม่เหมาะสม</h3>
+                
+                <p id="modal-desc" class="text-gray-500 text-base mb-2 text-center">กรุณาลองใหม่อีกครั้ง</p>
+                
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // รายชื่อที่ไม่เหมาะสม (เพื่อใช้ทดสอบ)
+        const inappropriateNames = ["สมปอง", "admin", "root", "test", "คำหยาบ"];
+
+        function validateForm() {
+            const name = document.getElementById('name').value.trim();
+            const password = document.getElementById('password').value.trim();
+
+            // 1. เช็คข้อมูลว่างเปล่า
+            if (!name || !password) {
+                showModal("ข้อมูลไม่ครบถ้วน", "กรุณากรอกข้อมูลให้ครบทั้ง ชื่อ และ รหัสผ่าน");
+                return;
+            }
+
+            // 2. เช็คชื่อไม่เหมาะสม (พิมพ์ "สมปอง" เพื่อดูแจ้งเตือนตามรูป)
+            const isBadName = inappropriateNames.some(badName => name.toLowerCase().includes(badName.toLowerCase()));
+            if (isBadName) {
+                showModal("ชื่อไม่เหมาะสม", "กรุณาลองใหม่อีกครั้ง");
+                return;
+            }
+
+            // 3. เช็ครหัสผ่านง่ายเกินไป (น้อยกว่า 8 ตัวอักษร)
+            if (password.length < 8) {
+                showModal("รหัสผ่านง่ายเกินไป", "กรุณาตั้งรหัสผ่านที่มีความยาวอย่างน้อย 8 ตัวอักษร");
+                return;
+            }
+
+            // หากผ่านทุกเงื่อนไข
+            alert("สร้างบัญชีผู้ใช้สำเร็จ! (จำลองการทำงาน)");
+            // โค้ดสำหรับส่งข้อมูลไป Backend ใส่ตรงนี้ได้เลยครับ
+        }
+
+        function showModal(title, description) {
+            document.getElementById('modal-title').textContent = title;
+            document.getElementById('modal-desc').textContent = description;
+            
+            const modal = document.getElementById('error-modal');
+            modal.classList.remove('hidden');
+        }
+
+        function closeModal(event) {
+            // ปิด Modal เมื่อคลิกที่พื้นหลังสีดำ
+            const modal = document.getElementById('error-modal');
+            modal.classList.add('hidden');
+        }
+    </script>
+</body>
+</html>
