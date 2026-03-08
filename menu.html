@@ -6,20 +6,11 @@
     <title>เลือกเมนูอาหาร</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500&display=swap" rel="stylesheet">
-    <head>
     <style>
         body { font-family: 'Kanit', sans-serif; background-color: #f9f7f2; }
-        
-        /* วางส่วนที่พี่ส่งให้ตรงนี้ครับ */
-        .no-scrollbar::-webkit-scrollbar {
-            display: none;
-        }
-        .no-scrollbar {
-            -ms-overflow-style: none;
-            scrollbar-width: none;
-        }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
     </style>
-</head>
 </head>
 <body class="p-4 md:p-8">
 
@@ -38,160 +29,132 @@
         <button onclick="filterMenu('เมนูเส้น')" class="px-4 py-1 text-sm rounded-full bg-white border border-gray-200 shadow-sm hover:bg-orange-100 transition">เมนูเส้น</button>
         <button onclick="filterMenu('เมนูยำ')" class="px-4 py-1 text-sm rounded-full bg-white border border-gray-200 shadow-sm hover:bg-orange-100 transition">เมนูยำ</button>
         <button onclick="filterMenu('เมนูเพิ่มเติม')" class="px-4 py-1 text-sm rounded-full bg-white border border-gray-200 shadow-sm hover:bg-orange-100 transition">เมนูเพิ่มเติม</button>
-
     </nav>
 
-    <div id="menu-container" class="max-w-6xl mx-auto space-y-12">
-        </div>
+    <div id="menu-container" class="max-w-6xl mx-auto space-y-12"></div>
 
     <script>
-        // ข้อมูลเมนู (จำลองจากภาพ)
-        // 1. แยกกลุ่มข้อมูลตามหมวดหมู่
-const recommendedMenu = [
-    { id: 1, name: "ผัดกะเพรา", category: "เมนูแนะนำ", img: "/รูปอาหาร/krapao-moo.png" },
-    { id: 2, name: "แกงเขียวหวาน", category: "เมนูแนะนำ", img: "/รูปอาหาร/Kaeng Khiaowan.png" },
-];
+        const recommendedMenu = [
+            { id: 1, name: "ผัดกะเพรา", category: "เมนูแนะนำ", img: "/รูปอาหาร/krapao-moo.png" },
+            { id: 2, name: "แกงเขียวหวาน", category: "เมนูแนะนำ", img: "/รูปอาหาร/Kaeng Khiaowan.png" },
+        ];
+        const boilMenu = [
+            { id: 3, name: "แกงเขียวหวาน", category: "เมนูต้มแกง", img: "/รูปอาหาร/Kaeng Khiaowan.png" },
+            { id: 4, name: "ต้มยำ", category: "เมนูต้มแกง", img: "/รูปอาหาร/Tomyam.png" },
+            { id: 5, name: "แกงส้ม", category: "เมนูต้มแกง", img: "/รูปอาหาร/Kaengsom.png" },
+            { id: 6, name: "ต้มข่า", category: "เมนูต้มแกง", img: "/รูปอาหาร/Tomkha.png" },
+            { id: 7, name: "ต้มจืด", category: "เมนูต้มแกง", img: "/รูปอาหาร/tom-jed-moo.png" },
+        ];
+        const orderMenu = [
+            { id: 8, name: "ผัดกะเพรา", category: "เมนูตามสั่ง", img: "/รูปอาหาร/krapao-moo.png" },
+            { id: 9, name: "ผัดคะน้า", category: "เมนูตามสั่ง", img: "/รูปอาหาร/Phat Khana.png" },
+            { id: 10, name: "ราดพริก", category: "เมนูตามสั่ง", img: "/รูปอาหาร/Kai Rat Phrik.png" },
+            { id: 11, name: "ผัดพริกเผา", category: "เมนูตามสั่ง", img: "/รูปอาหาร/Kai Phrik Phao.png" },
+            { id: 12, name: "พะแนง", category: "เมนูตามสั่ง", img: "/รูปอาหาร/Pha Nong Kai.png" },
+            { id: 13, name: "พริกแกง", category: "เมนูตามสั่ง", img: "/รูปอาหาร/Phrik Kaeng Kai.png" },
+            { id: 14, name: "ผัดเผ็ด", category: "เมนูตามสั่ง", img: "/รูปอาหาร/Phat Phet Kai.png" },
+            { id: 15, name: "ผัดฉ่า", category: "เมนูตามสั่ง", img: "/รูปอาหาร/Phat Cha Kai.png" },
+            { id: 16, name: "ผัดผงกะหรี่", category: "เมนูตามสั่ง", img: "/รูปอาหาร/Kai Phat Phong Kra Ri.png" },
+            { id: 17, name: "ทอดกะเทียม", category: "เมนูตามสั่ง", img: "/รูปอาหาร/Kai Thot Krathiam.png" },
+            { id: 18, name: "ผัดผักรวม", category: "เมนูตามสั่ง", img: "/รูปอาหาร/Phat Kruam.png" },
+            { id: 19, name: "ผัดพริกสด", category: "เมนูตามสั่ง", img: "/รูปอาหาร/Phat Phrik Sot.png" },
+            { id: 20, name: "ไข่ยัดไส้", category: "เมนูตามสั่ง", img: "/รูปอาหาร/Khai Yat Sai.png" },
+        ];
+        const friedRiceMenu = [
+            { id: 21, name: "ข้าวผัดไข่", category: "เมนูข้าวผัด", img: "/รูปอาหาร/Khaophat Khai.png" },
+            { id: 22, name: "ข้าวผัดแหนม", category: "เมนูข้าวผัด", img: "/รูปอาหาร/Khaophat Naem.png" },
+            { id: 23, name: "ข้าวผัดสัปรดแฮม", category: "เมนูข้าวผัด", img: "/รูปอาหาร/Khaophat Prot Haem.png" },
+            { id: 24, name: "ข้าวผัดไส้กรอก", category: "เมนูข้าวผัด", img: "/รูปอาหาร/Khaophat Saikrok.png" },
+        ];
+        const friedMenu = [
+            { id: 25, name: "ปีกไก่ทอด", category: "เมนูทอด", img: "/รูปอาหาร/Pik Kai Thot.png" },
+            { id: 26, name: "หมูทอด", category: "เมนูทอด", img: "/รูปอาหาร/Mu Thot.png" },
+            { id: 27, name: "กุนเชียงทอด", category: "เมนูทอด", img: "/รูปอาหาร/Kunchiang Thot.png" },
+            { id: 28, name: "หมูยอทอด", category: "เมนูทอด", img: "/รูปอาหาร/MuYo Thot.png" },
+            { id: 29, name: "เนื้อทอด", category: "เมนูทอด", img: "/รูปอาหาร/Nuea Thot.png" },
+            { id: 30, name: "กุ้งทอด", category: "เมนูทอด", img: "/รูปอาหาร/Kung Thot.png" },
+            { id: 31, name: "ดอลลี่ทอด", category: "เมนูทอด", img: "/รูปอาหาร/Donli Thot.png" },
+        ];
+        const namprikMenu = [
+            { id: 32, name: "น้ำพริกกระปิ + ชะอมทอด", category: "เมนูน้ำพริกกระปิ", img: "/รูปอาหาร/Namphrik Kra Pi ChaOm Thot.png" },
+            { id: 33, name: "น้ำพริกกระปิ + ปลาทูทอด", category: "เมนูน้ำพริกกระปิ", img: "/รูปอาหาร/Namphrik Kra Pi   Phak Thot.png" },
+            { id: 34, name: "น้ำพริกกระปิ + ปลานิลทอด", category: "เมนูน้ำพริกกระปิ", img: "/รูปอาหาร/Namphrik Kra Pi   Pla Nin Thot.png" },
+            { id: 35, name: "น้ำพริกกระปิ + ผักทอด", category: "เมนูน้ำพริกกระปิ", img: "/รูปอาหาร/Namphrik Kra Pi   Phak Thot.png" },
+            { id: 36, name: "น้ำพริกกระปิ + มะเขือยาวทอด", category: "เมนูน้ำพริกกระปิ", img: "/รูปอาหาร/Namphrik Kra Pi   MakhueaYao Thot.png" },
+        ];
+        const NoodleMenu = [
+            { id: 37, name: "ผัดมาม่า", category: "เมนูเส้น", img: "/รูปอาหาร/Phat Ma Ma.png" },
+            { id: 38, name: "สุกี้", category: "เมนูเส้น", img: "/รูปอาหาร/Suk Ki.png" },
+            { id: 39, name: "ราดหน้า", category: "เมนูเส้น", img: "/รูปอาหาร/Rat Na.png" },
+            { id: 40, name: "ผัดไทย", category: "เมนูเส้น", img: "/รูปอาหาร/PhatThai.png" },
+            { id: 41, name: "ผัดซีอิ้ว", category: "เมนูเส้น", img: "/รูปอาหาร/Phat Si Io.png" },
+            { id: 42, name: "สปาเก็ตตี้", category: "เมนูเส้น", img: "/รูปอาหาร/Sapa Ket Ti.png" },
+        ];
+        const spicyMenu = [
+            { id: 43, name: "ยำวุ้นเส้นหมูสับ", category: "เมนูยำ", img: "/รูปอาหาร/Yam Wunsen Mu.png" },
+            { id: 44, name: "ยำปลากระป๋อง", category: "เมนูยำ", img: "/รูปอาหาร/Yam Pla Krapong.png" },
+            { id: 45, name: "ยำหมูยอ", category: "เมนูยำ", img: "/รูปอาหาร/Yam MuYo.png" },
+            { id: 46, name: "ยำรวมมิตร", category: "เมนูยำ", img: "/รูปอาหาร/Yam Ruam Mit.png" },
+            { id: 47, name: "ยำปลากรอบ", category: "เมนูยำ", img: "/รูปอาหาร/Yam Pla Krop.png" },
+            { id: 48, name: "ยำกุนเชียง", category: "เมนูยำ", img: "/รูปอาหาร/Yam Kunchiang.png" },
+            { id: 49, name: "ยำไข่ดาว", category: "เมนูยำ", img: "/รูปอาหาร/Yam Khaidao.png" },
+        ];
+        const extraMenu = [
+            {id: 50, name: "ข้าวคลุกกะปิ", category: "เมนูเพิ่มเติม", img: "/รูปอาหาร/Khao Khluk Kra Pi.png" },
+        ];
 
-const boilMenu = [
-    { id: 3, name: "แกงเขียวหวาน", category: "เมนูต้มแกง", img: "/รูปอาหาร/Kaeng Khiaowan.png" },
-    { id: 4, name: "ต้มยำ", category: "เมนูต้มแกง", img: "/รูปอาหาร/Tomyam.png" },
-    { id: 5, name: "แกงส้ม", category: "เมนูต้มแกง", img: "/รูปอาหาร/Kaengsom.png" },
-    { id: 6, name: "ต้มข่า", category: "เมนูต้มแกง", img: "/รูปอาหาร/Tomkha.png" },
-    { id: 7, name: "ต้มจืด", category: "เมนูต้มแกง", img: "/รูปอาหาร/tom-jed-moo.png" },
-    
-];
+        const menuData = [
+            ...recommendedMenu, ...boilMenu, ...orderMenu, ...friedRiceMenu, 
+            ...friedMenu, ...namprikMenu, ...NoodleMenu, ...spicyMenu, ...extraMenu
+        ];
 
-const orderMenu = [
-    { id: 8, name: "ผัดกะเพรา", category: "เมนูตามสั่ง", img: "/รูปอาหาร/krapao-moo.png" },
-    { id: 9, name: "ผัดคะน้า", category: "เมนูตามสั่ง", img: "/รูปอาหาร/Phat Khana.png" },
-    { id: 10, name: "ราดพริก", category: "เมนูตามสั่ง", img: "/รูปอาหาร/Kai Rat Phrik.png" },
-    { id: 11, name: "ผัดพริกเผา", category: "เมนูตามสั่ง", img: "/รูปอาหาร/Kai Phrik Phao.png" },
-    { id: 12, name: "พะแนง", category: "เมนูตามสั่ง", img: "/รูปอาหาร/Pha Nong Kai.png" },
-    { id: 13, name: "พริกแกง", category: "เมนูตามสั่ง", img: "/รูปอาหาร/Phrik Kaeng Kai.png" },
-    { id: 14, name: "ผัดเผ็ด", category: "เมนูตามสั่ง", img: "/รูปอาหาร/Phat Phet Kai.png" },
-    { id: 15, name: "ผัดฉ่า", category: "เมนูตามสั่ง", img: "/รูปอาหาร/Phat Cha Kai.png" },
-    { id: 16, name: "ผัดผงกะหรี่", category: "เมนูตามสั่ง", img: "/รูปอาหาร/Kai Phat Phong Kra Ri.png" },
-    {id: 17, name: "ทอดกะเทียม", category: "เมนูตามสั่ง", img: "/รูปอาหาร/Kai Thot Krathiam.png" },
-    {id: 18, name: "ผัดผักรวม", category: "เมนูตามสั่ง", img: "/รูปอาหาร/Phat Kruam.png" },
-    {id: 19, name: "ผัดพริกสด", category: "เมนูตามสั่ง", img: "/รูปอาหาร/Phat Phrik Sot.png" },
-    {id: 20, name: "ไข่ยัดไส้", category: "เมนูตามสั่ง", img: "/รูปอาหาร/Khai Yat Sai.png" },
-];
+        function renderMenu(items) {
+            const container = document.getElementById('menu-container');
+            container.innerHTML = '';
 
-const friedRiceMenu = [
-    { id: 21, name: "ข้าวผัดไข่", category: "เมนูข้าวผัด", img: "/รูปอาหาร/Khaophat Khai.png" },
-    { id: 22, name: "ข้าวผัดแหนม", category: "เมนูข้าวผัด", img: "/รูปอาหาร/Khaophat Naem.png" },
-    { id: 23, name: "ข้าวผัดสัปรดแฮม", category: "เมนูข้าวผัด", img: "/รูปอาหาร/Khaophat Prot Haem.png" },
-    { id: 24, name: "ข้าวผัดไส้กรอก", category: "เมนูข้าวผัด", img: "/รูปอาหาร/Khaophat Saikrok.png" },
-];
+            const categories = [...new Set(items.map(i => i.category))];
 
-const friedMenu = [
-    { id: 25, name: "ปีกไก่ทอด", category: "เมนูทอด", img: "/รูปอาหาร/Pik Kai Thot.png" },
-    { id: 26, name: "หมูทอด", category: "เมนูทอด", img: "/รูปอาหาร/Mu Thot.png" },
-    { id: 27, name: "กุนเชียงทอด", category: "เมนูทอด", img: "/รูปอาหาร/Kunchiang Thot.png" },
-    { id: 28, name: "หมูยอทอด", category: "เมนูทอด", img: "/รูปอาหาร/MuYo Thot.png" },
-    { id: 29, name: "เนื้อทอด", category: "เมนูทอด", img: "/รูปอาหาร/Nuea Thot.png" },
-    { id: 30, name: "กุ้งทอด", category: "เมนูทอด", img: "/รูปอาหาร/Kung Thot.png" },
-    { id: 31, name: "ดอลลี่ทอด", category: "เมนูทอด", img: "/รูปอาหาร/Donli Thot.png" },
-    
-];
-
-
-
-const namprikMenu = [
-    { id: 32, name: "น้ำพริกกระปิ + ชะอมทอด", category: "เมนูน้ำพริกกระปิ", img: "/รูปอาหาร/Namphrik Kra Pi ChaOm Thot.png" },
-    { id: 33, name: "น้ำพริกกระปิ + ปลาทูทอด", category: "เมนูน้ำพริกกระปิ", img: "/รูปอาหาร/Namphrik Kra Pi   Phak Thot.png" },
-    { id: 34, name: "น้ำพริกกระปิ + ปลานิลทอด", category: "เมนูน้ำพริกกระปิ", img: "/รูปอาหาร/Namphrik Kra Pi   Pla Nin Thot.png" },
-    { id: 35, name: "น้ำพริกกระปิ + ผักทอด", category: "เมนูน้ำพริกกระปิ", img: "/รูปอาหาร/Namphrik Kra Pi   Phak Thot.png" },
-    { id: 36, name: "น้ำพริกกระปิ + มะเขือยาวทอด", category: "เมนูน้ำพริกกระปิ", img: "/รูปอาหาร/Namphrik Kra Pi   MakhueaYao Thot.png" },
-];
-
-const NoodleMenu = [
-    { id: 37, name: "ผัดมาม่า", category: "เมนูเส้น", img: "/รูปอาหาร/Phat Ma Ma.png" },
-    { id: 38, name: "สุกี้", category: "เมนูเส้น", img: "/รูปอาหาร/Suk Ki.png" },
-    { id: 39, name: "ราดหน้า", category: "เมนูเส้น", img: "/รูปอาหาร/Rat Na.png" },
-    { id: 40, name: "ผัดไทย", category: "เมนูเส้น", img: "/รูปอาหาร/PhatThai.png" },
-    { id: 41, name: "ผัดซีอิ้ว", category: "เมนูเส้น", img: "/รูปอาหาร/Phat Si Io.png" },
-    { id: 42, name: "สปาเก็ตตี้", category: "เมนูเส้น", img: "/รูปอาหาร/Sapa Ket Ti.png" },
-];
-
-const spicyMenu = [
-    { id: 43, name: "ยำวุ้นเส้นหมูสับ", category: "เมนูยำ", img: "/รูปอาหาร/Yam Wunsen Mu.png" },
-    { id: 44, name: "ยำปลากระป๋อง", category: "เมนูยำ", img: "/รูปอาหาร/Yam Pla Krapong.png" },
-    { id: 45, name: "ยำหมูยอ", category: "เมนูยำ", img: "/รูปอาหาร/Yam MuYo.png" },
-    { id: 46, name: "ยำรวมมิตร", category: "เมนูยำ", img: "/รูปอาหาร/Yam Ruam Mit.png" },
-    { id: 47, name: "ยำปลากรอบ", category: "เมนูยำ", img: "/รูปอาหาร/Yam Pla Krop.png" },
-    { id: 48, name: "ยำกุนเชียง", category: "เมนูยำ", img: "/รูปอาหาร/Yam Kunchiang.png" },
-    { id: 49, name: "ยำไข่ดาว", category: "เมนูยำ", img: "/รูปอาหาร/Yam Khaidao.png" },
-];
-
-const extraMenu = [
-    {id: 50, name: "ข้าวคลุกกะปิ", category: "เมนูเพิ่มเติม", img: "/รูปอาหาร/Khao Khluk Kra Pi.png" },
-];
-// 2. นำมารวมกันเป็นตัวแปรเดียวเพื่อใช้ในฟังก์ชันหลัก
-const menuData = [
-    ...recommendedMenu,
-    ...boilMenu,
-    ...orderMenu,
-    ...friedRiceMenu,
-    ...friedMenu,
-    ...namprikMenu,
-    ...NoodleMenu,
-    ...spicyMenu,
-    ...extraMenu,
-    
-    // สามารถเพิ่มหมวดอื่นๆ ต่อท้ายได้เลยครับ
-];
-
-       function renderMenu(items) {
-        const container = document.getElementById('menu-container');
-        container.innerHTML = '';
-
-        const categories = [...new Set(items.map(i => i.category))];
-
-        categories.forEach(cat => {
-            const isRecommended = cat === 'เมนูแนะนำ';
-            
-            const section = document.createElement('div');
-            section.className = "mb-10"; // ระยะห่างแต่ละหมวดหมู่
-            
-            section.innerHTML = `
-                <h2 class="text-xl font-bold mb-4 text-gray-800 ml-2 flex items-center gap-2">
-                    ${cat} 
-                    ${isRecommended ? '' : ''} 
-                    <span class="text-xs font-normal text-gray-400"></span>
-                </h2>
+            categories.forEach(cat => {
+                const isRecommended = cat === 'เมนูแนะนำ';
+                const section = document.createElement('div');
+                section.className = "mb-10"; 
                 
-                <div class="flex flex-nowrap overflow-x-auto gap-5 pb-6 no-scrollbar snap-x touch-pan-x">
-                    ${items.filter(i => i.category === cat).map(item => `
-                        <div class="flex-shrink-0 ${isRecommended ? 'w-52 md:w-64' : 'w-44 md:w-56'} snap-start group cursor-pointer">
-                            <div class="overflow-hidden rounded-2xl shadow-md aspect-square mb-3 border-2 
-                                ${isRecommended ? 'border-orange-300' : 'border-transparent'}">
-                                <img src="${item.img}" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                // เพิ่มลิงก์ onclick ตรง div ของการ์ดอาหาร
+                section.innerHTML = `
+                    <h2 class="text-xl font-bold mb-4 text-gray-800 ml-2 flex items-center gap-2">
+                        ${cat}
+                    </h2>
+                    
+                    <div class="flex flex-nowrap overflow-x-auto gap-5 pb-6 no-scrollbar snap-x touch-pan-x">
+                        ${items.filter(i => i.category === cat).map(item => `
+                            <div class="flex-shrink-0 ${isRecommended ? 'w-52 md:w-64' : 'w-44 md:w-56'} snap-start group cursor-pointer"
+                                 onclick="window.location.href='costom.html?category=${encodeURIComponent(item.category)}&name=${encodeURIComponent(item.name)}&img=${encodeURIComponent(item.img)}'">
+                                <div class="overflow-hidden rounded-2xl shadow-md aspect-square mb-3 border-2 
+                                    ${isRecommended ? 'border-orange-300' : 'border-transparent'}">
+                                    <img src="${item.img}" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                                </div>
+                                <p class="text-sm md:text-base font-medium text-gray-700 px-1 truncate">
+                                    ${item.name}
+                                </p>
                             </div>
-                            <p class="text-sm md:text-base font-medium text-gray-700 px-1 truncate">
-                                ${item.name}
-                            </p>
-                        </div>
-                    `).join('')}
-                    <div class="flex-shrink-0 w-6"></div>
-                </div>
-            `;
-            container.appendChild(section);
-        });
-    }
-
-    // ฟังก์ชันสำหรับกรองเมนู
-    function filterMenu(category) {
-        if (category === 'all') {
-            renderMenu(menuData);
-        } else {
-            const filtered = menuData.filter(item => item.category === category);
-            renderMenu(filtered);
+                        `).join('')}
+                        <div class="flex-shrink-0 w-6"></div>
+                    </div>
+                `;
+                container.appendChild(section);
+            });
         }
-    }
 
-    // เริ่มต้นแสดงผล
-    renderMenu(menuData);
+        function filterMenu(category) {
+            if (category === 'all') {
+                renderMenu(menuData);
+            } else {
+                const filtered = menuData.filter(item => item.category === category);
+                renderMenu(filtered);
+            }
+        }
+
+        renderMenu(menuData);
     </script>
 </body>
 </html>
