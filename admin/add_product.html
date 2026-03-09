@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>เพิ่มเมนูใหม่ - Admin</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Kanit', sans-serif; background-color: #fcfbf9; }
+        
+    </style>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Kanit', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            orange: '#fd6e3b',
+                            darkOrange: '#e55a2b',
+                            inputBg: '#f8ece7',
+                            textMuted: '#b1745f',
+                            bgWhite: '#fcfbf9'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    
+</head>
+<body class="bg-gray-100 flex justify-center min-h-screen font-sans">
+
+    <div class="w-full  bg-brand-bgWhite shadow-sm relative overflow-hidden min-h-screen flex flex-col ">
+        
+        <div class="px-8 py-5 border-b border-gray-100 bg-white flex items-center gap-2">
+            <span class="text-xl leading-none mt-0.5 text-gray-800">✦</span>
+            <span class="font-bold text-gray-800 text-lg">รายการอาหาร</span>
+            
+        </div>
+            
+        
+
+        <div class="p-8 md:p-12 justify-center items-center ">
+            <form id="add-product-form" class="space-y-6" onsubmit="saveProduct(event)">
+                <div>
+                    <h2 class="text-2xl font-bold text-gray-900 mb-6">เพิ่มเมนูใหม่</h2> 
+                </div>
+                <div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-500 mb-2 ml-1">รูปภาพอาหาร</label>
+                        <div id="image-container" onclick="document.getElementById('p-img-file').click()" 
+                        class="w-1/2 h-64 bg-[#f8ece7] rounded-[2.5rem] border-2 border-dashed border-[#b1745f]/20 flex items-center justify-center overflow-hidden relative group transition hover:border-orange-500/50 cursor-pointer">
+        
+                        <img id="img-preview" src="" class="hidden w-full h-full object-cover">
+        
+                        <div id="placeholder-text" class="text-center">
+                            <div class="text-4xl text-[#b1745f] mb-2">+</div>
+                            <p class="text-[#b1745f]/60 text-sm px-4">คลิกเพื่อเลือกไฟล์รูปภาพจากเครื่อง</p>
+                            </div>
+                        </div>
+    
+                        <input type="file" id="p-img-file" accept="image/*" class="hidden">
+                        <input type="hidden" id="p-img-data">
+                     </div>
+                
+                <div>
+                    <label class="block text-sm font-medium text-gray-500 mb-2 ml-1">ชื่ออาหาร</label>
+                    <input type="text" id="p-name" placeholder="ระบุชื่อเมนู..." required
+                        class="w-1/2 bg-[#f8ece7] text-gray-800 rounded-2xl px-6 py-4 focus:outline-none focus:ring-2 focus:ring-orange-500/30 transition appearance-none">
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-500 mb-2 ml-1">หมวดหมู่</label>
+                        <select id="p-category" class="w-full bg-[#f8ece7] text-gray-800 rounded-2xl px-6 py-4 focus:outline-none focus:ring-2 focus:ring-orange-500/30 transition appearance-none">
+                            
+                            <option value="เมนูต้มแกง">เมนูต้มแกง</option>
+                            <option value="เมนูตามสั่ง">เมนูตามสั่ง</option>
+                            <option value="เมนูข้าวผัด">เมนูข้าวผัด</option>
+                            <option value="เมนูทอด">เมนูทอด</option>
+                            <option value="เมนูน้ำพริกกระปิ">เมนูน้ำพริกกระปิ</option>
+                            <option value="เมนูเส้น">เมนูเส้น</option>
+                            <option value="เมนูยำ">เมนูยำ</option>
+                            <option value="เมนูเพิ่มเติม">เมนูเพิ่มเติม</option>
+                        </select>
+                    </div>
+                </div>
+
+                
+
+                <div class="pt-6 flex justify-between">
+                    <button type="button" onclick="window.location.href='/admin/manage_menu.html';" 
+                        class=" bg-[#cccccc] hover:bg-[#bbbbbb] text-gray-800 font-bold rounded-2xl px-6 py-5 transition shadow-lg transform active:scale-[0.98]">
+                        ยกเลิก
+                    </button>
+    
+                    <button type="submit" 
+                        class=" bg-[#E54D66]/80 hover:bg-[#E54D66] text-white font-bold rounded-2xl px-6 py-5 transition shadow-lg transform active:scale-[0.98]">
+                        บันทึกรายการเมนู
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <script>
+        const fileInput = document.getElementById('p-img-file');
+const imgPreview = document.getElementById('img-preview');
+const placeholder = document.getElementById('placeholder-text');
+const imgDataInput = document.getElementById('p-img-data');
+
+fileInput.addEventListener('change', function() {
+    const file = this.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const img = new Image();
+            img.src = e.target.result;
+            
+            img.onload = function() {
+                // สร้าง Canvas เพื่อใช้บีบอัดรูป
+                const canvas = document.createElement('canvas');
+                const ctx = canvas.getContext('2d');
+                
+                // ตั้งค่าขนาดที่ต้องการ (เช่น กว้างไม่เกิน 800px)
+                const maxWidth = 800;
+                const scale = maxWidth / img.width;
+                canvas.width = maxWidth;
+                canvas.height = img.height * scale;
+
+                // วาดรูปลง Canvas
+                ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+                // แปลงเป็น Base64 โดยลดคุณภาพเหลือ 0.7 (70%)
+                const compressedBase64 = canvas.toDataURL('image/jpeg', 0.7);
+                
+                // แสดงผลและเก็บข้อมูล
+                imgPreview.src = compressedBase64;
+                imgPreview.classList.remove('hidden');
+                placeholder.classList.add('hidden');
+                imgDataInput.value = compressedBase64;
+            }
+        }
+        reader.readAsDataURL(file);
+    }
+});
+
+// อย่าลืมแก้ไขในฟังก์ชัน saveProduct() ให้ดึงค่าจาก imgDataInput.value แทนนะครับ
+function saveProduct(event) {
+    event.preventDefault();
+    
+    // ดึงค่าข้อมูล (ตัด price ออกแล้ว)
+    const newProduct = {
+        id: Date.now(),
+        name: document.getElementById('p-name').value.trim(),
+        category: document.getElementById('p-category').value,
+        img: document.getElementById('p-img-data').value 
+    };
+
+    // เช็คว่าเลือกรูปหรือยัง
+    if (!newProduct.img) {
+        alert("กรุณาเลือกรูปภาพก่อนบันทึก!");
+        return;
+    }
+
+    // บันทึกลง localStorage
+    try {
+        let adminMenu = JSON.parse(localStorage.getItem('foodMenu')) || [];
+        adminMenu.push(newProduct);
+        localStorage.setItem('foodMenu', JSON.stringify(adminMenu));
+        
+        alert('เพิ่มเมนู "' + newProduct.name + '" เรียบร้อยแล้ว!');
+        window.location.href = '/admin/manage_menu.html';
+    } catch (e) {
+        alert("ไม่สามารถบันทึกได้ พื้นที่จัดเก็บอาจเต็ม (ลองใช้รูปที่เล็กลงนะครับ)");
+        console.error(e);
+    }
+}
+    </script>
+</body>
+</html>

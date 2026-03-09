@@ -33,7 +33,7 @@
 
     <nav class="bg-white border-b border-gray-200 sticky top-0 z-50">
         <div class="max-w-6xl mx-auto px-4 py-3 flex justify-between items-center">
-            <div class="flex items-center gap-2 cursor-pointer" onclick="window.history.back()">
+            <div class="flex items-center gap-2 cursor-pointer" onclick="window.location.href='/customer/menu.html'">
                 <span class="text-xl font-bold">◀ ย้อนกลับ</span>
             </div>
         </div>
@@ -345,8 +345,37 @@
 
         // 6. ปุ่มเพิ่มลงตะกร้า
         document.getElementById('add-to-cart-btn').addEventListener('click', () => {
-            const totalPrice = document.getElementById('total-price').textContent;
-            alert(`เพิ่ม ${menuName} ลงตะกร้าแล้ว!\nยอดรวมทั้งหมด: ${totalPrice}`);
+            const totalPriceText = document.getElementById('total-price').textContent;
+            const totalPrice = parseInt(totalPriceText.replace('฿', '')) || 0;
+
+            // สร้างชื่อรายการรวมตัวเลือก
+            let itemLabel = menuName;
+            const meatChecked = document.querySelector('input[name="meat"]:checked');
+            if (meatChecked && meatSection.style.display !== 'none') {
+                itemLabel += ` + ${meatChecked.dataset.name}`;
+            }
+            const sizeChecked = document.querySelector('input[name="size"]:checked');
+            if (sizeChecked && parseInt(sizeChecked.value) > 0) {
+                itemLabel += ` + ${sizeChecked.dataset.name}`;
+            }
+            const addonChecked = document.querySelector('input[name="addon"]:checked');
+            if (addonChecked && parseInt(addonChecked.value) > 0 && addonSection.style.display !== 'none') {
+                itemLabel += ` + ${addonChecked.dataset.name}`;
+            }
+
+            // บันทึกลง localStorage
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+            // เช็คว่ามีรายการนี้อยู่แล้วหรือไม่
+            const existing = cart.find(i => i.name === itemLabel && i.price === totalPrice);
+            if (existing) {
+                existing.quantity += 1;
+            } else {
+                cart.push({ id: Date.now(), name: itemLabel, price: totalPrice, quantity: 1 });
+            }
+            localStorage.setItem('cart', JSON.stringify(cart));
+
+            // ไปหน้าตะกร้า
+            window.location.href = '/customer/menu.html';
         });
     </script>
 </body>
