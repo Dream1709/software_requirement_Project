@@ -55,8 +55,8 @@
                         <svg class="w-8 h-8 opacity-80" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z"/></svg>
                     </div>
                     <div>
-                        <p class="font-bold text-gray-800 text-lg">สั่งจาก สมปอง</p>
-                        <p class="text-brand-textMuted text-sm font-medium">โต๊ะ: 4</p>
+                        <p class="font-bold text-gray-800 text-lg" id="customer-name-display">สั่งจาก...</p>
+                        <p class="text-brand-textMuted text-sm font-medium" id="table-display">โต๊ะ: -</p>
                     </div>
                 </div>
 
@@ -75,7 +75,7 @@
                 </div>
 
                 <div class="flex justify-end gap-4 mb-12">
-                    <button class="px-6 py-2.5 bg-brand-btnGray text-gray-800 rounded-lg text-sm font-medium hover:bg-gray-200 transition">เลือกอาหารเพิ่ม</button>
+                    <button onclick="window.location.href='/customer/menu.html'" class="px-6 py-2.5 bg-brand-btnGray text-gray-800 rounded-lg text-sm font-medium hover:bg-gray-200 transition">เลือกอาหารเพิ่ม</button>
                     <button onclick="goToPayment()" class="px-6 py-2.5 bg-brand-orange text-white rounded-lg text-sm font-medium shadow-sm hover:bg-orange-600 transition">ส่งออเดอร์</button>
                 </div>
 
@@ -153,10 +153,22 @@
     </div>
 
     <script>
-        // ข้อมูลสินค้าเบื้องต้น
-        let cart = [
-            { id: 1, name: 'ผัดกะเพรา + หมูกรอบ + พิเศษ', price: 60, quantity: 1 }
-        ];
+        // ข้อมูลสินค้าจาก localStorage
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+        // แสดงข้อมูลลูกค้า
+        const customerInfo = JSON.parse(localStorage.getItem('customerInfo')) || {};
+        if (customerInfo.name) {
+            document.getElementById('customer-name-display').textContent = 'สั่งจาก ' + customerInfo.name;
+        }
+        if (customerInfo.table) {
+            document.getElementById('table-display').textContent = 'โต๊ะ: ' + customerInfo.table;
+        }
+        // แสดงข้อมูลในหน้าชำระเงินด้วย
+        const paymentTableEl = document.querySelector('#payment-section p.text-gray-600');
+        if (paymentTableEl && customerInfo.table) {
+            paymentTableEl.textContent = 'โต๊ะ: ' + customerInfo.table + (customerInfo.name ? ' | ' + customerInfo.name : '');
+        }
 
         let itemToDeleteIndex = null; // ตัวแปรเก็บ index ของรายการที่กำลังจะถูกลบ
 
@@ -224,9 +236,10 @@
 
         function confirmDelete() {
             if (itemToDeleteIndex !== null) {
-                cart.splice(itemToDeleteIndex, 1); // ลบข้อมูลออกจาก Array
-                renderCart(); // อัปเดตหน้าจอ
-                hideDeleteModal(); // ซ่อน Modal
+                cart.splice(itemToDeleteIndex, 1);
+                localStorage.setItem('cart', JSON.stringify(cart));
+                renderCart();
+                hideDeleteModal();
             }
         }
 
@@ -259,6 +272,22 @@
                 `;
             });
             document.getElementById('payment-total-price').textContent = `฿ ${total}`;
+
+            // บันทึกออเดอร์ลง localStorage เพื่อส่งให้ admin
+            const customerInfo = JSON.parse(localStorage.getItem('customerInfo')) || {};
+            const newOrder = {
+                id: Date.now(),
+                customerName: customerInfo.name || 'ไม่ระบุ',
+                table: customerInfo.table || '-',
+                items: cart.map(item => ({ name: item.name, price: item.price, quantity: item.quantity })),
+                total: total,
+                status: 'รอดำเนินการ',
+                time: new Date().toLocaleTimeString('th-TH', { hour: '2-digit', minute: '2-digit' })
+            };
+
+            const orders = JSON.parse(localStorage.getItem('orders')) || [];
+            orders.unshift(newOrder); // เพิ่มออเดอร์ใหม่ไว้ด้านบนสุด
+            localStorage.setItem('orders', JSON.stringify(orders));
 
             showSection('payment');
         }
@@ -306,9 +335,8 @@
         }
 
         function resetApp() {
-            cart = [{ id: 1, name: 'ผัดกะเพรา + หมูกรอบ + พิเศษ', price: 60, quantity: 1 }]; 
-            renderCart();
-            goToCart();
+            localStorage.removeItem('cart');
+            window.location.href = '/customer/index.html';
         }
 
         // Initialize

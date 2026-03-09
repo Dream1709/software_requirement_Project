@@ -14,8 +14,15 @@
 </head>
 <body class="p-4 md:p-8">
 
-    <header class="text-center mb-8">
+    <header class="text-center mb-8 relative">
         <h1 class="text-xl font-bold text-gray-800">เลือกเมนู</h1>
+        <button onclick="window.location.href='/customer/Shopping cart.html'" 
+            class="absolute right-0 top-0 flex items-center gap-1 bg-white border border-gray-200 rounded-full px-4 py-2 shadow-sm hover:bg-orange-50 transition">
+            <svg class="w-5 h-5 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/>
+            </svg>
+            <span id="cart-count" class="text-sm font-bold text-orange-500">0</span>
+        </button>
     </header>
 
     <nav class="flex flex-wrap justify-center gap-2 mb-10">
@@ -103,58 +110,78 @@
             {id: 50, name: "ข้าวคลุกกะปิ", category: "เมนูเพิ่มเติม", img: "/รูปอาหาร/Khao Khluk Kra Pi.png" },
         ];
 
-        const menuData = [
-            ...recommendedMenu, ...boilMenu, ...orderMenu, ...friedRiceMenu, 
-            ...friedMenu, ...namprikMenu, ...NoodleMenu, ...spicyMenu, ...extraMenu
-        ];
+        // 1. รวมข้อมูลเริ่มต้นทั้งหมด (เปลี่ยนชื่อจาก menuData เป็น allDefaultMenu)
+const allDefaultMenu = [
+    ...recommendedMenu,
+    ...boilMenu,
+    ...orderMenu, 
+    ...friedRiceMenu, 
+    ...friedMenu,
+    ...namprikMenu, 
+    ...NoodleMenu, 
+    ...spicyMenu, 
+    ...extraMenu
+];
 
-        function renderMenu(items) {
-            const container = document.getElementById('menu-container');
-            container.innerHTML = '';
+// 2. ฟังก์ชัน Render (ต้องมีฟังก์ชัน renderMenu เดิมที่วาด HTML ด้วยนะครับ)
+function renderMenu(data) {
+    const container = document.getElementById('menu-container');
+    container.innerHTML = ''; // ล้างค่าเก่า
 
-            const categories = [...new Set(items.map(i => i.category))];
-
-            categories.forEach(cat => {
-                const isRecommended = cat === 'เมนูแนะนำ';
-                const section = document.createElement('div');
-                section.className = "mb-10"; 
-                
-                // เพิ่มลิงก์ onclick ตรง div ของการ์ดอาหาร
-                section.innerHTML = `
-                    <h2 class="text-xl font-bold mb-4 text-gray-800 ml-2 flex items-center gap-2">
-                        ${cat}
-                    </h2>
-                    
-                    <div class="flex flex-nowrap overflow-x-auto gap-5 pb-6 no-scrollbar snap-x touch-pan-x">
-                        ${items.filter(i => i.category === cat).map(item => `
-                            <div class="flex-shrink-0 ${isRecommended ? 'w-52 md:w-64' : 'w-44 md:w-56'} snap-start group cursor-pointer"
-                                 onclick="window.location.href='costom.html?category=${encodeURIComponent(item.category)}&name=${encodeURIComponent(item.name)}&img=${encodeURIComponent(item.img)}'">
-                                <div class="overflow-hidden rounded-2xl shadow-md aspect-square mb-3 border-2 
-                                    ${isRecommended ? 'border-orange-300' : 'border-transparent'}">
-                                    <img src="${item.img}" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
-                                </div>
-                                <p class="text-sm md:text-base font-medium text-gray-700 px-1 truncate">
-                                    ${item.name}
-                                </p>
-                            </div>
-                        `).join('')}
-                        <div class="flex-shrink-0 w-6"></div>
+    // แบ่งกลุ่มข้อมูลตามหมวดหมู่เพื่อแสดงผล (อิงตาม Logic เดิมของน้องดรีม)
+    const categories = [...new Set(data.map(item => item.category))];
+    
+    categories.forEach(cat => {
+        const items = data.filter(item => item.category === cat);
+        const section = document.createElement('div');
+        section.innerHTML = `
+            <h2 class="text-lg font-bold mb-4">${cat}</h2>
+            <div class="flex overflow-x-auto gap-4 no-scrollbar pb-4">
+                ${items.map(item => `
+                    <div class="flex-shrink-0 w-44 md:w-56 cursor-pointer" 
+                         onclick="window.location.href='/customer/custom.html?name=${encodeURIComponent(item.name)}&img=${encodeURIComponent(item.img)}&category=${encodeURIComponent(item.category)}'">
+                        <div class="rounded-2xl overflow-hidden aspect-square mb-2">
+                            <img src="${item.img}" class="w-full h-full object-cover">
+                        </div>
+                        <p class="text-sm font-medium">${item.name}</p>
                     </div>
-                `;
-                container.appendChild(section);
-            });
-        }
+                `).join('')}
+            </div>
+        `;
+        container.appendChild(section);
+    });
+}
 
-        function filterMenu(category) {
-            if (category === 'all') {
-                renderMenu(menuData);
-            } else {
-                const filtered = menuData.filter(item => item.category === category);
-                renderMenu(filtered);
-            }
-        }
+// 3. ฟังก์ชันโหลดข้อมูลรวม
+function renderMenuWithRealData() {
+    const adminMenu = JSON.parse(localStorage.getItem('foodMenu')) || [];
+    const totalMenu = [...allDefaultMenu, ...adminMenu];
+    renderMenu(totalMenu);
+}
 
-        renderMenu(menuData);
+// 4. ฟังก์ชัน Filter
+function filterMenu(category) {
+    const adminMenu = JSON.parse(localStorage.getItem('foodMenu')) || [];
+    const totalMenu = [...allDefaultMenu, ...adminMenu];
+
+    if (category === 'all') {
+        renderMenu(totalMenu);
+    } else {
+        const filtered = totalMenu.filter(item => item.category === category);
+        renderMenu(filtered);
+    }
+}
+
+window.onload = function() {
+    renderMenuWithRealData();
+    updateCartCount();
+};
+
+function updateCartCount() {
+    const cart = JSON.parse(localStorage.getItem('cart')) || [];
+    const total = cart.reduce((sum, item) => sum + item.quantity, 0);
+    document.getElementById('cart-count').textContent = total;
+}
     </script>
 </body>
 </html>

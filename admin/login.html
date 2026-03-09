@@ -30,7 +30,7 @@
 </head>
 <body class="bg-gray-100 flex justify-center min-h-screen font-sans">
 
-    <div class="w-full max-w-5xl bg-brand-bgWhite shadow-sm relative overflow-hidden min-h-screen flex flex-col">
+    <div class="w-full  bg-brand-bgWhite shadow-sm relative overflow-hidden min-h-screen flex flex-col">
         
         <div class="px-8 py-5 border-b border-gray-100 bg-white flex items-center gap-2">
             <span class="text-xl leading-none mt-0.5 text-gray-800">✦</span>
@@ -90,13 +90,19 @@
     <script>
         // ข้อมูลจำลองสำหรับทดสอบล็อกอิน
         const validUsername = "สมปอง";
-        const validPassword = "092*****91eiei";
+        const validPassword = "sompong123";
 
         function validateLogin() {
             const usernameInput = document.getElementById('username').value.trim();
             const passwordInput = document.getElementById('password').value.trim();
 
             // 1. เช็คว่ากรอกข้อมูลครบหรือไม่
+
+            if (usernameInput === validUsername && passwordInput === validPassword) {
+            alert("เข้าสู่ระบบแอดมินสำเร็จ!");
+            // เปลี่ยนหน้าไปยังโฟลเดอร์ admin ไฟล์ main.html
+            window.location.href = "/admin/main.html";
+            }
             if (!usernameInput || !passwordInput) {
                 showModal("ข้อมูลไม่ครบถ้วน", "กรุณากรอกทั้ง username และ รหัสผ่าน");
                 return;
@@ -108,9 +114,7 @@
                 return;
             }
 
-            // หากข้อมูลถูกต้อง
-            alert("เข้าสู่ระบบสำเร็จ!");
-            // สามารถเพิ่มโค้ดเพื่อเปลี่ยนหน้า (Redirect) ได้ที่นี่
+            
         }
 
         function showModal(title, description) {
