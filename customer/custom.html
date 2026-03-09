@@ -62,12 +62,12 @@
                         </div>
                     </label>
                     <label class="cursor-pointer group">
-                        <input type="radio" name="style" value="15" data-name="เป็นกับข้าว" class="hidden">
+                        <input type="radio" name="style" value="10" data-name="เป็นกับข้าว" class="hidden">
                         <div class="border border-gray-200 rounded-lg p-3 flex items-start gap-3 transition bg-white h-full">
                             <div class="radio-circle w-5 h-5 border-2 border-gray-300 rounded-full flex-shrink-0 mt-0.5"></div>
                             <div class="flex flex-col">
                                 <span class="text-sm font-medium">เป็นกับข้าว</span>
-                                <span class="text-xs text-orange-600 font-bold">+ ฿15</span>
+                                <span class="text-xs text-orange-600 font-bold">+ ฿10</span>
                             </div>
                         </div>
                     </label>
@@ -82,7 +82,10 @@
                         <input type="radio" name="size" value="0" data-name="ธรรมดา" class="hidden" checked>
                         <div class="border border-gray-200 rounded-lg p-3 flex items-start gap-3 transition bg-white h-full">
                             <div class="radio-circle w-5 h-5 border-2 border-gray-300 rounded-full flex-shrink-0 mt-0.5"></div>
-                            <span class="text-sm font-medium">ธรรมดา</span>
+                            <div class="flex flex-col">
+                                <span class="text-sm font-medium">ธรรมดา</span>
+                                <span id="base-price-label" class="text-xs text-orange-600 font-bold"></span>
+                            </div>
                         </div>
                     </label>
                     <label class="cursor-pointer group">
@@ -101,68 +104,7 @@
 
             <div id="meat-section" style="display: none;">
                 <h2 class="text-lg font-bold mb-4">เนื้อสัตว์ (เลือก 1 อย่าง)</h2>
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
-                    <label class="cursor-pointer group">
-                        <input type="radio" name="meat" value="40" data-name="หมู" class="hidden" checked>
-                        <div class="border border-gray-200 rounded-lg p-3 flex items-start gap-3 transition bg-white h-full">
-                            <div class="radio-circle w-5 h-5 border-2 border-gray-300 rounded-full flex-shrink-0 mt-0.5"></div>
-                            <div class="flex flex-col">
-                                <span class="text-sm font-medium">หมู</span>
-                                <span class="text-xs text-orange-600 font-bold">฿40</span>
-                            </div>
-                        </div>
-                    </label>
-                    <label class="cursor-pointer group">
-                        <input type="radio" name="meat" value="40" data-name="ไก่" class="hidden">
-                        <div class="border border-gray-200 rounded-lg p-3 flex items-start gap-3 transition bg-white h-full">
-                            <div class="radio-circle w-5 h-5 border-2 border-gray-300 rounded-full flex-shrink-0 mt-0.5"></div>
-                            <div class="flex flex-col">
-                                <span class="text-sm font-medium">ไก่</span>
-                                <span class="text-xs text-orange-600 font-bold">฿40</span>
-                            </div>
-                        </div>
-                    </label>
-                    <label class="cursor-pointer group">
-                        <input type="radio" name="meat" value="50" data-name="ลูกชิ้น" class="hidden">
-                        <div class="border border-gray-200 rounded-lg p-3 flex items-start gap-3 transition bg-white h-full">
-                            <div class="radio-circle w-5 h-5 border-2 border-gray-300 rounded-full flex-shrink-0 mt-0.5"></div>
-                            <div class="flex flex-col">
-                                <span class="text-sm font-medium">ลูกชิ้น</span>
-                                <span class="text-xs text-orange-600 font-bold">฿50</span>
-                            </div>
-                        </div>
-                    </label>
-                    <label class="cursor-pointer group">
-                        <input type="radio" name="meat" value="50" data-name="หมูกรอบ" class="hidden">
-                        <div class="border border-gray-200 rounded-lg p-3 flex items-start gap-3 transition bg-white h-full">
-                            <div class="radio-circle w-5 h-5 border-2 border-gray-300 rounded-full flex-shrink-0 mt-0.5"></div>
-                            <div class="flex flex-col">
-                                <span class="text-sm font-medium">หมูกรอบ</span>
-                                <span class="text-xs text-orange-600 font-bold">฿50</span>
-                            </div>
-                        </div>
-                    </label>
-                    <label class="cursor-pointer group">
-                        <input type="radio" name="meat" value="50" data-name="เนื้อ" class="hidden">
-                        <div class="border border-gray-200 rounded-lg p-3 flex items-start gap-3 transition bg-white h-full">
-                            <div class="radio-circle w-5 h-5 border-2 border-gray-300 rounded-full flex-shrink-0 mt-0.5"></div>
-                            <div class="flex flex-col">
-                                <span class="text-sm font-medium">เนื้อ</span>
-                                <span class="text-xs text-orange-600 font-bold">฿50</span>
-                            </div>
-                        </div>
-                    </label>
-                    <label class="cursor-pointer group">
-                        <input type="radio" name="meat" value="50" data-name="ทะเล" class="hidden">
-                        <div class="border border-gray-200 rounded-lg p-3 flex items-start gap-3 transition bg-white h-full">
-                            <div class="radio-circle w-5 h-5 border-2 border-gray-300 rounded-full flex-shrink-0 mt-0.5"></div>
-                            <div class="flex flex-col">
-                                <span class="text-sm font-medium">ทะเล</span>
-                                <span class="text-xs text-orange-600 font-bold">฿50</span>
-                            </div>
-                        </div>
-                    </label>
-                </div>
+                <div id="meat-options" class="grid grid-cols-2 md:grid-cols-4 gap-3"></div>
                 <hr class="border-gray-100 my-6">
             </div>
 
@@ -232,6 +174,16 @@
         const category = urlParams.get('category') || 'เมนูตามสั่ง'; // Default
         const menuName = urlParams.get('name') || 'เลือกเมนูของคุณ';
         const menuImg = urlParams.get('img') || 'https://images.unsplash.com/photo-1593967858208-67aaa5b28e6c?q=80&w=2000&auto=format&fit=crop';
+        const basePrice = parseInt(urlParams.get('price')) || 0;
+
+        // แสดงราคาธรรมดาที่ตัวเลือกขนาด
+        // ถ้ามีวัตถุดิบให้เลือก ราคา "ธรรมดา" = 0 (ราคาอยู่ที่วัตถุดิบแล้ว)
+        const categoriesWithMeat = ['เมนูต้มแกง', 'เมนูตามสั่ง', 'เมนูแนะนำ', 'เมนูเส้น'];
+        const effectiveBasePrice = categoriesWithMeat.includes(category) ? 0 : basePrice;
+        if (effectiveBasePrice > 0) {
+            const label = document.getElementById('base-price-label');
+            if (label) label.textContent = `฿${effectiveBasePrice}`;
+        }
 
         // 2. แปะข้อมูลลงหน้าเว็บ
         document.getElementById('menu-title').textContent = menuName;
@@ -244,27 +196,79 @@
         const meatSection = document.getElementById('meat-section');
         const addonSection = document.getElementById('addon-section');
 
+        // ---- ข้อมูลวัตถุดิบแยกตาม category ----
+        const meatData = {
+            'เมนูต้มแกง': [
+                // แกงเขียวหวาน
+                { name: 'หมู', price: 50 }, { name: 'ไก่', price: 50 }, { name: 'ปลานิล', price: 50 },
+                { name: 'สามชั้น', price: 50 }, { name: 'รวมมิตร', price: 60 }, { name: 'หมูเด้ง', price: 60 },
+                { name: 'เนื้อ', price: 60 }, { name: 'กุ้ง', price: 60 }, { name: 'ดอลลี่', price: 60 },
+            ],
+            'เมนูตามสั่ง': [
+                { name: 'หมู', price: 35 }, { name: 'หมูสับ', price: 35 }, { name: 'ไก่', price: 35 },
+                { name: 'เครื่องในไก่', price: 35 }, { name: 'หมูกรอบ', price: 45 }, { name: 'เนื้อ', price: 45 },
+                { name: 'กุ้ง', price: 45 }, { name: 'รวมมิตร', price: 45 }, { name: 'ลูกชิ้น', price: 40 },
+                { name: 'ปลากรอบ', price: 40 }, { name: 'ปลานิล', price: 40 }, { name: 'ปลาดุก', price: 40 },
+                { name: 'ไข่เยียวม้า', price: 40 }, { name: 'สามชั้น', price: 40 }, { name: 'ทะเล', price: 40 },
+                { name: 'หมึก', price: 40 }, { name: 'มูจัด', price: 40 }, { name: 'หอยแมงภู่', price: 40 },
+                { name: 'หมูยอ', price: 40 }, { name: 'ตับหมู', price: 40 },
+            ],
+            'เมนูแนะนำ': [
+                { name: 'หมู', price: 35 }, { name: 'หมูสับ', price: 35 }, { name: 'ไก่', price: 35 },
+                { name: 'หมูกรอบ', price: 45 }, { name: 'เนื้อ', price: 45 }, { name: 'กุ้ง', price: 45 },
+                { name: 'รวมมิตร', price: 45 },
+            ],
+            'เมนูเส้น': [
+                { name: 'หมู', price: 40 }, { name: 'ไก่', price: 40 }, { name: 'ทะเล', price: 40 },
+                { name: 'หมึก', price: 40 }, { name: 'เนื้อ', price: 50 }, { name: 'รวมมิตร', price: 50 },
+                { name: 'หมูกรอบ', price: 50 },
+            ],
+        };
+
+        // ฟังก์ชัน render วัตถุดิบ
+        function renderMeatOptions(meats) {
+            const container = document.getElementById('meat-options');
+            container.innerHTML = meats.map((m, i) => `
+                <label class="cursor-pointer group">
+                    <input type="radio" name="meat" value="${m.price}" data-name="${m.name}" class="hidden" ${i === 0 ? 'checked' : ''}>
+                    <div class="border border-gray-200 rounded-lg p-3 flex items-start gap-3 transition bg-white h-full">
+                        <div class="radio-circle w-5 h-5 border-2 border-gray-300 rounded-full flex-shrink-0 mt-0.5"></div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-medium">${m.name}</span>
+                            <span class="text-xs text-orange-600 font-bold">฿${m.price}</span>
+                        </div>
+                    </div>
+                </label>
+            `).join('');
+            // ผูก event ใหม่
+            container.querySelectorAll('input[type="radio"]').forEach(r => r.addEventListener('change', updateSummary));
+        }
+
         // ตั้งค่าเริ่มต้น ปิดส่วนที่ไม่จำเป็นก่อน (ซ่อนเนื้อสัตว์, รูปแบบ, เพิ่มเติม)
         styleSection.style.display = 'none';
         meatSection.style.display = 'none';
         addonSection.style.display = 'none';
 
         if (['เมนูต้มแกง', 'เมนูตามสั่ง', 'เมนูแนะนำ'].includes(category)) {
-            // โชว์ครบ: รูปแบบ, เนื้อสัตว์, เมนูเพิ่มเติม
             styleSection.style.display = 'block';
             meatSection.style.display = 'block';
             addonSection.style.display = 'block';
+            renderMeatOptions(meatData[category] || meatData['เมนูตามสั่ง']);
         } 
         else if (['เมนูทอด', 'เมนูน้ำพริกกระปิ'].includes(category)) {
-            // โชว์แค่: รูปแบบ (ราดข้าว/กับข้าว) อย่างเดียว -> ส่วนเนื้อสัตว์กับเพิ่มเติมปล่อยซ่อนไว้
             styleSection.style.display = 'block';
+            // เมนูทอด กับข้าว = +15
+            const sideDishRadio = document.querySelector('input[name="style"][data-name="เป็นกับข้าว"]');
+            const sideDishLabel = sideDishRadio ? sideDishRadio.nextElementSibling.querySelector('.text-xs') : null;
+            if (sideDishRadio) sideDishRadio.value = '15';
+            if (sideDishLabel) sideDishLabel.textContent = '+ ฿15';
         }
         else if (['เมนูเส้น'].includes(category)) {
-            // เมนูเส้น ไม่ต้องราดข้าว แต่มีให้เลือกเนื้อสัตว์กับเมนูเพิ่มเติม
             meatSection.style.display = 'block';
             addonSection.style.display = 'block';
+            renderMeatOptions(meatData['เมนูเส้น']);
         }
-        // ส่วน ['เมนูเพิ่มเติม', 'เมนูยำ', 'เมนูข้าวผัด'] จะตกอยู่ที่ค่าเริ่มต้น คือ "ซ่อนหมด" และจะเหลือแค่ หมวดขนาด (พิเศษ/ธรรมดา) ที่แสดงตลอดอยู่แล้ว
+        // เมนูยำ, เมนูข้าวผัด, เมนูเพิ่มเติม — แสดงแค่ขนาด
 
         // 4. ฟังก์ชันคำนวณและสรุปราคา
         function updateSummary() {
@@ -272,6 +276,16 @@
             const totalPriceEl = document.getElementById('total-price');
             let total = 0;
             summaryDetails.innerHTML = ''; 
+
+            // 4.0 ราคาเริ่มต้นของเมนู (สำหรับหมวดที่มี basePrice เช่น ข้าวผัด)
+            if (effectiveBasePrice > 0) {
+                total += effectiveBasePrice;
+                summaryDetails.innerHTML += `
+                    <div class="flex justify-between text-gray-700">
+                        <span>ราคาเมนู</span>
+                        <span>฿${effectiveBasePrice}</span>
+                    </div>`;
+            }
 
             // 4.1 ตรวจสอบ เนื้อสัตว์ (ถ้ากำลังแสดงอยู่)
             if (meatSection.style.display !== 'none') {
