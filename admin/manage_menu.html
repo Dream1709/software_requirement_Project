@@ -3,82 +3,183 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>จัดการเมนูอาหาร - Admin</title>
+    <title>รายการอาหาร - Admin</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Kanit', sans-serif; background-color: #f9f7f2; }
-        .no-scrollbar::-webkit-scrollbar { display: none; }
-        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        body { font-family: 'Kanit', sans-serif; background-color: #f5f5f0; }
+        .sidebar-item { transition: all 0.2s; }
+        .sidebar-item:hover { background-color: #f0ede8; }
+        .sidebar-item.active { background-color: #f0ede8; }
+        .menu-card { transition: transform 0.2s, box-shadow 0.2s; }
+        .menu-card:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(0,0,0,0.10); }
+        .menu-card:hover .delete-btn { opacity: 1; }
+        .delete-btn { opacity: 0; transition: opacity 0.2s; }
+        .fade-in { animation: fadeIn 0.3s ease forwards; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
-<body class="p-4 md:p-8">
+<body class="min-h-screen flex">
 
-    <header class="flex justify-between items-center mb-8 max-w-6xl mx-auto">
-        <button onclick="window.location.href='/admin/main.html'" class="text-gray-400">ปิด</button>
-        <h1 class="text-xl font-bold text-gray-800">จัดการรายการอาหาร</h1>
-        <button onclick="window.location.href='/admin/add_product.html'" class="bg-[#fd6e3b] text-white px-4 py-1 rounded-full text-sm font-bold shadow-md hover:bg-[#e55a2b] transition">
-            + เพิ่มเมนู
-        </button>
-    </header>
+    <!-- Sidebar -->
+    <aside class="w-56 bg-white border-r border-gray-100 flex flex-col py-6 px-3 fixed h-full z-10">
+        <div class="px-3 mb-8">
+            <div class="flex items-center gap-2">
+                <span class="text-orange-500 text-lg">✦</span>
+                <span class="font-bold text-gray-800 text-sm">ร้านเพิ่มข้าว</span>
+            </div>
+        </div>
+        <nav class="space-y-1 flex-1">
+            <a href="/admin/main.html" class="sidebar-item flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-500 text-sm">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+                หน้าหลัก
+            </a>
+            <a href="#" class="sidebar-item active flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-800 font-medium text-sm">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"/></svg>
+                สินค้า
+            </a>
+            <a href="/admin/report.html" class="sidebar-item flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-500 text-sm">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+                รายงาน
+            </a>
+        </nav>
+        <div class="px-3">
+            <button onclick="window.location.href='/admin/login.html'" class="w-full py-2 bg-gray-100 text-gray-500 rounded-xl text-xs hover:bg-gray-200 transition">
+                ออกจากระบบ
+            </button>
+        </div>
+    </aside>
 
-    <nav class="flex flex-wrap justify-center gap-2 mb-10">
-        <button onclick="filterMenu('all')" class="px-4 py-1 text-sm rounded-full bg-white border border-gray-200 shadow-sm hover:bg-orange-100 transition">เมนูทั้งหมด</button>
-        <button onclick="filterMenu('เมนูต้มแกง')" class="px-4 py-1 text-sm rounded-full bg-white border border-gray-200 shadow-sm hover:bg-orange-100 transition">เมนูต้มแกง</button>
-        <button onclick="filterMenu('เมนูตามสั่ง')" class="px-4 py-1 text-sm rounded-full bg-white border border-gray-200 shadow-sm hover:bg-orange-100 transition">เมนูตามสั่ง</button>
-        <button onclick="filterMenu('เมนูเส้น')" class="px-4 py-1 text-sm rounded-full bg-white border border-gray-200 shadow-sm hover:bg-orange-100 transition">เมนูเส้น</button>
-    </nav>
+    <!-- Main -->
+    <main class="flex-1 ml-56 p-8">
+        <div class="max-w-5xl mx-auto">
+            <div class="flex items-center justify-between mb-8">
+                <div class="flex items-center gap-2">
+                    <svg class="w-5 h-5 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"/></svg>
+                    <h1 class="text-lg font-bold text-gray-800">รายการอาหาร</h1>
+                </div>
+                <button onclick="window.location.href='/admin/add_product.html'"
+                    class="flex items-center gap-2 bg-orange-500 hover:bg-orange-600 text-white text-sm font-medium px-4 py-2 rounded-full shadow-sm transition">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+                    เพิ่มเมนูใหม่ (Admin เพิ่มเอง)
+                </button>
+            </div>
+            <div id="menu-container" class="space-y-10"></div>
+        </div>
+    </main>
 
-    <div id="admin-menu-container" class="max-w-6xl mx-auto space-y-12"></div>
+    <!-- Delete Modal -->
+    <div id="delete-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm">
+        <div class="bg-white rounded-3xl p-8 w-[90%] max-w-sm shadow-2xl flex flex-col items-center">
+            <div class="w-12 h-12 bg-orange-50 rounded-full flex items-center justify-center mb-4">
+                <svg class="w-6 h-6 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+            </div>
+            <h3 class="text-lg font-bold text-gray-900 mb-1">ลบเมนูนี้ใช่ไหม?</h3>
+            <p class="text-gray-400 text-sm mb-6">เมนูนี้จะถูกลบออกจากระบบถาวร</p>
+            <div class="flex gap-3 w-full">
+                <button onclick="hideDeleteModal()" class="flex-1 py-2.5 rounded-xl bg-gray-100 text-gray-600 font-medium text-sm hover:bg-gray-200 transition">ยกเลิก</button>
+                <button onclick="confirmDelete()" class="flex-1 py-2.5 rounded-xl bg-orange-500 text-white font-medium text-sm hover:bg-orange-600 transition">ลบ</button>
+            </div>
+        </div>
+    </div>
 
     <script>
-        // ข้อมูลระบบ (นำเข้าจากก้อนข้อมูลที่น้องดรีมให้มา)
-        const recommendedMenu = [{ id: 1, name: "ผัดกะเพรา", category: "เมนูแนะนำ", img: "/รูปอาหาร/krapao-moo.png" },{ id: 2, name: "แกงเขียวหวาน", category: "เมนูแนะนำ", img: "/รูปอาหาร/Kaeng Khiaowan.png" }];
-        const boilMenu = [{ id: 3, name: "แกงเขียวหวาน", category: "เมนูต้มแกง", img: "/รูปอาหาร/Kaeng Khiaowan.png" },{ id: 4, name: "ต้มยำ", category: "เมนูต้มแกง", img: "/รูปอาหาร/Tomyam.png" },{ id: 5, name: "แกงส้ม", category: "เมนูต้มแกง", img: "/รูปอาหาร/Kaengsom.png" },{ id: 6, name: "ต้มข่า", category: "เมนูต้มแกง", img: "/รูปอาหาร/Tomkha.png" },{ id: 7, name: "ต้มจืด", category: "เมนูต้มแกง", img: "/รูปอาหาร/tom-jed-moo.png" }];
-        const orderMenu = [{ id: 8, name: "ผัดกะเพรา", category: "เมนูตามสั่ง", img: "/รูปอาหาร/krapao-moo.png" },{ id: 9, name: "ผัดคะน้า", category: "เมนูตามสั่ง", img: "/รูปอาหาร/Phat Khana.png" },{ id: 10, name: "ราดพริก", category: "เมนูตามสั่ง", img: "/รูปอาหาร/Kai Rat Phrik.png" },{ id: 11, name: "ผัดพริกเผา", category: "เมนูตามสั่ง", img: "/รูปอาหาร/Kai Phrik Phao.png" },{ id: 12, name: "พะแนง", category: "เมนูตามสั่ง", img: "/รูปอาหาร/Pha Nong Kai.png" },{ id: 13, name: "พริกแกง", category: "เมนูตามสั่ง", img: "/รูปอาหาร/Phrik Kaeng Kai.png" },{ id: 14, name: "ผัดเผ็ด", category: "เมนูตามสั่ง", img: "/รูปอาหาร/Phat Phet Kai.png" },{ id: 15, name: "ผัดฉ่า", category: "เมนูตามสั่ง", img: "/รูปอาหาร/Phat Cha Kai.png" },{ id: 16, name: "ผัดผงกะหรี่", category: "เมนูตามสั่ง", img: "/รูปอาหาร/Kai Phat Phong Kra Ri.png" },{ id: 17, name: "ทอดกะเทียม", category: "เมนูตามสั่ง", img: "/รูปอาหาร/Kai Thot Krathiam.png" },{ id: 18, name: "ผัดผักรวม", category: "เมนูตามสั่ง", img: "/รูปอาหาร/Phat Kruam.png" },{ id: 19, name: "ผัดพริกสด", category: "เมนูตามสั่ง", img: "/รูปอาหาร/Phat Phrik Sot.png" },{ id: 20, name: "ไข่ยัดไส้", category: "เมนูตามสั่ง", img: "/รูปอาหาร/Khai Yat Sai.png" }];
-        const friedRiceMenu = [{ id: 21, name: "ข้าวผัดไข่", category: "เมนูข้าวผัด", img: "/รูปอาหาร/Khaophat Khai.png" },{ id: 22, name: "ข้าวผัดแหนม", category: "เมนูข้าวผัด", img: "/รูปอาหาร/Khaophat Naem.png" },{ id: 23, name: "ข้าวผัดสัปรดแฮม", category: "เมนูข้าวผัด", img: "/รูปอาหาร/Khaophat Prot Haem.png" },{ id: 24, name: "ข้าวผัดไส้กรอก", category: "เมนูข้าวผัด", img: "/รูปอาหาร/Khaophat Saikrok.png" }];
-        const friedMenu = [{ id: 25, name: "ปีกไก่ทอด", category: "เมนูทอด", img: "/รูปอาหาร/Pik Kai Thot.png" },{ id: 26, name: "หมูทอด", category: "เมนูทอด", img: "/รูปอาหาร/Mu Thot.png" },{ id: 27, name: "กุนเชียงทอด", category: "เมนูทอด", img: "/รูปอาหาร/Kunchiang Thot.png" },{ id: 28, name: "หมูยอทอด", category: "เมนูทอด", img: "/รูปอาหาร/MuYo Thot.png" },{ id: 29, name: "เนื้อทอด", category: "เมนูทอด", img: "/รูปอาหาร/Nuea Thot.png" },{ id: 30, name: "กุ้งทอด", category: "เมนูทอด", img: "/รูปอาหาร/Kung Thot.png" },{ id: 31, name: "ดอลลี่ทอด", category: "เมนูทอด", img: "/รูปอาหาร/Donli Thot.png" }];
-        const namprikMenu = [{ id: 32, name: "น้ำพริกกระปิ + ชะอมทอด", category: "เมนูน้ำพริกกระปิ", img: "/รูปอาหาร/Namphrik Kra Pi ChaOm Thot.png" },{ id: 33, name: "น้ำพริกกระปิ + ปลาทูทอด", category: "เมนูน้ำพริกกระปิ", img: "/รูปอาหาร/Namphrik Kra Pi   Phak Thot.png" },{ id: 34, name: "น้ำพริกกระปิ + ปลานิลทอด", category: "เมนูน้ำพริกกระปิ", img: "/รูปอาหาร/Namphrik Kra Pi   Pla Nin Thot.png" },{ id: 35, name: "น้ำพริกกระปิ + ผักทอด", category: "เมนูน้ำพริกกระปิ", img: "/รูปอาหาร/Namphrik Kra Pi   Phak Thot.png" },{ id: 36, name: "น้ำพริกกระปิ + มะเขือยาวทอด", category: "เมนูน้ำพริกกระปิ", img: "/รูปอาหาร/Namphrik Kra Pi   MakhueaYao Thot.png" }];
-        const NoodleMenu = [{ id: 37, name: "ผัดมาม่า", category: "เมนูเส้น", img: "/รูปอาหาร/Phat Ma Ma.png" },{ id: 38, name: "สุกี้", category: "เมนูเส้น", img: "/รูปอาหาร/Suk Ki.png" },{ id: 39, name: "ราดหน้า", category: "เมนูเส้น", img: "/รูปอาหาร/Rat Na.png" },{ id: 40, name: "ผัดไทย", category: "เมนูเส้น", img: "/รูปอาหาร/PhatThai.png" },{ id: 41, name: "ผัดซีอิ้ว", category: "เมนูเส้น", img: "/รูปอาหาร/Phat Si Io.png" },{ id: 42, name: "สปาเก็ตตี้", category: "เมนูเส้น", img: "/รูปอาหาร/Sapa Ket Ti.png" }];
-        const spicyMenu = [{ id: 43, name: "ยำวุ้นเส้นหมูสับ", category: "เมนูยำ", img: "/รูปอาหาร/Yam Wunsen Mu.png" },{ id: 44, name: "ยำปลากระป๋อง", category: "เมนูยำ", img: "/รูปอาหาร/Yam Pla Krapong.png" },{ id: 45, name: "ยำหมูยอ", category: "เมนูยำ", img: "/รูปอาหาร/Yam MuYo.png" },{ id: 46, name: "ยำรวมมิตร", category: "เมนูยำ", img: "/รูปอาหาร/Yam Ruam Mit.png" },{ id: 47, name: "ยำปลากรอบ", category: "เมนูยำ", img: "/รูปอาหาร/Yam Pla Krop.png" },{ id: 48, name: "ยำกุนเชียง", category: "เมนูยำ", img: "/รูปอาหาร/Yam Kunchiang.png" },{ id: 49, name: "ยำไข่ดาว", category: "เมนูยำ", img: "/รูปอาหาร/Yam Khaidao.png" }];
-        const extraMenu = [{id: 50, name: "ข้าวคลุกกะปิ", category: "เมนูเพิ่มเติม", img: "/รูปอาหาร/Khao Khluk Kra Pi.png" }];
+        const systemMenu = [
+            { id: 3, name: "แกงเขียวหวาน", category: "เมนูต้มแกง", img: "/รูปอาหาร/Kaeng Khiaowan.png" },
+            { id: 4, name: "ต้มยำ", category: "เมนูต้มแกง", img: "/รูปอาหาร/Tomyam.png" },
+            { id: 5, name: "แกงส้ม", category: "เมนูต้มแกง", img: "/รูปอาหาร/Kaengsom.png" },
+            { id: 6, name: "ต้มข่า", category: "เมนูต้มแกง", img: "/รูปอาหาร/Tomkha.png" },
+            { id: 7, name: "ต้มจืด", category: "เมนูต้มแกง", img: "/รูปอาหาร/tom-jed-moo.png" },
+            { id: 8, name: "ผัดกะเพรา", category: "เมนูตามสั่ง", img: "/รูปอาหาร/krapao-moo.png" },
+            { id: 9, name: "ผัดคะน้า", category: "เมนูตามสั่ง", img: "/รูปอาหาร/Phat Khana.png" },
+            { id: 10, name: "ราดพริก", category: "เมนูตามสั่ง", img: "/รูปอาหาร/Kai Rat Phrik.png" },
+            { id: 11, name: "ผัดพริกเผา", category: "เมนูตามสั่ง", img: "/รูปอาหาร/Kai Phrik Phao.png" },
+            { id: 12, name: "พะแนง", category: "เมนูตามสั่ง", img: "/รูปอาหาร/Pha Nong Kai.png" },
+            { id: 13, name: "พริกแกง", category: "เมนูตามสั่ง", img: "/รูปอาหาร/Phrik Kaeng Kai.png" },
+            { id: 14, name: "ผัดเผ็ด", category: "เมนูตามสั่ง", img: "/รูปอาหาร/Phat Phet Kai.png" },
+            { id: 15, name: "ผัดฉ่า", category: "เมนูตามสั่ง", img: "/รูปอาหาร/Phat Cha Kai.png" },
+            { id: 16, name: "ผัดผงกะหรี่", category: "เมนูตามสั่ง", img: "/รูปอาหาร/Kai Phat Phong Kra Ri.png" },
+            { id: 17, name: "ทอดกะเทียม", category: "เมนูตามสั่ง", img: "/รูปอาหาร/Kai Thot Krathiam.png" },
+            { id: 18, name: "ผัดผักรวม", category: "เมนูตามสั่ง", img: "/รูปอาหาร/Phat Kruam.png" },
+            { id: 19, name: "ผัดพริกสด", category: "เมนูตามสั่ง", img: "/รูปอาหาร/Phat Phrik Sot.png" },
+            { id: 20, name: "ไข่ยัดไส้", category: "เมนูตามสั่ง", img: "/รูปอาหาร/Khai Yat Sai.png" },
+            { id: 21, name: "ข้าวผัดไข่", category: "เมนูข้าวผัด", img: "/รูปอาหาร/Khaophat Khai.png" },
+            { id: 22, name: "ข้าวผัดแหนม", category: "เมนูข้าวผัด", img: "/รูปอาหาร/Khaophat Naem.png" },
+            { id: 23, name: "ข้าวผัดสัปรดแฮม", category: "เมนูข้าวผัด", img: "/รูปอาหาร/Khaophat Prot Haem.png" },
+            { id: 24, name: "ข้าวผัดไส้กรอก", category: "เมนูข้าวผัด", img: "/รูปอาหาร/Khaophat Saikrok.png" },
+            { id: 25, name: "ปีกไก่ทอด", category: "เมนูทอด", img: "/รูปอาหาร/Pik Kai Thot.png" },
+            { id: 26, name: "หมูทอด", category: "เมนูทอด", img: "/รูปอาหาร/Mu Thot.png" },
+            { id: 27, name: "กุนเชียงทอด", category: "เมนูทอด", img: "/รูปอาหาร/Kunchiang Thot.png" },
+            { id: 28, name: "หมูยอทอด", category: "เมนูทอด", img: "/รูปอาหาร/MuYo Thot.png" },
+            { id: 29, name: "เนื้อทอด", category: "เมนูทอด", img: "/รูปอาหาร/Nuea Thot.png" },
+            { id: 30, name: "กุ้งทอด", category: "เมนูทอด", img: "/รูปอาหาร/Kung Thot.png" },
+            { id: 31, name: "ดอลลี่ทอด", category: "เมนูทอด", img: "/รูปอาหาร/Donli Thot.png" },
+            { id: 32, name: "น้ำพริกกระปิ + ชะอมทอด", category: "เมนูน้ำพริกกระปิ", img: "/รูปอาหาร/Namphrik Kra Pi ChaOm Thot.png" },
+            { id: 33, name: "น้ำพริกกระปิ + ปลาทูทอด", category: "เมนูน้ำพริกกระปิ", img: "/รูปอาหาร/Namphrik Kra Pi   Phak Thot.png" },
+            { id: 34, name: "น้ำพริกกระปิ + ปลานิลทอด", category: "เมนูน้ำพริกกระปิ", img: "/รูปอาหาร/Namphrik Kra Pi   Pla Nin Thot.png" },
+            { id: 35, name: "น้ำพริกกระปิ + ผักทอด", category: "เมนูน้ำพริกกระปิ", img: "/รูปอาหาร/Namphrik Kra Pi   Phak Thot.png" },
+            { id: 36, name: "น้ำพริกกระปิ + มะเขือยาวทอด", category: "เมนูน้ำพริกกระปิ", img: "/รูปอาหาร/Namphrik Kra Pi   MakhueaYao Thot.png" },
+            { id: 37, name: "ผัดมาม่า", category: "เมนูเส้น", img: "/รูปอาหาร/Phat Ma Ma.png" },
+            { id: 38, name: "สุกี้", category: "เมนูเส้น", img: "/รูปอาหาร/Suk Ki.png" },
+            { id: 39, name: "ราดหน้า", category: "เมนูเส้น", img: "/รูปอาหาร/Rat Na.png" },
+            { id: 40, name: "ผัดไทย", category: "เมนูเส้น", img: "/รูปอาหาร/PhatThai.png" },
+            { id: 41, name: "ผัดซีอิ้ว", category: "เมนูเส้น", img: "/รูปอาหาร/Phat Si Io.png" },
+            { id: 42, name: "สปาเก็ตตี้", category: "เมนูเส้น", img: "/รูปอาหาร/Sapa Ket Ti.png" },
+            { id: 43, name: "ยำวุ้นเส้นหมูสับ", category: "เมนูยำ", img: "/รูปอาหาร/Yam Wunsen Mu.png" },
+            { id: 44, name: "ยำปลากระป๋อง", category: "เมนูยำ", img: "/รูปอาหาร/Yam Pla Krapong.png" },
+            { id: 45, name: "ยำหมูยอ", category: "เมนูยำ", img: "/รูปอาหาร/Yam MuYo.png" },
+            { id: 46, name: "ยำรวมมิตร", category: "เมนูยำ", img: "/รูปอาหาร/Yam Ruam Mit.png" },
+            { id: 47, name: "ยำปลากรอบ", category: "เมนูยำ", img: "/รูปอาหาร/Yam Pla Krop.png" },
+            { id: 48, name: "ยำกุนเชียง", category: "เมนูยำ", img: "/รูปอาหาร/Yam Kunchiang.png" },
+            { id: 49, name: "ยำไข่ดาว", category: "เมนูยำ", img: "/รูปอาหาร/Yam Khaidao.png" },
+            { id: 50, name: "ข้าวคลุกกะปิ", category: "เมนูเพิ่มเติม", img: "/รูปอาหาร/Khao Khluk Kra Pi.png" },
+        ];
 
-        const allDefaultMenu = [...recommendedMenu, ...boilMenu, ...orderMenu, ...friedRiceMenu, ...friedMenu, ...namprikMenu, ...NoodleMenu, ...spicyMenu, ...extraMenu];
+        let deleteTargetId = null;
 
-        function renderAdminMenu(data) {
-            const container = document.getElementById('admin-menu-container');
+        function loadMenu() {
+            const adminMenu = JSON.parse(localStorage.getItem('foodMenu')) || [];
+            const allMenu = [...systemMenu, ...adminMenu];
+            const container = document.getElementById('menu-container');
             container.innerHTML = '';
-            
-            // แยกหมวดหมู่เหมือนหน้าลูกค้า
-            const categories = [...new Set(data.map(item => item.category))];
-            
-            categories.forEach(cat => {
-                const items = data.filter(item => item.category === cat);
+
+            // โหลด recommendedIds และสร้างหมวด "เมนูแนะนำ" จาก id จริง
+            const recIds = JSON.parse(localStorage.getItem('recommendedIds')) || [8, 4, 25];
+            const recItems = recIds.map(id => allMenu.find(m => m.id === id)).filter(Boolean);
+
+            // categories ทั้งหมด ไม่รวม "เมนูแนะนำ" (เพราะเราจัดการเองด้านบน)
+            const rawCats = [...new Set(allMenu.map(item => item.category))].filter(c => c !== 'เมนูแนะนำ');
+            const categories = ['เมนูแนะนำ', ...rawCats];
+
+            categories.forEach((cat, catIndex) => {
+                const items = cat === 'เมนูแนะนำ' ? recItems : allMenu.filter(item => item.category === cat);
                 const section = document.createElement('div');
+                section.className = 'fade-in';
+                section.style.animationDelay = `${catIndex * 0.05}s`;
                 section.innerHTML = `
-                    <h2 class="text-lg font-bold mb-4 text-gray-800">${cat}</h2>
-                    <div class="flex overflow-x-auto gap-4 no-scrollbar pb-4">
+                    <div class="flex items-center gap-2 mb-4">
+                        <h2 class="text-base font-bold text-gray-800">${cat}</h2>
+                        <button onclick="editCategory('${cat}')" class="text-gray-300 hover:text-orange-400 transition" title="แก้ไขหมวดหมู่">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/></svg>
+                        </button>
+                    </div>
+                    <div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-3">
                         ${items.map(item => {
-                            const isSystem = item.id <= 50; // เช็คว่าเป็นเมนูระบบหรือแอดมินเพิ่มเอง
+                            const isSystem = item.id <= 50;
                             return `
-                            <div class="flex-shrink-0 w-44 md:w-56 relative group">
-                                <div class="overflow-hidden rounded-2xl shadow-md aspect-square mb-3 bg-white border border-gray-100">
-                                    <img src="${item.img}" class="w-full h-full object-cover">
-                                    
-                                    ${!isSystem ? `
-                                        <button onclick="deleteProduct(${item.id})" 
-                                            class="absolute top-2 right-2 bg-red-500 text-white w-8 h-8 rounded-full shadow-lg flex items-center justify-center hover:bg-red-600 transition">
-                                            ✕
-                                        </button>
-                                    ` : `
-                                        <div class="absolute top-2 left-2 bg-gray-800/50 text-white text-[10px] px-2 py-1 rounded-full backdrop-blur-sm">
-                                            ระบบ
-                                        </div>
-                                    `}
+                            <div class="menu-card relative group rounded-2xl overflow-hidden bg-white shadow-sm border border-gray-100">
+                                <div class="aspect-square overflow-hidden">
+                                    <img src="${item.img}" alt="${item.name}" class="w-full h-full object-cover group-hover:scale-105 transition duration-300" onerror="this.src='https://via.placeholder.com/200x200/f8ece7/b1745f?text=🍽️'">
                                 </div>
-                                <p class="text-sm font-medium text-gray-700 truncate">${item.name}</p>
-                            </div>
-                            `;
+                                <div class="p-2">
+                                    <p class="text-xs font-medium text-gray-700 truncate">${item.name}</p>
+                                    ${isSystem ? `<span class="text-[10px] text-gray-300">ระบบ</span>` : `<span class="text-[10px] text-orange-400">เพิ่มเอง</span>`}
+                                </div>
+                                ${!isSystem ? `
+                                <button onclick="showDeleteModal(${item.id})"
+                                    class="delete-btn absolute top-2 right-2 w-7 h-7 bg-red-500 text-white rounded-full flex items-center justify-center shadow-md hover:bg-red-600 transition text-xs">✕</button>
+                                ` : ''}
+                            </div>`;
                         }).join('')}
                     </div>
                 `;
@@ -86,28 +187,31 @@
             });
         }
 
-        function loadData() {
-            const adminMenu = JSON.parse(localStorage.getItem('foodMenu')) || [];
-            renderAdminMenu([...adminMenu, ...allDefaultMenu]);
+        function editCategory(catName) {
+            window.location.href = '/admin/edit_category.html?category=' + encodeURIComponent(catName);
         }
 
-        function filterMenu(category) {
-            const adminMenu = JSON.parse(localStorage.getItem('foodMenu')) || [];
-            const total = [...adminMenu, ...allDefaultMenu];
-            if (category === 'all') renderAdminMenu(total);
-            else renderAdminMenu(total.filter(item => item.category === category));
+        function showDeleteModal(id) {
+            deleteTargetId = id;
+            document.getElementById('delete-modal').classList.remove('hidden');
         }
 
-        function deleteProduct(id) {
-            if (confirm('ลบเมนูนี้ใช่ไหม?')) {
+        function hideDeleteModal() {
+            deleteTargetId = null;
+            document.getElementById('delete-modal').classList.add('hidden');
+        }
+
+        function confirmDelete() {
+            if (deleteTargetId !== null) {
                 let adminMenu = JSON.parse(localStorage.getItem('foodMenu')) || [];
-                adminMenu = adminMenu.filter(item => item.id !== id);
+                adminMenu = adminMenu.filter(item => item.id !== deleteTargetId);
                 localStorage.setItem('foodMenu', JSON.stringify(adminMenu));
-                loadData();
+                hideDeleteModal();
+                loadMenu();
             }
         }
 
-        window.onload = loadData;
+        loadMenu();
     </script>
 </body>
 </html>
