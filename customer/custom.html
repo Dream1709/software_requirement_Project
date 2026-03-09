@@ -253,7 +253,64 @@
             styleSection.style.display = 'block';
             meatSection.style.display = 'block';
             addonSection.style.display = 'block';
-            renderMeatOptions(meatData[category] || meatData['เมนูตามสั่ง']);
+
+            // เมนูแนะนำ: ดึง options ตาม category จริงของเมนูนั้นจาก localStorage
+            if (category === 'เมนูแนะนำ') {
+                // หาว่าเมนูชื่อนี้มี category จริงว่าอะไร
+                const allMenuData = JSON.parse(localStorage.getItem('foodMenu')) || [];
+                // รวม systemMenu เพื่อค้นหา (ใช้ชื่อเมนูที่ส่งมาจาก URL)
+                const realCat = (() => {
+                    const systemMenu = [
+                        {id:3,name:"แกงเขียวหวาน",category:"เมนูต้มแกง"},{id:4,name:"ต้มยำ",category:"เมนูต้มแกง"},
+                        {id:5,name:"แกงส้ม",category:"เมนูต้มแกง"},{id:6,name:"ต้มข่า",category:"เมนูต้มแกง"},
+                        {id:7,name:"ต้มจืด",category:"เมนูต้มแกง"},{id:8,name:"ผัดกะเพรา",category:"เมนูตามสั่ง"},
+                        {id:9,name:"ผัดคะน้า",category:"เมนูตามสั่ง"},{id:10,name:"ราดพริก",category:"เมนูตามสั่ง"},
+                        {id:11,name:"ผัดพริกเผา",category:"เมนูตามสั่ง"},{id:12,name:"พะแนง",category:"เมนูตามสั่ง"},
+                        {id:13,name:"พริกแกง",category:"เมนูตามสั่ง"},{id:14,name:"ผัดเผ็ด",category:"เมนูตามสั่ง"},
+                        {id:15,name:"ผัดฉ่า",category:"เมนูตามสั่ง"},{id:16,name:"ผัดผงกะหรี่",category:"เมนูตามสั่ง"},
+                        {id:17,name:"ทอดกะเทียม",category:"เมนูตามสั่ง"},{id:18,name:"ผัดผักรวม",category:"เมนูตามสั่ง"},
+                        {id:19,name:"ผัดพริกสด",category:"เมนูตามสั่ง"},{id:20,name:"ไข่ยัดไส้",category:"เมนูตามสั่ง"},
+                        {id:21,name:"ข้าวผัดไข่",category:"เมนูข้าวผัด"},{id:22,name:"ข้าวผัดแหนม",category:"เมนูข้าวผัด"},
+                        {id:23,name:"ข้าวผัดสัปรดแฮม",category:"เมนูข้าวผัด"},{id:24,name:"ข้าวผัดไส้กรอก",category:"เมนูข้าวผัด"},
+                        {id:25,name:"ปีกไก่ทอด",category:"เมนูทอด"},{id:26,name:"หมูทอด",category:"เมนูทอด"},
+                        {id:27,name:"กุนเชียงทอด",category:"เมนูทอด"},{id:28,name:"หมูยอทอด",category:"เมนูทอด"},
+                        {id:29,name:"เนื้อทอด",category:"เมนูทอด"},{id:30,name:"กุ้งทอด",category:"เมนูทอด"},
+                        {id:31,name:"ดอลลี่ทอด",category:"เมนูทอด"},
+                        {id:32,name:"น้ำพริกกระปิ + ชะอมทอด",category:"เมนูน้ำพริกกระปิ"},
+                        {id:33,name:"น้ำพริกกระปิ + ปลาทูทอด",category:"เมนูน้ำพริกกระปิ"},
+                        {id:34,name:"น้ำพริกกระปิ + ปลานิลทอด",category:"เมนูน้ำพริกกระปิ"},
+                        {id:35,name:"น้ำพริกกระปิ + ผักทอด",category:"เมนูน้ำพริกกระปิ"},
+                        {id:36,name:"น้ำพริกกระปิ + มะเขือยาวทอด",category:"เมนูน้ำพริกกระปิ"},
+                        {id:37,name:"ผัดมาม่า",category:"เมนูเส้น"},{id:38,name:"สุกี้",category:"เมนูเส้น"},
+                        {id:39,name:"ราดหน้า",category:"เมนูเส้น"},{id:40,name:"ผัดไทย",category:"เมนูเส้น"},
+                        {id:41,name:"ผัดซีอิ้ว",category:"เมนูเส้น"},{id:42,name:"สปาเก็ตตี้",category:"เมนูเส้น"},
+                        {id:43,name:"ยำวุ้นเส้นหมูสับ",category:"เมนูยำ"},{id:44,name:"ยำปลากระป๋อง",category:"เมนูยำ"},
+                        {id:45,name:"ยำหมูยอ",category:"เมนูยำ"},{id:46,name:"ยำรวมมิตร",category:"เมนูยำ"},
+                        {id:47,name:"ยำปลากรอบ",category:"เมนูยำ"},{id:48,name:"ยำกุนเชียง",category:"เมนูยำ"},
+                        {id:49,name:"ยำไข่ดาว",category:"เมนูยำ"},{id:50,name:"ข้าวคลุกกะปิ",category:"เมนูเพิ่มเติม"},
+                    ];
+                    const combined = [...systemMenu, ...allMenuData];
+                    const found = combined.find(m => m.name === menuName);
+                    return found ? found.category : 'เมนูตามสั่ง';
+                })();
+
+                // ถ้า category จริงเป็นเมนูทอด/น้ำพริกกระปิ ให้ซ่อนเนื้อสัตว์
+                if (['เมนูทอด', 'เมนูน้ำพริกกระปิ', 'เมนูข้าวผัด', 'เมนูยำ', 'เมนูเพิ่มเติม'].includes(realCat)) {
+                    meatSection.style.display = 'none';
+                    addonSection.style.display = 'none';
+                    if (['เมนูทอด', 'เมนูน้ำพริกกระปิ'].includes(realCat)) {
+                        styleSection.style.display = 'block';
+                        const sideDishRadio = document.querySelector('input[name="style"][data-name="เป็นกับข้าว"]');
+                        const sideDishLabel = sideDishRadio ? sideDishRadio.nextElementSibling.querySelector('.text-xs') : null;
+                        if (sideDishRadio) sideDishRadio.value = '15';
+                        if (sideDishLabel) sideDishLabel.textContent = '+ ฿15';
+                    }
+                } else {
+                    renderMeatOptions(meatData[realCat] || meatData['เมนูตามสั่ง']);
+                }
+            } else {
+                renderMeatOptions(meatData[category] || meatData['เมนูตามสั่ง']);
+            }
         } 
         else if (['เมนูทอด', 'เมนูน้ำพริกกระปิ'].includes(category)) {
             styleSection.style.display = 'block';
