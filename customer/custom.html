@@ -249,7 +249,13 @@ else if (realCat === 'เมนูตามสั่ง') {
     document.getElementById('size-options').innerHTML =
         radioCard('ธรรมดา','normal','size',true) + radioCard('พิเศษ','special','size');
     document.getElementById('meat-options').innerHTML =
-        allOrderMeats.map((name,i) => radioCard(name, name, 'meat', i===0)).join('');
+        allOrderMeats.map((name,i) => {
+            const tier = Object.values(orderTiers).find(t => t.names.includes(name));
+            const style = (document.querySelector('input[name="style"]:checked') || {value:'radkao'}).value;
+            const size  = (document.querySelector('input[name="size"]:checked')  || {value:'normal'}).value;
+            const price = tier ? tier[style][size === 'special' ? 's' : 'n'] : 0;
+            return radioCard(name, name, 'meat', i===0, `฿${price}`);
+        }).join('');
 }
 else if (realCat === 'เมนูทอด') {
     document.getElementById('style-section').classList.remove('hidden');
@@ -281,7 +287,26 @@ else if (realCat === 'เมนูเส้น') {
 }
 
 document.querySelectorAll('input[type="radio"],input[type="checkbox"]').forEach(el => {
-    el.addEventListener('change', updateSummary);
+    el.addEventListener('change', () => {
+        // ถ้าเปลี่ยน style หรือ size ใน เมนูตามสั่ง ให้ re-render ราคาเนื้อสัตว์ด้วย
+        if (realCat === 'เมนูตามสั่ง' && (el.name === 'style' || el.name === 'size')) {
+            const selectedMeat = (document.querySelector('input[name="meat"]:checked') || {}).dataset?.name;
+            document.getElementById('meat-options').innerHTML =
+                allOrderMeats.map((name) => {
+                    const tier  = Object.values(orderTiers).find(t => t.names.includes(name));
+                    const style = (document.querySelector('input[name="style"]:checked') || {value:'radkao'}).value;
+                    const size  = (document.querySelector('input[name="size"]:checked')  || {value:'normal'}).value;
+                    const price = tier ? tier[style][size === 'special' ? 's' : 'n'] : 0;
+                    const checked = name === selectedMeat;
+                    return radioCard(name, name, 'meat', checked, `฿${price}`);
+                }).join('');
+            // ผูก event ใหม่กับ meat options ที่เพิ่งสร้าง
+            document.querySelectorAll('input[name="meat"]').forEach(m => {
+                m.addEventListener('change', updateSummary);
+            });
+        }
+        updateSummary();
+    });
 });
 
 // ============= PRICE =============
