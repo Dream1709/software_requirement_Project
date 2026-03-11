@@ -16,6 +16,13 @@
 
     <header class="text-center mb-8 relative">
         <h1 class="text-xl font-bold text-gray-800">เลือกเมนู</h1>
+        <button onclick="showChangeTableModal()"
+            class="absolute left-0 top-0 flex items-center gap-1.5 bg-white border border-gray-200 rounded-full px-4 py-2 shadow-sm hover:bg-orange-50 transition text-sm text-gray-500 font-medium">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/>
+            </svg>
+            เปลี่ยนโต๊ะ
+        </button>
         <button onclick="window.location.href='/customer/Shopping_cart.html'" 
             class="absolute right-0 top-0 flex items-center gap-1 bg-white border border-gray-200 rounded-full px-4 py-2 shadow-sm hover:bg-orange-50 transition">
             <svg class="w-5 h-5 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -24,6 +31,23 @@
             <span id="cart-count" class="text-sm font-bold text-orange-500">0</span>
         </button>
     </header>
+
+    <!-- Modal ยืนยันเปลี่ยนโต๊ะ -->
+    <div id="change-table-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm">
+        <div class="bg-white rounded-3xl p-8 w-[90%] max-w-sm shadow-2xl flex flex-col items-center">
+            <div class="w-14 h-14 bg-orange-50 rounded-full flex items-center justify-center mb-4">
+                <svg class="w-7 h-7 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
+                </svg>
+            </div>
+            <h3 class="text-lg font-bold text-gray-900 mb-1">ออกจากโต๊ะนี้?</h3>
+            <p class="text-gray-400 text-sm mb-6 text-center">ตะกร้าสินค้าของคุณจะถูกล้าง<br>และกลับไปยังหน้าเลือกโต๊ะ</p>
+            <div class="flex gap-3 w-full">
+                <button onclick="hideChangeTableModal()" class="flex-1 py-3 rounded-2xl bg-gray-100 text-gray-600 font-bold text-sm hover:bg-gray-200 transition">ยกเลิก</button>
+                <button onclick="confirmChangeTable()" class="flex-1 py-3 rounded-2xl bg-orange-500 hover:bg-orange-600 text-white font-bold text-sm transition">ยืนยัน</button>
+            </div>
+        </div>
+    </div>
 
     <nav class="flex flex-wrap justify-center gap-2 mb-10">
         <button onclick="filterMenu('all')" class="px-4 py-1 text-sm rounded-full bg-white border border-gray-200 shadow-sm hover:bg-orange-100 transition">เมนูทั้งหมด</button>
@@ -142,15 +166,15 @@
                 const section = document.createElement('div');
                 section.innerHTML = `
                     <h2 class="text-lg font-bold mb-4">${cat}</h2>
-                    <div class="flex overflow-x-auto gap-4 no-scrollbar pb-4">
+                    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 mb-2">
                         ${items.map(item => `
-                            <div class="flex-shrink-0 w-44 md:w-56 cursor-pointer"
-                                onclick="window.location.href='/customer/custom.html?name=${encodeURIComponent(item.name)}&img=${encodeURIComponent(item.img)}&category=${encodeURIComponent(item.category)}&price=${item.price || 0}'">
-                                <div class="rounded-2xl overflow-hidden aspect-square mb-2">
-                                    <img src="${item.img}" class="w-full h-full object-cover">
+                            <div class="cursor-pointer group"
+                                onclick="goToCustom(${item.id}, '${encodeURIComponent(item.name)}', '${encodeURIComponent(item.category)}', ${item.price || 0}, '${(item.img||'').startsWith('data:') ? '' : encodeURIComponent(item.img||'')}')">
+                                <div class="rounded-2xl overflow-hidden aspect-square mb-2 shadow-sm group-hover:shadow-md transition">
+                                    <img src="${item.img}" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
                                 </div>
-                                <p class="text-sm font-medium">${item.name}</p>
-                                ${item.price ? `<p class="text-xs text-orange-500 font-bold">฿${item.price}.-</p>` : ''}
+                                <p class="text-sm font-medium leading-tight">${item.name}</p>
+                                ${item.price ? `<p class="text-xs text-orange-500 font-bold mt-0.5">฿${item.price}.-</p>` : ''}
                             </div>
                         `).join('')}
                     </div>
@@ -179,6 +203,26 @@
             const cart  = JSON.parse(localStorage.getItem('cart')) || [];
             const total = cart.reduce((sum, item) => sum + item.quantity, 0);
             document.getElementById('cart-count').textContent = total;
+        }
+
+        function goToCustom(id, name, cat, price, img) {
+            window.location.href = '/customer/custom.html?id=' + id
+                + '&name=' + name
+                + '&category=' + cat
+                + '&price=' + price
+                + (img ? '&img=' + img : '');
+        }
+
+        function showChangeTableModal() {
+            document.getElementById('change-table-modal').classList.remove('hidden');
+        }
+        function hideChangeTableModal() {
+            document.getElementById('change-table-modal').classList.add('hidden');
+        }
+        function confirmChangeTable() {
+            localStorage.removeItem('cart');
+            localStorage.removeItem('customerInfo');
+            window.location.href = '/customer/index.html';
         }
     </script>
 </body>
