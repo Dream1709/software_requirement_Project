@@ -290,14 +290,16 @@
             document.getElementById('payment-total-price').textContent = '฿' + total.toLocaleString();
 
             // บันทึกออเดอร์ให้ admin
+            const _now = new Date();
+            const _dateKey = `${_now.getFullYear()}-${String(_now.getMonth()+1).padStart(2,'0')}-${String(_now.getDate()).padStart(2,'0')}`;
             const newOrder = {
                 id: Date.now(),
                 customerName: customerInfo.name || 'ไม่ระบุ',
                 table: customerInfo.table || '-',
                 items: cart.map(i => ({ name: i.name, price: i.price, quantity: i.quantity })),
                 total: total,
-                status: 'รอดำเนินการ',
-                time: new Date().toLocaleTimeString('th-TH', { hour: '2-digit', minute: '2-digit' })
+                dateKey: _dateKey,
+                time: _now.toLocaleTimeString('th-TH', { hour: '2-digit', minute: '2-digit' })
             };
             const orders = JSON.parse(localStorage.getItem('orders')) || [];
             orders.unshift(newOrder);

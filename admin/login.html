@@ -13,11 +13,8 @@
                     fontFamily: { sans: ['Kanit', 'sans-serif'] },
                     colors: {
                         brand: {
-                            orange: '#fd6e3b',
-                            darkOrange: '#e55a2b',
-                            inputBg: '#f8ece7',
-                            textMuted: '#b1745f',
-                            bgWhite: '#fcfbf9'
+                            orange: '#fd6e3b', darkOrange: '#e55a2b',
+                            inputBg: '#f8ece7', textMuted: '#b1745f', bgWhite: '#fcfbf9'
                         }
                     }
                 }
@@ -26,146 +23,141 @@
     </script>
     <style>
         @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            20%, 60% { transform: translateX(-6px); }
-            40%, 80% { transform: translateX(6px); }
+            0%,100% { transform: translateX(0); }
+            20%,60%  { transform: translateX(-6px); }
+            40%,80%  { transform: translateX(6px); }
         }
         .shake { animation: shake 0.4s ease; }
     </style>
 </head>
 <body class="bg-gray-100 flex justify-center min-h-screen font-sans">
+<div class="w-full bg-brand-bgWhite shadow-sm relative overflow-hidden min-h-screen flex flex-col">
 
-    <div class="w-full bg-brand-bgWhite shadow-sm relative overflow-hidden min-h-screen flex flex-col">
-
-        <!-- Header -->
-        <div class="px-8 py-5 border-b border-gray-100 bg-white flex justify-between items-center sticky top-0 z-10">
+    <!-- Header -->
+    <div class="px-8 py-5 border-b border-gray-100 bg-white flex items-center justify-between sticky top-0 z-10">
+        <div class="flex items-center gap-3">
+            <button onclick="history.back()" class="text-gray-400 hover:text-gray-600 transition p-1">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+                </svg>
+            </button>
             <div class="flex items-center gap-2 text-gray-800 font-bold text-lg">
-                <span class="text-xl leading-none mt-0.5">✦</span>
+                <span class="text-brand-orange text-xl">✦</span>
                 <span>ร้านเพิ่มข้าว</span>
             </div>
-            <a href="/admin/Create_account.html" class="text-xs text-brand-textMuted hover:text-brand-orange transition font-medium">
-                สร้างบัญชีแอดมิน
-            </a>
         </div>
+        <a href="/admin/Create_account.html" class="text-xs text-brand-textMuted hover:text-brand-orange transition font-medium">
+            สร้างบัญชีแอดมิน
+        </a>
+    </div>
 
-        <div class="p-8 md:p-12 flex-1 flex flex-col items-center">
-            <div class="w-full max-w-4xl">
+    <div class="p-8 md:p-12 flex-1 flex flex-col items-center">
+        <div class="w-full max-w-4xl">
+            <div class="w-full h-[220px] md:h-[320px] rounded-[2.5rem] overflow-hidden shadow-sm mb-10">
+                <img src="https://images.unsplash.com/photo-1559314809-0d155014e29e?q=80&w=2000&auto=format&fit=crop"
+                     alt="ร้านเพิ่มข้าว" class="w-full h-full object-cover">
+            </div>
 
-                <!-- Banner -->
-                <div class="w-full h-[220px] md:h-[320px] rounded-[2.5rem] overflow-hidden shadow-sm mb-10">
-                    <img src="https://images.unsplash.com/photo-1559314809-0d155014e29e?q=80&w=2000&auto=format&fit=crop"
-                         alt="ร้านเพิ่มข้าว" class="w-full h-full object-cover">
-                </div>
+            <div class="w-full max-w-md mx-auto text-center">
+                <h1 class="text-2xl font-bold text-gray-900 mb-2">ยินดีต้อนรับ</h1>
+                <p class="text-brand-textMuted text-sm mb-8 font-medium">เข้าสู่ระบบสำหรับเจ้าของร้าน / แอดมิน</p>
 
-                <div class="w-full max-w-md mx-auto text-center">
-                    <h1 class="text-2xl font-bold text-gray-900 mb-2">ยินดีต้อนรับ</h1>
-                    <p class="text-brand-textMuted text-sm mb-8 font-medium">เข้าสู่ระบบสำหรับเจ้าของร้าน / แอดมิน</p>
-
-                    <form id="login-form" class="space-y-5 text-left" onsubmit="event.preventDefault(); doLogin();">
-
-                        <div>
-                            <label class="block text-sm font-medium text-gray-500 mb-2 ml-1">ชื่อผู้ใช้</label>
-                            <input type="text" id="username" placeholder="ระบุชื่อผู้ใช้..."
-                                class="w-full bg-brand-inputBg text-gray-800 placeholder-brand-textMuted/60 rounded-2xl px-6 py-4 focus:outline-none focus:ring-2 focus:ring-brand-orange/50 transition font-medium">
-                        </div>
-
-                        <div>
-                            <label class="block text-sm font-medium text-gray-500 mb-2 ml-1">รหัสผ่าน</label>
-                            <input type="password" id="password" placeholder="ระบุรหัสผ่าน..."
-                                class="w-full bg-brand-inputBg text-gray-800 placeholder-brand-textMuted/60 rounded-2xl px-6 py-4 focus:outline-none focus:ring-2 focus:ring-brand-orange/50 transition font-medium">
-                        </div>
-
-                        <div class="pt-4">
-                            <button type="submit"
-                                class="w-full bg-brand-orange hover:bg-brand-darkOrange text-white font-bold rounded-2xl px-5 py-5 transition shadow-lg transform active:scale-[0.98]">
-                                เข้าสู่ระบบ
-                            </button>
-                        </div>
-                    </form>
-
-                    <p class="text-gray-400 text-sm mt-6">
-                        ยังไม่มีบัญชี?
-                        <a href="/admin/Create_account.html" class="text-brand-orange hover:text-brand-darkOrange font-medium transition">สร้างบัญชีแอดมิน</a>
-                    </p>
-
-                    <!-- debug: แสดงบัญชีที่มี -->
-                    <div id="account-info" class="hidden mt-6 bg-brand-inputBg rounded-2xl px-5 py-4 text-left">
-                        <p class="text-xs font-medium text-brand-textMuted mb-2">📋 บัญชีแอดมินที่มีอยู่:</p>
-                        <ul id="account-list" class="text-xs text-gray-500 space-y-1"></ul>
+                <form id="login-form" class="space-y-5 text-left" onsubmit="event.preventDefault(); doLogin();">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-500 mb-2 ml-1">ชื่อผู้ใช้</label>
+                        <input type="text" id="username" placeholder="ระบุชื่อผู้ใช้..."
+                            class="w-full bg-brand-inputBg text-gray-800 placeholder-brand-textMuted/60 rounded-2xl px-6 py-4 focus:outline-none focus:ring-2 focus:ring-brand-orange/50 transition font-medium">
                     </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-500 mb-2 ml-1">รหัสผ่าน</label>
+                        <input type="password" id="password" placeholder="ระบุรหัสผ่าน..."
+                            class="w-full bg-brand-inputBg text-gray-800 placeholder-brand-textMuted/60 rounded-2xl px-6 py-4 focus:outline-none focus:ring-2 focus:ring-brand-orange/50 transition font-medium">
+                    </div>
+                    <div class="pt-4">
+                        <button type="submit"
+                            class="w-full bg-brand-orange hover:bg-brand-darkOrange text-white font-bold rounded-2xl px-5 py-5 transition shadow-lg transform active:scale-[0.98]">
+                            เข้าสู่ระบบ
+                        </button>
+                    </div>
+                </form>
+
+                <p class="text-gray-400 text-sm mt-6">
+                    ยังไม่มีบัญชี?
+                    <a href="/admin/Create_account.html" class="text-brand-orange hover:text-brand-darkOrange font-medium transition">สร้างบัญชีแอดมิน</a>
+                </p>
+
+                <div id="account-info" class="hidden mt-6 bg-brand-inputBg rounded-2xl px-5 py-4 text-left">
+                    <p class="text-xs font-medium text-brand-textMuted mb-2">📋 บัญชีแอดมินที่มีอยู่:</p>
+                    <ul id="account-list" class="text-xs text-gray-500 space-y-1"></ul>
                 </div>
             </div>
         </div>
     </div>
+</div>
 
-    <!-- Modal -->
-    <div id="modal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm" onclick="closeModal()">
-        <div class="bg-white rounded-[2rem] p-10 max-w-sm w-[90%] shadow-2xl flex flex-col items-center" onclick="event.stopPropagation()">
-            <div class="w-16 h-16 bg-orange-50 rounded-full flex items-center justify-center mb-6">
-                <svg class="w-8 h-8 text-brand-orange" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
-                </svg>
-            </div>
-            <h3 id="modal-title" class="text-xl font-bold text-gray-900 mb-2 text-center"></h3>
-            <p id="modal-desc" class="text-gray-400 text-sm text-center"></p>
+<!-- Modal -->
+<div id="modal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm" onclick="closeModal()">
+    <div class="bg-white rounded-[2rem] p-10 max-w-sm w-[90%] shadow-2xl flex flex-col items-center" onclick="event.stopPropagation()">
+        <div class="w-16 h-16 bg-orange-50 rounded-full flex items-center justify-center mb-6">
+            <svg class="w-8 h-8 text-brand-orange" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+            </svg>
         </div>
+        <h3 id="modal-title" class="text-xl font-bold text-gray-900 mb-2 text-center"></h3>
+        <p id="modal-desc" class="text-gray-400 text-sm text-center"></p>
     </div>
+</div>
 
-    <script>
-        function renderAccountInfo() {
-            const accounts = JSON.parse(localStorage.getItem('adminAccounts') || '[]');
-            const infoBox = document.getElementById('account-info');
-            const list = document.getElementById('account-list');
-            if (accounts.length > 0) {
-                infoBox.classList.remove('hidden');
-                list.innerHTML = accounts.map(a => `<li>• ${a.username}</li>`).join('');
-            }
+<script>
+    function renderAccountInfo() {
+        const accounts = JSON.parse(localStorage.getItem('adminAccounts') || '[]');
+        const infoBox = document.getElementById('account-info');
+        const list    = document.getElementById('account-list');
+        if (accounts.length > 0) {
+            infoBox.classList.remove('hidden');
+            list.innerHTML = accounts.map(a => `<li>• ${a.username}</li>`).join('');
         }
-        renderAccountInfo();
+    }
+    renderAccountInfo();
 
-        function doLogin() {
-            const username = document.getElementById('username').value.trim();
-            const password = document.getElementById('password').value;
-
-            if (!username || !password) {
-                showModal('ข้อมูลไม่ครบถ้วน', 'กรุณากรอกชื่อผู้ใช้และรหัสผ่าน');
-                shakeForm(); return;
-            }
-
-            const accounts = JSON.parse(localStorage.getItem('adminAccounts') || '[]');
-            if (accounts.length === 0) {
-                showModal('ยังไม่มีบัญชี', 'กรุณาสร้างบัญชีแอดมินก่อนเข้าสู่ระบบ'); return;
-            }
-
-            const match = accounts.find(a =>
-                a.username.toLowerCase() === username.toLowerCase() && a.password === password
-            );
-
-            if (!match) {
-                showModal('ชื่อหรือรหัสผ่านไม่ถูกต้อง', 'กรุณาตรวจสอบและลองใหม่อีกครั้ง');
-                shakeForm(); return;
-            }
-
-            sessionStorage.setItem('loggedInAdmin', match.username);
-            window.location.href = '/admin/main.html';
+    function doLogin() {
+        const username = document.getElementById('username').value.trim();
+        const password = document.getElementById('password').value;
+        if (!username || !password) {
+            showModal('ข้อมูลไม่ครบถ้วน', 'กรุณากรอกชื่อผู้ใช้และรหัสผ่าน');
+            shakeForm(); return;
         }
-
-        function shakeForm() {
-            const form = document.getElementById('login-form');
-            form.classList.remove('shake');
-            void form.offsetWidth;
-            form.classList.add('shake');
+        const accounts = JSON.parse(localStorage.getItem('adminAccounts') || '[]');
+        if (accounts.length === 0) {
+            showModal('ยังไม่มีบัญชี', 'กรุณาสร้างบัญชีแอดมินก่อนเข้าสู่ระบบ'); return;
         }
-
-        function showModal(title, desc) {
-            document.getElementById('modal-title').textContent = title;
-            document.getElementById('modal-desc').textContent = desc;
-            document.getElementById('modal').classList.remove('hidden');
+        const match = accounts.find(a =>
+            a.username.toLowerCase() === username.toLowerCase() && a.password === password
+        );
+        if (!match) {
+            showModal('ชื่อหรือรหัสผ่านไม่ถูกต้อง', 'กรุณาตรวจสอบและลองใหม่อีกครั้ง');
+            shakeForm(); return;
         }
+        sessionStorage.setItem('loggedInAdmin', match.username);
+        window.location.href = '/admin/main.html';
+    }
 
-        function closeModal() {
-            document.getElementById('modal').classList.add('hidden');
-        }
-    </script>
+    function shakeForm() {
+        const form = document.getElementById('login-form');
+        form.classList.remove('shake');
+        void form.offsetWidth;
+        form.classList.add('shake');
+    }
+
+    function showModal(title, desc) {
+        document.getElementById('modal-title').textContent = title;
+        document.getElementById('modal-desc').textContent  = desc;
+        document.getElementById('modal').classList.remove('hidden');
+    }
+
+    function closeModal() {
+        document.getElementById('modal').classList.add('hidden');
+    }
+</script>
 </body>
 </html>

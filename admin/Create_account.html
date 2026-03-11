@@ -13,11 +13,8 @@
                     fontFamily: { sans: ['Kanit', 'sans-serif'] },
                     colors: {
                         brand: {
-                            orange: '#fd6e3b',
-                            darkOrange: '#e55a2b',
-                            inputBg: '#f8ece7',
-                            textMuted: '#b1745f',
-                            bgWhite: '#fcfbf9'
+                            orange: '#fd6e3b', darkOrange: '#e55a2b',
+                            inputBg: '#f8ece7', textMuted: '#b1745f', bgWhite: '#fcfbf9'
                         }
                     }
                 }
@@ -26,181 +23,160 @@
     </script>
 </head>
 <body class="bg-gray-100 flex justify-center min-h-screen font-sans">
+<div class="w-full bg-brand-bgWhite shadow-sm relative overflow-hidden min-h-screen flex flex-col">
 
-    <div class="w-full bg-brand-bgWhite shadow-sm relative overflow-hidden min-h-screen flex flex-col">
-
-        <!-- Header -->
-        <div class="px-8 py-5 border-b border-gray-100 bg-white flex justify-between items-center sticky top-0 z-10">
+    <!-- Header -->
+    <div class="px-8 py-5 border-b border-gray-100 bg-white flex items-center justify-between sticky top-0 z-10">
+        <div class="flex items-center gap-3">
+            <button onclick="history.back()" class="text-gray-400 hover:text-gray-600 transition p-1">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+                </svg>
+            </button>
             <div class="flex items-center gap-2 text-gray-800 font-bold text-lg">
-                <span class="text-xl leading-none mt-0.5">✦</span>
+                <span class="text-brand-orange text-xl">✦</span>
                 <span>ร้านเพิ่มข้าว</span>
             </div>
-            <a href="/admin/login.html" class="text-xs text-brand-textMuted hover:text-brand-orange transition font-medium">
-                เข้าสู่ระบบ
-            </a>
         </div>
+        <a href="/admin/login.html" class="text-xs text-brand-textMuted hover:text-brand-orange transition font-medium">
+            เข้าสู่ระบบ
+        </a>
+    </div>
 
-        <div class="p-8 md:p-12 flex-1 flex flex-col items-center">
-            <div class="w-full max-w-4xl">
+    <div class="p-8 md:p-12 flex-1 flex flex-col items-center">
+        <div class="w-full max-w-4xl">
+            <div class="w-full h-[220px] md:h-[320px] rounded-[2.5rem] overflow-hidden shadow-sm mb-10">
+                <img src="https://images.unsplash.com/photo-1559314809-0d155014e29e?q=80&w=2000&auto=format&fit=crop"
+                     alt="ร้านเพิ่มข้าว" class="w-full h-full object-cover">
+            </div>
 
-                <!-- Banner -->
-                <div class="w-full h-[220px] md:h-[320px] rounded-[2.5rem] overflow-hidden shadow-sm mb-10">
-                    <img src="https://images.unsplash.com/photo-1559314809-0d155014e29e?q=80&w=2000&auto=format&fit=crop"
-                         alt="ร้านเพิ่มข้าว" class="w-full h-full object-cover">
-                </div>
+            <div class="w-full max-w-md mx-auto text-center">
+                <h1 class="text-2xl font-bold text-gray-900 mb-2">สร้างบัญชีแอดมิน</h1>
+                <p class="text-brand-textMuted text-sm mb-8 font-medium">กรอกข้อมูลเพื่อสร้างบัญชีสำหรับเจ้าของร้าน</p>
 
-                <div class="w-full max-w-md mx-auto text-center">
-                    <h1 class="text-2xl font-bold text-gray-900 mb-2">สร้างบัญชีแอดมิน</h1>
-                    <p class="text-brand-textMuted text-sm mb-8 font-medium">กรอกข้อมูลเพื่อสร้างบัญชีสำหรับเจ้าของร้าน</p>
-
-                    <form id="register-form" class="space-y-5 text-left" onsubmit="event.preventDefault(); doRegister();">
-
-                        <div>
-                            <label class="block text-sm font-medium text-gray-500 mb-2 ml-1">ชื่อผู้ใช้</label>
-                            <input type="text" id="name" placeholder="ระบุชื่อผู้ใช้..."
-                                class="w-full bg-brand-inputBg text-gray-800 placeholder-brand-textMuted/60 rounded-2xl px-6 py-4 focus:outline-none focus:ring-2 focus:ring-brand-orange/50 transition font-medium">
+                <form id="register-form" class="space-y-5 text-left" onsubmit="event.preventDefault(); doRegister();">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-500 mb-2 ml-1">ชื่อผู้ใช้</label>
+                        <input type="text" id="name" placeholder="ระบุชื่อผู้ใช้..."
+                            class="w-full bg-brand-inputBg text-gray-800 placeholder-brand-textMuted/60 rounded-2xl px-6 py-4 focus:outline-none focus:ring-2 focus:ring-brand-orange/50 transition font-medium">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-500 mb-2 ml-1">รหัสผ่าน</label>
+                        <input type="password" id="password" placeholder="ตั้งรหัสผ่าน (อย่างน้อย 8 ตัวอักษร)"
+                            oninput="checkStrength(this.value)"
+                            class="w-full bg-brand-inputBg text-gray-800 placeholder-brand-textMuted/60 rounded-2xl px-6 py-4 focus:outline-none focus:ring-2 focus:ring-brand-orange/50 transition font-medium">
+                    </div>
+                    <!-- password strength -->
+                    <div class="px-1">
+                        <div class="flex gap-1.5 mb-1.5">
+                            <div id="bar1" class="h-1 flex-1 rounded-full bg-gray-200 transition-all duration-300"></div>
+                            <div id="bar2" class="h-1 flex-1 rounded-full bg-gray-200 transition-all duration-300"></div>
+                            <div id="bar3" class="h-1 flex-1 rounded-full bg-gray-200 transition-all duration-300"></div>
                         </div>
+                        <p id="strength-text" class="text-xs text-gray-400"></p>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-500 mb-2 ml-1">ยืนยันรหัสผ่าน</label>
+                        <input type="password" id="password2" placeholder="กรอกรหัสผ่านอีกครั้ง"
+                            class="w-full bg-brand-inputBg text-gray-800 placeholder-brand-textMuted/60 rounded-2xl px-6 py-4 focus:outline-none focus:ring-2 focus:ring-brand-orange/50 transition font-medium">
+                    </div>
+                    <div class="pt-4">
+                        <button type="submit"
+                            class="w-full bg-brand-orange hover:bg-brand-darkOrange text-white font-bold rounded-2xl px-5 py-5 transition shadow-lg transform active:scale-[0.98]">
+                            สร้างบัญชี
+                        </button>
+                    </div>
+                </form>
 
-                        <div>
-                            <label class="block text-sm font-medium text-gray-500 mb-2 ml-1">รหัสผ่าน</label>
-                            <input type="password" id="password" placeholder="ตั้งรหัสผ่าน (อย่างน้อย 8 ตัวอักษร)"
-                                oninput="checkStrength(this.value)"
-                                class="w-full bg-brand-inputBg text-gray-800 placeholder-brand-textMuted/60 rounded-2xl px-6 py-4 focus:outline-none focus:ring-2 focus:ring-brand-orange/50 transition font-medium">
-                        </div>
-
-                        <!-- Password strength -->
-                        <div class="px-1">
-                            <div class="flex gap-1.5 mb-1.5">
-                                <div id="bar1" class="h-1 flex-1 rounded-full bg-gray-200 transition-all duration-300"></div>
-                                <div id="bar2" class="h-1 flex-1 rounded-full bg-gray-200 transition-all duration-300"></div>
-                                <div id="bar3" class="h-1 flex-1 rounded-full bg-gray-200 transition-all duration-300"></div>
-                            </div>
-                            <p id="strength-text" class="text-xs text-gray-400"></p>
-                        </div>
-
-                        <div>
-                            <label class="block text-sm font-medium text-gray-500 mb-2 ml-1">ยืนยันรหัสผ่าน</label>
-                            <input type="password" id="password2" placeholder="กรอกรหัสผ่านอีกครั้ง"
-                                class="w-full bg-brand-inputBg text-gray-800 placeholder-brand-textMuted/60 rounded-2xl px-6 py-4 focus:outline-none focus:ring-2 focus:ring-brand-orange/50 transition font-medium">
-                        </div>
-
-                        <div class="pt-4">
-                            <button type="submit"
-                                class="w-full bg-brand-orange hover:bg-brand-darkOrange text-white font-bold rounded-2xl px-5 py-5 transition shadow-lg transform active:scale-[0.98]">
-                                สร้างบัญชี
-                            </button>
-                        </div>
-                    </form>
-
-                    <p class="text-gray-400 text-sm mt-6">
-                        มีบัญชีอยู่แล้ว?
-                        <a href="/admin/login.html" class="text-brand-orange hover:text-brand-darkOrange font-medium transition">เข้าสู่ระบบ</a>
-                    </p>
-                </div>
+                <p class="text-gray-400 text-sm mt-6">
+                    มีบัญชีอยู่แล้ว?
+                    <a href="/admin/login.html" class="text-brand-orange hover:text-brand-darkOrange font-medium transition">เข้าสู่ระบบ</a>
+                </p>
             </div>
         </div>
     </div>
+</div>
 
-    <!-- Modal -->
-    <div id="modal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm" onclick="handleOverlayClick()">
-        <div class="bg-white rounded-[2rem] p-10 max-w-sm w-[90%] shadow-2xl flex flex-col items-center" onclick="event.stopPropagation()">
-            <div id="modal-icon" class="w-16 h-16 bg-orange-50 rounded-full flex items-center justify-center mb-6">
-                <svg id="modal-svg" class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                          d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
-                </svg>
-            </div>
-            <h3 id="modal-title" class="text-xl font-bold text-gray-900 mb-2 text-center"></h3>
-            <p id="modal-desc" class="text-gray-400 text-sm text-center mb-6"></p>
-            <button id="modal-btn" class="hidden w-full bg-brand-orange hover:bg-brand-darkOrange text-white font-bold rounded-2xl px-5 py-4 transition active:scale-[0.98]"
-                onclick="handleModalBtn()"></button>
+<!-- Modal -->
+<div id="modal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm" onclick="handleOverlayClick()">
+    <div class="bg-white rounded-[2rem] p-10 max-w-sm w-[90%] shadow-2xl flex flex-col items-center" onclick="event.stopPropagation()">
+        <div id="modal-icon" class="w-16 h-16 bg-orange-50 rounded-full flex items-center justify-center mb-6">
+            <svg id="modal-svg" class="w-8 h-8" fill="none" stroke="#fd6e3b" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+            </svg>
         </div>
+        <h3 id="modal-title" class="text-xl font-bold text-gray-900 mb-2 text-center"></h3>
+        <p id="modal-desc" class="text-gray-400 text-sm text-center mb-6"></p>
+        <button id="modal-btn" class="hidden w-full bg-brand-orange hover:bg-brand-darkOrange text-white font-bold rounded-2xl px-5 py-4 transition active:scale-[0.98]"
+            onclick="handleModalBtn()"></button>
     </div>
+</div>
 
-    <script>
-        let isSuccess = false;
+<script>
+    let isSuccess = false;
 
-        function checkStrength(val) {
-            ['bar1','bar2','bar3'].forEach(b => {
-                document.getElementById(b).style.background = '#e5e7eb';
-            });
-            const txt = document.getElementById('strength-text');
-            if (!val) { txt.textContent = ''; return; }
-            let score = 0;
-            if (val.length >= 8) score++;
-            if (/[0-9]/.test(val) || /[!@#$%^&*]/.test(val)) score++;
-            if (val.length >= 12) score++;
-            const colors = ['#fd6e3b','#f5a623','#34c759'];
-            const labels = ['รหัสผ่านอ่อนแอ','รหัสผ่านพอใช้','รหัสผ่านแข็งแกร่ง'];
-            for (let i = 0; i < score; i++) {
-                document.getElementById(['bar1','bar2','bar3'][i]).style.background = colors[score-1];
-            }
-            txt.style.color = colors[score-1];
-            txt.textContent = score > 0 ? labels[score-1] : '';
+    function checkStrength(val) {
+        ['bar1','bar2','bar3'].forEach(b => document.getElementById(b).style.background = '#e5e7eb');
+        const txt = document.getElementById('strength-text');
+        if (!val) { txt.textContent = ''; return; }
+        let score = 0;
+        if (val.length >= 8) score++;
+        if (/[0-9]/.test(val) || /[!@#$%^&*]/.test(val)) score++;
+        if (val.length >= 12) score++;
+        const colors = ['#fd6e3b','#f5a623','#34c759'];
+        const labels = ['รหัสผ่านอ่อนแอ','รหัสผ่านพอใช้','รหัสผ่านแข็งแกร่ง'];
+        for (let i = 0; i < score; i++)
+            document.getElementById(['bar1','bar2','bar3'][i]).style.background = colors[score-1];
+        txt.style.color = colors[score-1];
+        txt.textContent = score > 0 ? labels[score-1] : '';
+    }
+
+    function doRegister() {
+        const name      = document.getElementById('name').value.trim();
+        const password  = document.getElementById('password').value;
+        const password2 = document.getElementById('password2').value;
+        if (!name || !password || !password2) { showModal('error','ข้อมูลไม่ครบถ้วน','กรุณากรอกข้อมูลให้ครบทุกช่อง'); return; }
+        if (password.length < 8) { showModal('error','รหัสผ่านสั้นเกินไป','กรุณาตั้งรหัสผ่านอย่างน้อย 8 ตัวอักษร'); return; }
+        if (password !== password2) { showModal('error','รหัสผ่านไม่ตรงกัน','กรุณากรอกรหัสผ่านให้ตรงกันทั้งสองช่อง'); return; }
+        const accounts = JSON.parse(localStorage.getItem('adminAccounts') || '[]');
+        if (accounts.some(a => a.username.toLowerCase() === name.toLowerCase())) {
+            showModal('error','ชื่อนี้ถูกใช้แล้ว','กรุณาเลือกชื่อผู้ใช้อื่น'); return;
         }
+        accounts.push({ username: name, password: password });
+        localStorage.setItem('adminAccounts', JSON.stringify(accounts));
+        isSuccess = true;
+        showModal('success',`สร้างบัญชีสำเร็จ!`,`ยินดีต้อนรับ คุณ${name}`,'เข้าสู่ระบบเลย');
+    }
 
-        function doRegister() {
-            const name     = document.getElementById('name').value.trim();
-            const password = document.getElementById('password').value;
-            const password2= document.getElementById('password2').value;
-
-            if (!name || !password || !password2) {
-                showModal('error','ข้อมูลไม่ครบถ้วน','กรุณากรอกข้อมูลให้ครบทุกช่อง'); return;
-            }
-            if (password.length < 8) {
-                showModal('error','รหัสผ่านสั้นเกินไป','กรุณาตั้งรหัสผ่านอย่างน้อย 8 ตัวอักษร'); return;
-            }
-            if (password !== password2) {
-                showModal('error','รหัสผ่านไม่ตรงกัน','กรุณากรอกรหัสผ่านให้ตรงกันทั้งสองช่อง'); return;
-            }
-
-            const accounts = JSON.parse(localStorage.getItem('adminAccounts') || '[]');
-            if (accounts.some(a => a.username.toLowerCase() === name.toLowerCase())) {
-                showModal('error','ชื่อนี้ถูกใช้แล้ว','กรุณาเลือกชื่อผู้ใช้อื่น'); return;
-            }
-
-            accounts.push({ username: name, password: password });
-            localStorage.setItem('adminAccounts', JSON.stringify(accounts));
-
-            isSuccess = true;
-            showModal('success','สร้างบัญชีสำเร็จ!',`ยินดีต้อนรับ คุณ${name}`,'เข้าสู่ระบบเลย');
+    function showModal(type, title, desc, btnText = null) {
+        document.getElementById('modal-title').textContent = title;
+        document.getElementById('modal-desc').textContent  = desc;
+        const icon = document.getElementById('modal-icon');
+        const svg  = document.getElementById('modal-svg');
+        const btn  = document.getElementById('modal-btn');
+        if (type === 'success') {
+            icon.className = 'w-16 h-16 bg-green-50 rounded-full flex items-center justify-center mb-6';
+            svg.setAttribute('stroke','#34c759');
+            svg.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>';
+        } else {
+            icon.className = 'w-16 h-16 bg-orange-50 rounded-full flex items-center justify-center mb-6';
+            svg.setAttribute('stroke','#fd6e3b');
+            svg.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>';
         }
+        if (btnText) { btn.textContent = btnText; btn.classList.remove('hidden'); }
+        else btn.classList.add('hidden');
+        document.getElementById('modal').classList.remove('hidden');
+    }
 
-        function showModal(type, title, desc, btnText = null) {
-            document.getElementById('modal-title').textContent = title;
-            document.getElementById('modal-desc').textContent = desc;
+    function handleModalBtn() {
+        if (isSuccess) window.location.href = '/admin/login.html';
+        else document.getElementById('modal').classList.add('hidden');
+    }
 
-            const icon = document.getElementById('modal-icon');
-            const svg  = document.getElementById('modal-svg');
-            const btn  = document.getElementById('modal-btn');
-
-            if (type === 'success') {
-                icon.className = 'w-16 h-16 bg-green-50 rounded-full flex items-center justify-center mb-6';
-                svg.setAttribute('stroke','#34c759');
-                svg.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>';
-            } else {
-                icon.className = 'w-16 h-16 bg-orange-50 rounded-full flex items-center justify-center mb-6';
-                svg.setAttribute('stroke','#fd6e3b');
-                svg.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>';
-            }
-
-            if (btnText) {
-                btn.textContent = btnText;
-                btn.classList.remove('hidden');
-            } else {
-                btn.classList.add('hidden');
-            }
-            document.getElementById('modal').classList.remove('hidden');
-        }
-
-        function handleModalBtn() {
-            if (isSuccess) window.location.href = '/admin/login.html';
-            else document.getElementById('modal').classList.add('hidden');
-        }
-
-        function handleOverlayClick() {
-            if (!isSuccess) document.getElementById('modal').classList.add('hidden');
-        }
-    </script>
+    function handleOverlayClick() {
+        if (!isSuccess) document.getElementById('modal').classList.add('hidden');
+    }
+</script>
 </body>
 </html>

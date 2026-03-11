@@ -65,9 +65,13 @@
                 <!-- Left Column -->
                 <div class="lg:col-span-2 space-y-5">
 
-                    <!-- Date Badge -->
-                    <div>
-                        <span id="date-badge" class="inline-block bg-white border border-gray-200 text-gray-600 text-sm font-medium px-4 py-2 rounded-full shadow-sm"></span>
+                    <!-- Date Navigation -->
+                    <div class="flex items-center gap-3">
+                        <button onclick="changeDay(-1)" title="วันก่อนหน้า"
+                            class="w-9 h-9 bg-white border border-gray-200 rounded-full flex items-center justify-center hover:bg-orange-50 hover:border-orange-300 transition text-gray-500 text-lg font-bold shadow-sm">‹</button>
+                        <span id="date-badge" class="inline-block bg-white border border-gray-200 text-gray-600 text-sm font-medium px-5 py-2 rounded-full shadow-sm min-w-[160px] text-center"></span>
+                        <button onclick="changeDay(1)" id="btn-next" title="วันถัดไป"
+                            class="w-9 h-9 bg-white border border-gray-200 rounded-full flex items-center justify-center hover:bg-orange-50 hover:border-orange-300 transition text-gray-500 text-lg font-bold shadow-sm disabled:opacity-30 disabled:cursor-not-allowed">›</button>
                     </div>
 
                     <!-- Stat Cards -->
@@ -119,20 +123,39 @@
     </main>
 
     <script>
-        // แสดงวันที่ปัจจุบัน
-        function formatThaiDate() {
-            const now = new Date();
-            const thaiMonths = ['มกราคม','กุมภาพันธ์','มีนาคม','เมษายน','พฤษภาคม','มิถุนายน','กรกฎาคม','สิงหาคม','กันยายน','ตุลาคม','พฤศจิกายน','ธันวาคม'];
-            const day = now.getDate();
-            const month = thaiMonths[now.getMonth()];
-            const year = now.getFullYear() + 543;
-            return `${day} ${month} ${year}`;
+        const thaiMonths = ['มกราคม','กุมภาพันธ์','มีนาคม','เมษายน','พฤษภาคม','มิถุนายน','กรกฎาคม','สิงหาคม','กันยายน','ตุลาคม','พฤศจิกายน','ธันวาคม'];
+        let dayOffset = 0; // 0 = วันนี้, -1 = เมื่อวาน, ...
+
+        function toDateKey(d) {
+            return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
         }
 
-        document.getElementById('date-badge').textContent = formatThaiDate();
+        function formatThaiDate(d) {
+            return `${d.getDate()} ${thaiMonths[d.getMonth()]} ${d.getFullYear()+543}`;
+        }
+
+        function changeDay(delta) {
+            const newOffset = dayOffset + delta;
+            if (newOffset > 0 || newOffset < -99) return;
+            dayOffset = newOffset;
+            loadReport();
+        }
 
         function loadReport() {
-            const orders = JSON.parse(localStorage.getItem('orders')) || [];
+            const targetDate = new Date();
+            targetDate.setDate(targetDate.getDate() + dayOffset);
+            const dateKey = toDateKey(targetDate);
+
+            document.getElementById('date-badge').textContent = formatThaiDate(targetDate);
+            const btnNext = document.getElementById('btn-next');
+            if (btnNext) btnNext.disabled = (dayOffset === 0);
+
+            const todayKey = toDateKey(new Date());
+            const allOrders = JSON.parse(localStorage.getItem('orders')) || [];
+            const orders = allOrders.filter(o => {
+                const orderKey = o.dateKey || todayKey; // orders เก่าที่ไม่มี dateKey ถือว่าวันนี้
+                return orderKey === dateKey;
+            });
 
             // คำนวณยอดรวม
             const totalRevenue = orders.reduce((sum, o) => sum + o.total, 0);
@@ -176,7 +199,7 @@
             });
 
             const sorted = Object.entries(itemCount).sort((a, b) => b[1] - a[1]).slice(0, 4);
-            const maxCount = sorted[0]?.[1] || 1;
+            const totalAllItems = Object.values(itemCount).reduce((s, v) => s + v, 0) || 1;
             const container = document.getElementById('popular-container');
             container.innerHTML = '';
 
@@ -189,7 +212,7 @@
             const allMenu = getAllMenu();
 
             sorted.forEach(([name, count], i) => {
-                const percent = Math.round((count / maxCount) * 100);
+                const percent = Math.round((count / totalAllItems) * 100);
                 const menuItem = allMenu.find(m => m.name === name);
                 const imgSrc = menuItem?.img || '';
 
@@ -223,20 +246,57 @@
         }
 
         function getAllMenu() {
-            // default menu list สำหรับดึงรูป
-            return [
-                { name: "ผัดกะเพรา", img: "/รูปอาหาร/krapao-moo.png" },
-                { name: "แกงเขียวหวาน", img: "/รูปอาหาร/Kaeng Khiaowan.png" },
-                { name: "ต้มยำ", img: "/รูปอาหาร/Tomyam.png" },
-                { name: "ผัดไทย", img: "/รูปอาหาร/PhatThai.png" },
-                { name: "ราดหน้า", img: "/รูปอาหาร/Rat Na.png" },
-                { name: "ข้าวผัดไข่", img: "/รูปอาหาร/Khaophat Khai.png" },
-                { name: "ผัดคะน้า", img: "/รูปอาหาร/Phat Khana.png" },
-                { name: "ต้มข่า", img: "/รูปอาหาร/Tomkha.png" },
-                { name: "ยำวุ้นเส้นหมูสับ", img: "/รูปอาหาร/Yam Wunsen Mu.png" },
-                { name: "ผัดซีอิ้ว", img: "/รูปอาหาร/Phat Si Io.png" },
-                ...(JSON.parse(localStorage.getItem('foodMenu')) || [])
+            const systemMenu = [
+                {name:"แกงเขียวหวาน",img:"/รูปอาหาร/Kaeng Khiaowan.png"},
+                {name:"ต้มยำ",img:"/รูปอาหาร/Tomyam.png"},
+                {name:"แกงส้ม",img:"/รูปอาหาร/Kaengsom.png"},
+                {name:"ต้มข่า",img:"/รูปอาหาร/Tomkha.png"},
+                {name:"ต้มจืด",img:"/รูปอาหาร/tom-jed-moo.png"},
+                {name:"ผัดกะเพรา",img:"/รูปอาหาร/krapao-moo.png"},
+                {name:"ผัดคะน้า",img:"/รูปอาหาร/Phat Khana.png"},
+                {name:"ราดพริก",img:"/รูปอาหาร/Kai Rat Phrik.png"},
+                {name:"ผัดพริกเผา",img:"/รูปอาหาร/Kai Phrik Phao.png"},
+                {name:"พะแนง",img:"/รูปอาหาร/Pha Nong Kai.png"},
+                {name:"พริกแกง",img:"/รูปอาหาร/Phrik Kaeng Kai.png"},
+                {name:"ผัดเผ็ด",img:"/รูปอาหาร/Phat Phet Kai.png"},
+                {name:"ผัดฉ่า",img:"/รูปอาหาร/Phat Cha Kai.png"},
+                {name:"ผัดผงกะหรี่",img:"/รูปอาหาร/Kai Phat Phong Kra Ri.png"},
+                {name:"ทอดกะเทียม",img:"/รูปอาหาร/Kai Thot Krathiam.png"},
+                {name:"ผัดผักรวม",img:"/รูปอาหาร/Phat Kruam.png"},
+                {name:"ผัดพริกสด",img:"/รูปอาหาร/Phat Phrik Sot.png"},
+                {name:"ไข่ยัดไส้",img:"/รูปอาหาร/Khai Yat Sai.png"},
+                {name:"ข้าวผัดไข่",img:"/รูปอาหาร/Khaophat Khai.png"},
+                {name:"ข้าวผัดแหนม",img:"/รูปอาหาร/Khaophat Naem.png"},
+                {name:"ข้าวผัดสัปรดแฮม",img:"/รูปอาหาร/Khaophat Prot Haem.png"},
+                {name:"ข้าวผัดไส้กรอก",img:"/รูปอาหาร/Khaophat Saikrok.png"},
+                {name:"ปีกไก่ทอด",img:"/รูปอาหาร/Pik Kai Thot.png"},
+                {name:"หมูทอด",img:"/รูปอาหาร/Mu Thot.png"},
+                {name:"กุนเชียงทอด",img:"/รูปอาหาร/Kunchiang Thot.png"},
+                {name:"หมูยอทอด",img:"/รูปอาหาร/MuYo Thot.png"},
+                {name:"เนื้อทอด",img:"/รูปอาหาร/Nuea Thot.png"},
+                {name:"กุ้งทอด",img:"/รูปอาหาร/Kung Thot.png"},
+                {name:"ดอลลี่ทอด",img:"/รูปอาหาร/Donli Thot.png"},
+                {name:"น้ำพริกกระปิ + ชะอมทอด",img:"/รูปอาหาร/Namphrik Kra Pi ChaOm Thot.png"},
+                {name:"น้ำพริกกระปิ + ปลาทูทอด",img:"/รูปอาหาร/Namphrik Kra Pi   Phak Thot.png"},
+                {name:"น้ำพริกกระปิ + ปลานิลทอด",img:"/รูปอาหาร/Namphrik Kra Pi   Pla Nin Thot.png"},
+                {name:"น้ำพริกกระปิ + ผักทอด",img:"/รูปอาหาร/Namphrik Kra Pi   Phak Thot.png"},
+                {name:"น้ำพริกกระปิ + มะเขือยาวทอด",img:"/รูปอาหาร/Namphrik Kra Pi   MakhueaYao Thot.png"},
+                {name:"ผัดมาม่า",img:"/รูปอาหาร/Phat Ma Ma.png"},
+                {name:"สุกี้",img:"/รูปอาหาร/Suk Ki.png"},
+                {name:"ราดหน้า",img:"/รูปอาหาร/Rat Na.png"},
+                {name:"ผัดไทย",img:"/รูปอาหาร/PhatThai.png"},
+                {name:"ผัดซีอิ้ว",img:"/รูปอาหาร/Phat Si Io.png"},
+                {name:"สปาเก็ตตี้",img:"/รูปอาหาร/Sapa Ket Ti.png"},
+                {name:"ยำวุ้นเส้นหมูสับ",img:"/รูปอาหาร/Yam Wunsen Mu.png"},
+                {name:"ยำปลากระป๋อง",img:"/รูปอาหาร/Yam Pla Krapong.png"},
+                {name:"ยำหมูยอ",img:"/รูปอาหาร/Yam MuYo.png"},
+                {name:"ยำรวมมิตร",img:"/รูปอาหาร/Yam Ruammit.png"},
+                {name:"ยำปลากรอบ",img:"/รูปอาหาร/Yam Pla Krob.png"},
+                {name:"ยำกุนเชียง",img:"/รูปอาหาร/Yam Kunchiang.png"},
+                {name:"ยำไข่ดาว",img:"/รูปอาหาร/Yam Khai Dao.png"},
+                {name:"ข้าวคลุกกะปิ",img:"/รูปอาหาร/Khao Khluk Ka Pi.png"},
             ];
+            return [...systemMenu, ...(JSON.parse(localStorage.getItem('foodMenu')) || [])];
         }
 
         loadReport();

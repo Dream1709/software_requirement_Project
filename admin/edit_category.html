@@ -93,15 +93,7 @@
             <span class="mt-4 px-5 py-2 bg-pink-100 text-pink-500 text-sm font-medium rounded-full">เพิ่มรายการ</span>
         </div>
 
-        <!-- ปุ่มเพิ่ม (หมวดทั่วไป) -->
-        <div id="btn-normal" class="hidden border-2 border-dashed border-gray-200 rounded-2xl p-8 flex flex-col items-center text-center bg-white/60 hover:border-orange-300 hover:bg-orange-50/30 transition cursor-pointer" onclick="showAddModal()">
-            <div class="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center mb-3">
-                <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
-            </div>
-            <p id="btn-normal-label" class="font-bold text-gray-700 text-sm">เพิ่มรายการ</p>
-            <p class="text-gray-400 text-xs mt-1">คลิกเพื่อเพิ่มรายการเมนูใหม่</p>
-            <span class="mt-4 px-5 py-2 bg-[#f8ece7] text-[#b1745f] text-sm font-medium rounded-full">เพิ่มรายการ</span>
-        </div>
+        <!-- ปุ่มเพิ่ม (หมวดทั่วไป) ถูกลบออกแล้ว - หน้านี้ทำได้เพียงแค่ลบเมนู -->
     </div>
 
     <!-- ===== VIEW 2: Picker เมนูแนะนำ ===== -->
@@ -142,7 +134,7 @@ const isRec     = category === 'เมนูแนะนำ';
 
 document.getElementById('bc-title').textContent    = 'แก้ไข' + category;
 document.getElementById('page-title').textContent  = 'แก้ไข' + category;
-document.getElementById('btn-normal-label').textContent = 'เพิ่มรายการ' + category;
+
 document.title = 'แก้ไข' + category + ' - Admin';
 
 const defaultMenu = [
@@ -211,9 +203,8 @@ let deleteTargetId = null;
 function init() {
     if (isRec) {
         document.getElementById('btn-recommended').classList.remove('hidden');
-    } else {
-        document.getElementById('btn-normal').classList.remove('hidden');
     }
+    // หมวดทั่วไป: แสดงแค่รายการ + ลบ ไม่มีปุ่มเพิ่ม
     renderCurrentList();
 }
 

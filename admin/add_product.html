@@ -95,11 +95,9 @@
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    
                     <div>
                         <label class="block text-sm font-medium text-gray-500 mb-2 ml-1">หมวดหมู่</label>
                         <select id="p-category" class="w-full bg-[#f8ece7] text-gray-800 rounded-2xl px-6 py-4 focus:outline-none focus:ring-2 focus:ring-orange-500/30 transition appearance-none">
-                            
                             <option value="เมนูต้มแกง">เมนูต้มแกง</option>
                             <option value="เมนูตามสั่ง">เมนูตามสั่ง</option>
                             <option value="เมนูข้าวผัด">เมนูข้าวผัด</option>
@@ -109,6 +107,12 @@
                             <option value="เมนูยำ">เมนูยำ</option>
                             <option value="เมนูเพิ่มเติม">เมนูเพิ่มเติม</option>
                         </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-500 mb-2 ml-1">ราคาเริ่มต้น (บาท)</label>
+                        <input type="number" id="p-price" placeholder="เช่น 40" min="0"
+                            class="w-full bg-[#f8ece7] text-gray-800 placeholder-[#b1745f]/60 rounded-2xl px-6 py-4 focus:outline-none focus:ring-2 focus:ring-orange-500/30 transition">
+                        <p class="text-xs text-gray-400 mt-1.5 ml-1">ราคาสำหรับแสดงบนหน้าเมนู</p>
                     </div>
                 </div>
 
@@ -170,15 +174,14 @@ fileInput.addEventListener('change', function() {
     }
 });
 
-// อย่าลืมแก้ไขในฟังก์ชัน saveProduct() ให้ดึงค่าจาก imgDataInput.value แทนนะครับ
 function saveProduct(event) {
     event.preventDefault();
     
-    // ดึงค่าข้อมูล (ตัด price ออกแล้ว)
     const newProduct = {
         id: Date.now(),
         name: document.getElementById('p-name').value.trim(),
         category: document.getElementById('p-category').value,
+        price: parseInt(document.getElementById('p-price').value) || 0,
         img: document.getElementById('p-img-data').value 
     };
 

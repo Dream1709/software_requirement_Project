@@ -6,448 +6,393 @@
     <title>เลือกรายละเอียดเมนู</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600&display=swap" rel="stylesheet">
-    
     <script>
         tailwind.config = {
             theme: {
                 extend: {
-                    fontFamily: { sans: ['Kanit', 'sans-serif'], },
-                    colors: { orange: { 500: '#F97316', 600: '#EA580C', } }
+                    fontFamily: { sans: ['Kanit', 'sans-serif'] },
+                    colors: {
+                        brand: { orange:'#fd6e3b', darkOrange:'#e55a2b', inputBg:'#f8ece7', textMuted:'#b1745f', bgWhite:'#fcfbf9' }
+                    }
                 }
             }
         }
     </script>
     <style>
-        /* ซ่อน Radio Button ดั้งเดิม แต่ให้คลิกได้ */
-        input[type="radio"] { appearance: none; -webkit-appearance: none; }
-        
-        /* สไตล์เมื่อถูกเลือก (กรอบส้ม) */
-        input[type="radio"]:checked + div { border-color: #F97316; background-color: #FFF7ED; }
-        input[type="radio"]:checked + div .radio-circle { border-color: #F97316; background-color: transparent; }
-        input[type="radio"]:checked + div .radio-circle::after {
-            content: ''; display: block; width: 10px; height: 10px; background-color: #F97316; border-radius: 50%; margin: 3px;
-        }
+        input[type="radio"], input[type="checkbox"] { appearance:none; -webkit-appearance:none; }
+        input[type="radio"]:checked + div,
+        input[type="checkbox"]:checked + div { border-color:#fd6e3b !important; background-color:#FFF7ED; }
+        input[type="radio"]:checked + div .radio-dot { border-color:#fd6e3b; background:#fd6e3b; }
+        input[type="checkbox"]:checked + div .check-box { border-color:#fd6e3b; background-color:#fd6e3b; }
+        input[type="checkbox"]:checked + div .check-box::after { content:'✓'; display:block; color:white; font-size:11px; text-align:center; line-height:18px; }
     </style>
 </head>
-<body class="bg-gray-50 text-gray-800 font-sans pb-20">
+<body class="bg-gray-50 text-gray-800 font-sans pb-28">
 
-    <nav class="bg-white border-b border-gray-200 sticky top-0 z-50">
-        <div class="max-w-6xl mx-auto px-4 py-3 flex justify-between items-center">
-            <div class="flex items-center gap-2 cursor-pointer" onclick="window.location.href='/customer/menu.html'">
-                <span class="text-xl font-bold">◀ ย้อนกลับ</span>
-            </div>
+    <nav class="bg-white border-b border-gray-100 sticky top-0 z-50 shadow-sm">
+        <div class="max-w-5xl mx-auto px-4 py-3.5 flex items-center gap-3">
+            <button onclick="window.location.href='/customer/menu.html'"
+                class="flex items-center gap-2 text-gray-500 hover:text-brand-orange transition font-medium text-sm">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+                </svg>
+                ย้อนกลับ
+            </button>
         </div>
     </nav>
 
-    <main class="max-w-6xl mx-auto px-4 py-8 grid grid-cols-1 lg:grid-cols-3 gap-8">
-        
-        <div class="lg:col-span-2 space-y-6">
-            <div class="flex flex-col">
-                <span id="menu-category" class="text-sm text-orange-500 font-medium">หมวดหมู่</span>
-                <h1 id="menu-title" class="text-3xl font-bold mb-4">ชื่อเมนู</h1>
-            </div>
-            
-            <div class="rounded-xl overflow-hidden shadow-sm h-64 md:h-96 w-full relative group">
-                <img id="menu-image" src="" alt="Food Image" class="w-full h-full object-cover transform group-hover:scale-105 transition duration-500 bg-gray-200">
-            </div>
+    <main class="max-w-5xl mx-auto px-4 py-6 grid grid-cols-1 lg:grid-cols-3 gap-8">
 
-            <div id="style-section" style="display: none;">
-                <h2 class="text-lg font-bold mb-4">รูปแบบ (เลือก 1 อย่าง)</h2>
-                <div class="grid grid-cols-2 gap-3">
-                    <label class="cursor-pointer group">
-                        <input type="radio" name="style" value="0" data-name="ราดข้าว" class="hidden" checked>
-                        <div class="border border-gray-200 rounded-lg p-3 flex items-start gap-3 transition bg-white h-full">
-                            <div class="radio-circle w-5 h-5 border-2 border-gray-300 rounded-full flex-shrink-0 mt-0.5"></div>
-                            <span class="text-sm font-medium">ราดข้าว</span>
-                        </div>
-                    </label>
-                    <label class="cursor-pointer group">
-                        <input type="radio" name="style" value="10" data-name="เป็นกับข้าว" class="hidden">
-                        <div class="border border-gray-200 rounded-lg p-3 flex items-start gap-3 transition bg-white h-full">
-                            <div class="radio-circle w-5 h-5 border-2 border-gray-300 rounded-full flex-shrink-0 mt-0.5"></div>
-                            <div class="flex flex-col">
-                                <span class="text-sm font-medium">เป็นกับข้าว</span>
-                                <span class="text-xs text-orange-600 font-bold">+ ฿10</span>
-                            </div>
-                        </div>
-                    </label>
-                </div>
-                <hr class="border-gray-100 my-6">
-            </div>
-
-            <div id="size-section">
-                <h2 class="text-lg font-bold mb-4">ขนาด (เลือก 1 อย่าง)</h2>
-                <div class="grid grid-cols-2 gap-3">
-                    <label class="cursor-pointer group">
-                        <input type="radio" name="size" value="0" data-name="ธรรมดา" class="hidden" checked>
-                        <div class="border border-gray-200 rounded-lg p-3 flex items-start gap-3 transition bg-white h-full">
-                            <div class="radio-circle w-5 h-5 border-2 border-gray-300 rounded-full flex-shrink-0 mt-0.5"></div>
-                            <div class="flex flex-col">
-                                <span class="text-sm font-medium">ธรรมดา</span>
-                                <span id="base-price-label" class="text-xs text-orange-600 font-bold"></span>
-                            </div>
-                        </div>
-                    </label>
-                    <label class="cursor-pointer group">
-                        <input type="radio" name="size" value="10" data-name="พิเศษ" class="hidden">
-                        <div class="border border-gray-200 rounded-lg p-3 flex items-start gap-3 transition bg-white h-full">
-                            <div class="radio-circle w-5 h-5 border-2 border-gray-300 rounded-full flex-shrink-0 mt-0.5"></div>
-                            <div class="flex flex-col">
-                                <span class="text-sm font-medium">พิเศษ</span>
-                                <span class="text-xs text-orange-600 font-bold">+ ฿10</span>
-                            </div>
-                        </div>
-                    </label>
-                </div>
-                <hr class="border-gray-100 my-6">
-            </div>
-
-            <div id="meat-section" style="display: none;">
-                <h2 class="text-lg font-bold mb-4">เนื้อสัตว์ (เลือก 1 อย่าง)</h2>
-                <div id="meat-options" class="grid grid-cols-2 md:grid-cols-4 gap-3"></div>
-                <hr class="border-gray-100 my-6">
-            </div>
-
-            <div id="addon-section" style="display: none;">
-                <h2 class="text-lg font-bold mb-4">เพิ่มเติม (เลือก 1 อย่าง)</h2>
-                <div class="space-y-3">
-                    <label class="cursor-pointer block">
-                        <input type="radio" name="addon" value="0" data-name="" class="hidden" checked>
-                        <div class="border border-gray-200 rounded-lg p-3 flex items-center gap-3 transition bg-white">
-                            <div class="radio-circle w-5 h-5 border-2 border-gray-300 rounded-full flex-shrink-0"></div>
-                            <span class="text-sm text-gray-500">ไม่รับเพิ่มเติม</span>
-                        </div>
-                    </label>
-                    <label class="cursor-pointer block">
-                        <input type="radio" name="addon" value="7" data-name="ไข่ดาว" class="hidden">
-                        <div class="border border-gray-200 rounded-lg p-3 flex items-center gap-3 transition bg-white">
-                            <div class="radio-circle w-5 h-5 border-2 border-gray-300 rounded-full flex-shrink-0"></div>
-                            <span class="text-sm">ไข่ดาว <span class="text-orange-600 font-medium">+ ฿7</span></span>
-                        </div>
-                    </label>
-                    <label class="cursor-pointer block">
-                        <input type="radio" name="addon" value="10" data-name="ไข่เจียว" class="hidden">
-                        <div class="border border-gray-200 rounded-lg p-3 flex items-center gap-3 transition bg-white">
-                            <div class="radio-circle w-5 h-5 border-2 border-gray-300 rounded-full flex-shrink-0"></div>
-                            <span class="text-sm">ไข่เจียว <span class="text-orange-600 font-medium">+ ฿10</span></span>
-                        </div>
-                    </label>
-                    <label class="cursor-pointer block">
-                        <input type="radio" name="addon" value="7" data-name="ไข่ต้ม" class="hidden">
-                        <div class="border border-gray-200 rounded-lg p-3 flex items-center gap-3 transition bg-white">
-                            <div class="radio-circle w-5 h-5 border-2 border-gray-300 rounded-full flex-shrink-0"></div>
-                            <span class="text-sm">ไข่ต้ม <span class="text-orange-600 font-medium">+ ฿7</span></span>
-                        </div>
-                    </label>
+        <!-- Left: Options -->
+        <div class="lg:col-span-2 space-y-7">
+            <div>
+                <span id="menu-category" class="text-xs text-brand-orange font-semibold uppercase tracking-wide"></span>
+                <h1 id="menu-title" class="text-2xl font-bold text-gray-900 mt-1 mb-4"></h1>
+                <div class="rounded-2xl overflow-hidden shadow-sm h-52 md:h-72 w-full">
+                    <img id="menu-image" src="" alt="" class="w-full h-full object-cover bg-gray-100" onerror="this.style.opacity='0.3'">
                 </div>
             </div>
 
+            <!-- รูปแบบ ราดข้าว/กับข้าว -->
+            <div id="style-section" class="hidden">
+                <h2 class="font-bold text-gray-800 mb-3">รูปแบบ <span class="text-xs text-gray-400 font-normal">(เลือก 1 อย่าง)</span></h2>
+                <div id="style-options" class="grid grid-cols-2 gap-3"></div>
+            </div>
+
+            <!-- ขนาด ธรรมดา/พิเศษ -->
+            <div id="size-section" class="hidden">
+                <h2 class="font-bold text-gray-800 mb-3">ขนาด <span class="text-xs text-gray-400 font-normal">(เลือก 1 อย่าง)</span></h2>
+                <div id="size-options" class="grid grid-cols-2 gap-3"></div>
+            </div>
+
+            <!-- เนื้อสัตว์/ตัวเลือกหลัก -->
+            <div id="meat-section" class="hidden">
+                <h2 id="meat-label" class="font-bold text-gray-800 mb-3">เนื้อสัตว์ <span class="text-xs text-gray-400 font-normal">(เลือก 1 อย่าง)</span></h2>
+                <div id="meat-options" class="grid grid-cols-2 md:grid-cols-3 gap-3"></div>
+            </div>
+
+            <!-- เพิ่มเติม -->
+            <div id="addon-section">
+                <h2 class="font-bold text-gray-800 mb-3">เพิ่มเติม <span class="text-xs text-gray-400 font-normal">(เลือกได้หลายอย่าง)</span></h2>
+                <div id="addon-options" class="grid grid-cols-2 gap-3"></div>
+            </div>
         </div>
 
+        <!-- Right: Summary -->
         <div class="lg:col-span-1">
-            <div class="sticky top-24 bg-white p-6 rounded-lg shadow-sm border border-gray-100">
-                <h2 class="text-lg font-bold mb-4">สรุปรายการสั่งซื้อ</h2>
-                <div class="mb-6">
-                    <p id="summary-title" class="text-sm font-bold text-gray-800 mb-2">กำลังโหลด...</p>
-                    <div id="summary-details" class="text-sm space-y-2">
-                        </div>
+            <div class="sticky top-20 bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+                <h2 class="font-bold text-gray-800 mb-4">สรุปรายการ</h2>
+                <p id="summary-name" class="font-semibold text-gray-700 text-sm mb-3"></p>
+                <div id="summary-details" class="space-y-2 text-sm text-gray-500 mb-4"></div>
+                <div class="border-t border-gray-100 pt-4 flex justify-between items-center font-bold text-gray-900">
+                    <span>ยอดรวม</span>
+                    <span id="total-price" class="text-brand-orange text-xl">฿0</span>
                 </div>
-
-                <div class="border-t border-gray-100 pt-4 mb-4">
-                     <div class="flex justify-between font-bold text-lg">
-                        <span>ยอดรวม</span>
-                        <span id="total-price" class="text-orange-600">฿0</span>
-                    </div>
-                </div>
-
-                <button id="add-to-cart-btn" class="w-full bg-orange-500 text-white font-bold py-3 rounded-lg transition hover:bg-orange-600 hover:shadow-lg">
+                <button id="add-btn"
+                    class="mt-4 w-full bg-brand-orange hover:bg-brand-darkOrange text-white font-bold py-3.5 rounded-xl transition shadow-md active:scale-[0.98]">
                     เพิ่มลงตะกร้า
                 </button>
             </div>
         </div>
-
     </main>
 
-    <script>
-        // 1. ดึงข้อมูลจาก URL
-        const urlParams = new URLSearchParams(window.location.search);
-        const category = urlParams.get('category') || 'เมนูตามสั่ง'; // Default
-        const menuName = urlParams.get('name') || 'เลือกเมนูของคุณ';
-        const menuImg = urlParams.get('img') || 'https://images.unsplash.com/photo-1593967858208-67aaa5b28e6c?q=80&w=2000&auto=format&fit=crop';
-        const basePrice = parseInt(urlParams.get('price')) || 0;
+<script>
+const params   = new URLSearchParams(window.location.search);
+const menuId   = parseInt(params.get('id')) || 0;
+const category = params.get('category') || '';
+const menuName = params.get('name')     || '';
+const basePrice= parseInt(params.get('price')) || 0;
+const imgFromUrl = params.get('img') || ''; // path สั้นจาก system menu
 
-        // แสดงราคาธรรมดาที่ตัวเลือกขนาด
-        // ถ้ามีวัตถุดิบให้เลือก ราคา "ธรรมดา" = 0 (ราคาอยู่ที่วัตถุดิบแล้ว)
-        const categoriesWithMeat = ['เมนูต้มแกง', 'เมนูตามสั่ง', 'เมนูแนะนำ', 'เมนูเส้น'];
-        const effectiveBasePrice = categoriesWithMeat.includes(category) ? 0 : basePrice;
-        if (effectiveBasePrice > 0) {
-            const label = document.getElementById('base-price-label');
-            if (label) label.textContent = `฿${effectiveBasePrice}`;
+// ดึงรูป: ถ้ามี img จาก URL (system menu) ใช้เลย / ถ้าไม่มีให้ดึง base64 จาก localStorage (admin menu)
+function resolveMenuImg() {
+    if (imgFromUrl) return imgFromUrl; // system menu path เช่น /รูปอาหาร/xxx.png
+    const adminMenu = JSON.parse(localStorage.getItem('foodMenu')) || [];
+    const found = adminMenu.find(m => m.id === menuId || m.name === menuName);
+    return found ? (found.img || '') : '';
+}
+
+const menuImg = resolveMenuImg();
+
+document.getElementById('menu-title').textContent    = menuName;
+document.getElementById('summary-name').textContent  = menuName;
+document.getElementById('menu-category').textContent = category;
+document.getElementById('menu-image').src            = menuImg;
+
+// ============= DATA =============
+
+const boilMeats = {
+    'แกงเขียวหวาน': [
+        {n:'หมู',p:50},{n:'ไก่',p:50},{n:'ปลานิล',p:50},{n:'สามชั้น',p:50},
+        {n:'รวมมิตร',p:60},{n:'หมูเด้ง',p:60},{n:'เนื้อ',p:60},{n:'กุ้ง',p:60},{n:'ดอลลี่',p:60},
+    ],
+    'ต้มยำ': [
+        {n:'หมู',p:50},{n:'ไก่',p:50},{n:'ปลานิล',p:50},
+        {n:'รวมมิตร',p:60},{n:'เนื้อ',p:60},{n:'กุ้ง',p:60},{n:'ดอลลี่',p:60},
+    ],
+    'แกงส้ม': [
+        {n:'หมู',p:50},{n:'ไก่',p:50},{n:'ปลานิล',p:50},
+        {n:'รวมมิตร',p:60},{n:'เนื้อ',p:60},{n:'กุ้ง',p:60},
+    ],
+    'ต้มข่า': [
+        {n:'หมู',p:50},{n:'ไก่',p:50},{n:'ปลานิล',p:50},
+        {n:'รวมมิตร',p:60},{n:'เนื้อ',p:60},{n:'กุ้ง',p:60},{n:'ดอลลี่',p:60},
+    ],
+};
+
+const tomJued = [
+    {n:'ต้มจืดเต้าหู้หมูสับ',p:40},{n:'ต้มจืดสาหร่ายหมูสับ',p:40},
+    {n:'ต้มผักกาดดองหมูสับ',p:50},{n:'ต้มจืดรวมมิตรหมู',p:50},
+];
+
+const orderTiers = {
+    t1: { names:['หมู','หมูสับ','ไก่','เครื่องในไก่'], radkao:{n:35,s:40}, gabkao:{n:50,s:60} },
+    t2: { names:['ลูกชิ้น','ปลากรอบ','ปลานิล','ปลาดุก','ไข่เยี่ยวม้า','สามชั้น','ทะเล','หมึก','ปูอัด','หอยแมงภู่','หมูยอ','ตับหมู'], radkao:{n:40,s:45}, gabkao:{n:50,s:60} },
+    t3: { names:['หมูกรอบ','เนื้อ','กุ้ง','รวมมิตร'], radkao:{n:45,s:50}, gabkao:{n:60,s:70} },
+};
+const allOrderMeats = [...orderTiers.t1.names,...orderTiers.t2.names,...orderTiers.t3.names];
+
+const friedMap = {
+    'ปีกไก่ทอด':{r:45,g:60},'หมูทอด':{r:45,g:60},'กุนเชียงทอด':{r:45,g:60},'หมูยอทอด':{r:45,g:60},
+    'เนื้อทอด':{r:50,g:70},'กุ้งทอด':{r:50,g:70},'ดอลลี่ทอด':{r:50,g:70},
+};
+
+const yamMap = {
+    'ยำวุ้นเส้นหมูสับ':50,'ยำปลากระป๋อง':50,'ยำหมูยอ':50,
+    'ยำรวมมิตร':60,'ยำปลากรอบ':60,'ยำกุนเชียง':60,'ยำไข่ดาว':60,
+};
+
+const friceMap = {'ข้าวผัดไข่':30,'ข้าวผัดแหนม':40,'ข้าวผัดสัปรดแฮม':40,'ข้าวผัดไส้กรอก':40};
+
+const spaghetti = [{n:'สปาเก็ตตี้ซอสเนื้อ',p:60},{n:'สปาเก็ตตี้คาโบนาล่า',p:60}];
+
+// ============= HELPERS =============
+
+function radioCard(label, val, group, checked=false, sub='') {
+    return `<label class="cursor-pointer">
+        <input type="radio" name="${group}" value="${val}" data-name="${label}" class="hidden" ${checked?'checked':''}>
+        <div class="border-2 border-gray-200 rounded-xl p-3 flex items-start gap-2.5 bg-white transition h-full">
+            <div class="radio-dot w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 mt-0.5 transition"></div>
+            <div><p class="text-sm font-medium leading-tight">${label}</p>${sub?`<p class="text-xs text-brand-orange font-bold mt-0.5">${sub}</p>`:''}</div>
+        </div>
+    </label>`;
+}
+
+function checkCard(label, val, sub='') {
+    return `<label class="cursor-pointer">
+        <input type="checkbox" name="addon" value="${val}" data-name="${label}" class="hidden">
+        <div class="border-2 border-gray-200 rounded-xl p-3 flex items-start gap-2.5 bg-white transition h-full">
+            <div class="check-box w-4 h-4 border-2 border-gray-300 rounded flex-shrink-0 mt-0.5"></div>
+            <div><p class="text-sm font-medium leading-tight">${label}</p>${sub?`<p class="text-xs text-brand-orange font-bold mt-0.5">${sub}</p>`:''}</div>
+        </div>
+    </label>`;
+}
+
+// ============= RESOLVE REAL CATEGORY =============
+function getRealCat() {
+    if (category !== 'เมนูแนะนำ') return category;
+    const sysMenu = [
+        {name:'แกงเขียวหวาน',cat:'เมนูต้มแกง'},{name:'ต้มยำ',cat:'เมนูต้มแกง'},{name:'แกงส้ม',cat:'เมนูต้มแกง'},
+        {name:'ต้มข่า',cat:'เมนูต้มแกง'},{name:'ต้มจืด',cat:'เมนูต้มแกง'},
+        {name:'ผัดกะเพรา',cat:'เมนูตามสั่ง'},{name:'ผัดคะน้า',cat:'เมนูตามสั่ง'},{name:'ราดพริก',cat:'เมนูตามสั่ง'},
+        {name:'ผัดพริกเผา',cat:'เมนูตามสั่ง'},{name:'พะแนง',cat:'เมนูตามสั่ง'},{name:'พริกแกง',cat:'เมนูตามสั่ง'},
+        {name:'ผัดเผ็ด',cat:'เมนูตามสั่ง'},{name:'ผัดฉ่า',cat:'เมนูตามสั่ง'},{name:'ผัดผงกะหรี่',cat:'เมนูตามสั่ง'},
+        {name:'ทอดกะเทียม',cat:'เมนูตามสั่ง'},{name:'ผัดผักรวม',cat:'เมนูตามสั่ง'},{name:'ผัดพริกสด',cat:'เมนูตามสั่ง'},
+        {name:'ไข่ยัดไส้',cat:'เมนูตามสั่ง'},
+        {name:'ข้าวผัดไข่',cat:'เมนูข้าวผัด'},{name:'ข้าวผัดแหนม',cat:'เมนูข้าวผัด'},
+        {name:'ข้าวผัดสัปรดแฮม',cat:'เมนูข้าวผัด'},{name:'ข้าวผัดไส้กรอก',cat:'เมนูข้าวผัด'},
+        {name:'ปีกไก่ทอด',cat:'เมนูทอด'},{name:'หมูทอด',cat:'เมนูทอด'},{name:'กุนเชียงทอด',cat:'เมนูทอด'},
+        {name:'หมูยอทอด',cat:'เมนูทอด'},{name:'เนื้อทอด',cat:'เมนูทอด'},{name:'กุ้งทอด',cat:'เมนูทอด'},{name:'ดอลลี่ทอด',cat:'เมนูทอด'},
+        {name:'น้ำพริกกระปิ + ชะอมทอด',cat:'เมนูน้ำพริกกระปิ'},{name:'น้ำพริกกระปิ + ปลาทูทอด',cat:'เมนูน้ำพริกกระปิ'},
+        {name:'น้ำพริกกระปิ + ปลานิลทอด',cat:'เมนูน้ำพริกกระปิ'},{name:'น้ำพริกกระปิ + ผักทอด',cat:'เมนูน้ำพริกกระปิ'},
+        {name:'น้ำพริกกระปิ + มะเขือยาวทอด',cat:'เมนูน้ำพริกกระปิ'},
+        {name:'ผัดมาม่า',cat:'เมนูเส้น'},{name:'สุกี้',cat:'เมนูเส้น'},{name:'ราดหน้า',cat:'เมนูเส้น'},
+        {name:'ผัดไทย',cat:'เมนูเส้น'},{name:'ผัดซีอิ้ว',cat:'เมนูเส้น'},{name:'สปาเก็ตตี้',cat:'เมนูเส้น'},
+        {name:'ยำวุ้นเส้นหมูสับ',cat:'เมนูยำ'},{name:'ยำปลากระป๋อง',cat:'เมนูยำ'},{name:'ยำหมูยอ',cat:'เมนูยำ'},
+        {name:'ยำรวมมิตร',cat:'เมนูยำ'},{name:'ยำปลากรอบ',cat:'เมนูยำ'},{name:'ยำกุนเชียง',cat:'เมนูยำ'},{name:'ยำไข่ดาว',cat:'เมนูยำ'},
+        {name:'ข้าวคลุกกะปิ',cat:'เมนูเพิ่มเติม'},
+    ];
+    const adminMenu = JSON.parse(localStorage.getItem('foodMenu')) || [];
+    const found = [...sysMenu,...adminMenu.map(m=>({name:m.name,cat:m.category}))].find(m=>m.name===menuName);
+    return found ? (found.cat || found.category) : 'เมนูตามสั่ง';
+}
+
+const realCat = getRealCat();
+
+// ============= SETUP =============
+
+// addon ทุกเมนู
+document.getElementById('addon-options').innerHTML =
+    checkCard('ไข่ดาว', 7,  '+฿7')  +
+    checkCard('ไข่เจียว',10, '+฿10') +
+    checkCard('ไข่ต้ม',  7,  '+฿7')  +
+    checkCard('ข้าวเปล่า',5, '+฿5');
+
+if (realCat === 'เมนูต้มแกง') {
+    document.getElementById('meat-section').classList.remove('hidden');
+    if (menuName === 'ต้มจืด') {
+        document.getElementById('meat-label').innerHTML = 'เลือกประเภท <span class="text-xs text-gray-400 font-normal">(เลือก 1 อย่าง)</span>';
+        document.getElementById('meat-options').innerHTML =
+            tomJued.map((o,i) => radioCard(o.n, o.p, 'meat', i===0, `฿${o.p}`)).join('');
+    } else {
+        const meats = boilMeats[menuName] || boilMeats['แกงเขียวหวาน'];
+        document.getElementById('meat-options').innerHTML =
+            meats.map((m,i) => radioCard(m.n, m.p, 'meat', i===0, `฿${m.p}`)).join('');
+    }
+}
+else if (realCat === 'เมนูตามสั่ง') {
+    document.getElementById('style-section').classList.remove('hidden');
+    document.getElementById('size-section').classList.remove('hidden');
+    document.getElementById('meat-section').classList.remove('hidden');
+    document.getElementById('style-options').innerHTML =
+        radioCard('ราดข้าว','radkao','style',true) + radioCard('กับข้าว','gabkao','style');
+    document.getElementById('size-options').innerHTML =
+        radioCard('ธรรมดา','normal','size',true) + radioCard('พิเศษ','special','size');
+    document.getElementById('meat-options').innerHTML =
+        allOrderMeats.map((name,i) => radioCard(name, name, 'meat', i===0)).join('');
+}
+else if (realCat === 'เมนูทอด') {
+    document.getElementById('style-section').classList.remove('hidden');
+    const p = friedMap[menuName] || {r:45,g:60};
+    document.getElementById('style-options').innerHTML =
+        radioCard('ราดข้าว','radkao','style',true,`฿${p.r}`) + radioCard('กับข้าว','gabkao','style',false,`฿${p.g}`);
+}
+else if (realCat === 'เมนูน้ำพริกกระปิ') {
+    document.getElementById('style-section').classList.remove('hidden');
+    document.getElementById('size-section').classList.remove('hidden');
+    document.getElementById('style-options').innerHTML =
+        radioCard('ราดข้าว','radkao','style',true,'฿45') + radioCard('กับข้าว','gabkao','style',false);
+    document.getElementById('size-options').innerHTML =
+        radioCard('ธรรมดา','normal','size',true) + radioCard('พิเศษ','special','size',false,'+฿10');
+}
+else if (realCat === 'เมนูเส้น') {
+    document.getElementById('size-section').classList.remove('hidden');
+    if (menuName === 'สปาเก็ตตี้') {
+        document.getElementById('meat-section').classList.remove('hidden');
+        document.getElementById('meat-label').innerHTML = 'เลือกประเภท <span class="text-xs text-gray-400 font-normal">(เลือก 1 อย่าง)</span>';
+        document.getElementById('meat-options').innerHTML =
+            spaghetti.map((o,i) => radioCard(o.n, o.p, 'meat', i===0, `฿${o.p}`)).join('');
+        document.getElementById('size-options').innerHTML =
+            radioCard('ธรรมดา','normal','size',true) + radioCard('พิเศษ','special','size',false,'+฿10');
+    } else {
+        document.getElementById('size-options').innerHTML =
+            radioCard('ธรรมดา','normal','size',true,'฿40') + radioCard('พิเศษ','special','size',false,'฿50');
+    }
+}
+
+document.querySelectorAll('input[type="radio"],input[type="checkbox"]').forEach(el => {
+    el.addEventListener('change', updateSummary);
+});
+
+// ============= PRICE =============
+
+function getBasePrice() {
+    if (realCat === 'เมนูยำ')          return yamMap[menuName]   || basePrice;
+    if (realCat === 'เมนูข้าวผัด')     return friceMap[menuName] || basePrice;
+    if (realCat === 'เมนูเพิ่มเติม')  return basePrice || 50;
+
+    if (realCat === 'เมนูต้มแกง') {
+        const sel = document.querySelector('input[name="meat"]:checked');
+        return sel ? parseInt(sel.value) : 40;
+    }
+    if (realCat === 'เมนูตามสั่ง') {
+        const m = document.querySelector('input[name="meat"]:checked');
+        const st= document.querySelector('input[name="style"]:checked');
+        const sz= document.querySelector('input[name="size"]:checked');
+        if (!m) return 0;
+        const tier = Object.values(orderTiers).find(t => t.names.includes(m.dataset.name));
+        if (!tier) return 0;
+        const style = st ? st.value : 'radkao';
+        const size  = sz ? sz.value : 'normal';
+        return tier[style][size === 'special' ? 's' : 'n'];
+    }
+    if (realCat === 'เมนูทอด') {
+        const st = document.querySelector('input[name="style"]:checked');
+        const p  = friedMap[menuName] || {r:45,g:60};
+        return st ? (st.value === 'radkao' ? p.r : p.g) : p.r;
+    }
+    if (realCat === 'เมนูน้ำพริกกระปิ') {
+        const st = document.querySelector('input[name="style"]:checked');
+        const sz = document.querySelector('input[name="size"]:checked');
+        if (!st || st.value === 'radkao') return 45;
+        return sz && sz.value === 'special' ? 60 : 50;
+    }
+    if (realCat === 'เมนูเส้น') {
+        if (menuName === 'สปาเก็ตตี้') {
+            const m  = document.querySelector('input[name="meat"]:checked');
+            const sz = document.querySelector('input[name="size"]:checked');
+            const b  = m ? parseInt(m.value) : 60;
+            return sz && sz.value === 'special' ? b + 10 : b;
         }
+        const sz = document.querySelector('input[name="size"]:checked');
+        return sz && sz.value === 'special' ? 50 : 40;
+    }
+    return basePrice;
+}
 
-        // 2. แปะข้อมูลลงหน้าเว็บ
-        document.getElementById('menu-title').textContent = menuName;
-        document.getElementById('summary-title').textContent = menuName;
-        document.getElementById('menu-category').textContent = category;
-        document.getElementById('menu-image').src = menuImg;
+function updateSummary() {
+    const details = document.getElementById('summary-details');
+    details.innerHTML = '';
+    let total = 0;
 
-        // 3. จัดการเปิด/ปิด หมวดหมู่ย่อย ตาม Category ที่ถูกส่งมา
-        const styleSection = document.getElementById('style-section');
-        const meatSection = document.getElementById('meat-section');
-        const addonSection = document.getElementById('addon-section');
+    const base = getBasePrice();
+    total += base;
+    details.innerHTML += `<div class="flex justify-between"><span>ราคาเมนู</span><span class="font-medium text-gray-700">฿${base}</span></div>`;
 
-        // ---- ข้อมูลวัตถุดิบแยกตาม category ----
-        const meatData = {
-            'เมนูต้มแกง': [
-                // แกงเขียวหวาน
-                { name: 'หมู', price: 50 }, { name: 'ไก่', price: 50 }, { name: 'ปลานิล', price: 50 },
-                { name: 'สามชั้น', price: 50 }, { name: 'รวมมิตร', price: 60 }, { name: 'หมูเด้ง', price: 60 },
-                { name: 'เนื้อ', price: 60 }, { name: 'กุ้ง', price: 60 }, { name: 'ดอลลี่', price: 60 },
-            ],
-            'เมนูตามสั่ง': [
-                { name: 'หมู', price: 35 }, { name: 'หมูสับ', price: 35 }, { name: 'ไก่', price: 35 },
-                { name: 'เครื่องในไก่', price: 35 }, { name: 'หมูกรอบ', price: 45 }, { name: 'เนื้อ', price: 45 },
-                { name: 'กุ้ง', price: 45 }, { name: 'รวมมิตร', price: 45 }, { name: 'ลูกชิ้น', price: 40 },
-                { name: 'ปลากรอบ', price: 40 }, { name: 'ปลานิล', price: 40 }, { name: 'ปลาดุก', price: 40 },
-                { name: 'ไข่เยียวม้า', price: 40 }, { name: 'สามชั้น', price: 40 }, { name: 'ทะเล', price: 40 },
-                { name: 'หมึก', price: 40 }, { name: 'มูจัด', price: 40 }, { name: 'หอยแมงภู่', price: 40 },
-                { name: 'หมูยอ', price: 40 }, { name: 'ตับหมู', price: 40 },
-            ],
-            'เมนูแนะนำ': [
-                { name: 'หมู', price: 35 }, { name: 'หมูสับ', price: 35 }, { name: 'ไก่', price: 35 },
-                { name: 'หมูกรอบ', price: 45 }, { name: 'เนื้อ', price: 45 }, { name: 'กุ้ง', price: 45 },
-                { name: 'รวมมิตร', price: 45 },
-            ],
-            'เมนูเส้น': [
-                { name: 'หมู', price: 40 }, { name: 'ไก่', price: 40 }, { name: 'ทะเล', price: 40 },
-                { name: 'หมึก', price: 40 }, { name: 'เนื้อ', price: 50 }, { name: 'รวมมิตร', price: 50 },
-                { name: 'หมูกรอบ', price: 50 },
-            ],
-        };
+    document.querySelectorAll('input[name="addon"]:checked').forEach(cb => {
+        const p = parseInt(cb.value);
+        total += p;
+        details.innerHTML += `<div class="flex justify-between text-gray-400"><span>+ ${cb.dataset.name}</span><span>฿${p}</span></div>`;
+    });
 
-        // ฟังก์ชัน render วัตถุดิบ
-        function renderMeatOptions(meats) {
-            const container = document.getElementById('meat-options');
-            container.innerHTML = meats.map((m, i) => `
-                <label class="cursor-pointer group">
-                    <input type="radio" name="meat" value="${m.price}" data-name="${m.name}" class="hidden" ${i === 0 ? 'checked' : ''}>
-                    <div class="border border-gray-200 rounded-lg p-3 flex items-start gap-3 transition bg-white h-full">
-                        <div class="radio-circle w-5 h-5 border-2 border-gray-300 rounded-full flex-shrink-0 mt-0.5"></div>
-                        <div class="flex flex-col">
-                            <span class="text-sm font-medium">${m.name}</span>
-                            <span class="text-xs text-orange-600 font-bold">฿${m.price}</span>
-                        </div>
-                    </div>
-                </label>
-            `).join('');
-            // ผูก event ใหม่
-            container.querySelectorAll('input[type="radio"]').forEach(r => r.addEventListener('change', updateSummary));
+    document.getElementById('total-price').textContent = `฿${total}`;
+}
+
+updateSummary();
+
+// ============= ADD TO CART =============
+
+document.getElementById('add-btn').addEventListener('click', () => {
+    const total = parseInt(document.getElementById('total-price').textContent.replace('฿','')) || 0;
+    let label = menuName;
+
+    if (realCat === 'เมนูตามสั่ง') {
+        const m  = document.querySelector('input[name="meat"]:checked');
+        const st = document.querySelector('input[name="style"]:checked');
+        const sz = document.querySelector('input[name="size"]:checked');
+        if (m)  label += ` + ${m.dataset.name}`;
+        if (st) label += ` (${st.value === 'radkao' ? 'ราดข้าว' : 'กับข้าว'})`;
+        if (sz && sz.value === 'special') label += ' พิเศษ';
+    } else if (realCat === 'เมนูต้มแกง') {
+        const m = document.querySelector('input[name="meat"]:checked');
+        if (m) label += ` + ${m.dataset.name}`;
+    } else if (realCat === 'เมนูทอด') {
+        const st = document.querySelector('input[name="style"]:checked');
+        if (st) label += ` (${st.value === 'radkao' ? 'ราดข้าว' : 'กับข้าว'})`;
+    } else if (realCat === 'เมนูน้ำพริกกระปิ') {
+        const st = document.querySelector('input[name="style"]:checked');
+        const sz = document.querySelector('input[name="size"]:checked');
+        if (st) label += ` (${st.value === 'radkao' ? 'ราดข้าว' : 'กับข้าว'})`;
+        if (sz && sz.value === 'special') label += ' พิเศษ';
+    } else if (realCat === 'เมนูเส้น') {
+        if (menuName === 'สปาเก็ตตี้') {
+            const m = document.querySelector('input[name="meat"]:checked');
+            if (m) label = m.dataset.name;
         }
+        const sz = document.querySelector('input[name="size"]:checked');
+        if (sz && sz.value === 'special') label += ' พิเศษ';
+    }
 
-        // ตั้งค่าเริ่มต้น ปิดส่วนที่ไม่จำเป็นก่อน (ซ่อนเนื้อสัตว์, รูปแบบ, เพิ่มเติม)
-        styleSection.style.display = 'none';
-        meatSection.style.display = 'none';
-        addonSection.style.display = 'none';
+    const addons = [...document.querySelectorAll('input[name="addon"]:checked')].map(cb => cb.dataset.name);
+    if (addons.length) label += ` + ${addons.join(', ')}`;
 
-        if (['เมนูต้มแกง', 'เมนูตามสั่ง', 'เมนูแนะนำ'].includes(category)) {
-            styleSection.style.display = 'block';
-            meatSection.style.display = 'block';
-            addonSection.style.display = 'block';
-
-            // เมนูแนะนำ: ดึง options ตาม category จริงของเมนูนั้นจาก localStorage
-            if (category === 'เมนูแนะนำ') {
-                // หาว่าเมนูชื่อนี้มี category จริงว่าอะไร
-                const allMenuData = JSON.parse(localStorage.getItem('foodMenu')) || [];
-                // รวม systemMenu เพื่อค้นหา (ใช้ชื่อเมนูที่ส่งมาจาก URL)
-                const realCat = (() => {
-                    const systemMenu = [
-                        {id:3,name:"แกงเขียวหวาน",category:"เมนูต้มแกง"},{id:4,name:"ต้มยำ",category:"เมนูต้มแกง"},
-                        {id:5,name:"แกงส้ม",category:"เมนูต้มแกง"},{id:6,name:"ต้มข่า",category:"เมนูต้มแกง"},
-                        {id:7,name:"ต้มจืด",category:"เมนูต้มแกง"},{id:8,name:"ผัดกะเพรา",category:"เมนูตามสั่ง"},
-                        {id:9,name:"ผัดคะน้า",category:"เมนูตามสั่ง"},{id:10,name:"ราดพริก",category:"เมนูตามสั่ง"},
-                        {id:11,name:"ผัดพริกเผา",category:"เมนูตามสั่ง"},{id:12,name:"พะแนง",category:"เมนูตามสั่ง"},
-                        {id:13,name:"พริกแกง",category:"เมนูตามสั่ง"},{id:14,name:"ผัดเผ็ด",category:"เมนูตามสั่ง"},
-                        {id:15,name:"ผัดฉ่า",category:"เมนูตามสั่ง"},{id:16,name:"ผัดผงกะหรี่",category:"เมนูตามสั่ง"},
-                        {id:17,name:"ทอดกะเทียม",category:"เมนูตามสั่ง"},{id:18,name:"ผัดผักรวม",category:"เมนูตามสั่ง"},
-                        {id:19,name:"ผัดพริกสด",category:"เมนูตามสั่ง"},{id:20,name:"ไข่ยัดไส้",category:"เมนูตามสั่ง"},
-                        {id:21,name:"ข้าวผัดไข่",category:"เมนูข้าวผัด"},{id:22,name:"ข้าวผัดแหนม",category:"เมนูข้าวผัด"},
-                        {id:23,name:"ข้าวผัดสัปรดแฮม",category:"เมนูข้าวผัด"},{id:24,name:"ข้าวผัดไส้กรอก",category:"เมนูข้าวผัด"},
-                        {id:25,name:"ปีกไก่ทอด",category:"เมนูทอด"},{id:26,name:"หมูทอด",category:"เมนูทอด"},
-                        {id:27,name:"กุนเชียงทอด",category:"เมนูทอด"},{id:28,name:"หมูยอทอด",category:"เมนูทอด"},
-                        {id:29,name:"เนื้อทอด",category:"เมนูทอด"},{id:30,name:"กุ้งทอด",category:"เมนูทอด"},
-                        {id:31,name:"ดอลลี่ทอด",category:"เมนูทอด"},
-                        {id:32,name:"น้ำพริกกระปิ + ชะอมทอด",category:"เมนูน้ำพริกกระปิ"},
-                        {id:33,name:"น้ำพริกกระปิ + ปลาทูทอด",category:"เมนูน้ำพริกกระปิ"},
-                        {id:34,name:"น้ำพริกกระปิ + ปลานิลทอด",category:"เมนูน้ำพริกกระปิ"},
-                        {id:35,name:"น้ำพริกกระปิ + ผักทอด",category:"เมนูน้ำพริกกระปิ"},
-                        {id:36,name:"น้ำพริกกระปิ + มะเขือยาวทอด",category:"เมนูน้ำพริกกระปิ"},
-                        {id:37,name:"ผัดมาม่า",category:"เมนูเส้น"},{id:38,name:"สุกี้",category:"เมนูเส้น"},
-                        {id:39,name:"ราดหน้า",category:"เมนูเส้น"},{id:40,name:"ผัดไทย",category:"เมนูเส้น"},
-                        {id:41,name:"ผัดซีอิ้ว",category:"เมนูเส้น"},{id:42,name:"สปาเก็ตตี้",category:"เมนูเส้น"},
-                        {id:43,name:"ยำวุ้นเส้นหมูสับ",category:"เมนูยำ"},{id:44,name:"ยำปลากระป๋อง",category:"เมนูยำ"},
-                        {id:45,name:"ยำหมูยอ",category:"เมนูยำ"},{id:46,name:"ยำรวมมิตร",category:"เมนูยำ"},
-                        {id:47,name:"ยำปลากรอบ",category:"เมนูยำ"},{id:48,name:"ยำกุนเชียง",category:"เมนูยำ"},
-                        {id:49,name:"ยำไข่ดาว",category:"เมนูยำ"},{id:50,name:"ข้าวคลุกกะปิ",category:"เมนูเพิ่มเติม"},
-                    ];
-                    const combined = [...systemMenu, ...allMenuData];
-                    const found = combined.find(m => m.name === menuName);
-                    return found ? found.category : 'เมนูตามสั่ง';
-                })();
-
-                // ถ้า category จริงเป็นเมนูทอด/น้ำพริกกระปิ ให้ซ่อนเนื้อสัตว์
-                if (['เมนูทอด', 'เมนูน้ำพริกกระปิ', 'เมนูข้าวผัด', 'เมนูยำ', 'เมนูเพิ่มเติม'].includes(realCat)) {
-                    meatSection.style.display = 'none';
-                    addonSection.style.display = 'none';
-                    if (['เมนูทอด', 'เมนูน้ำพริกกระปิ'].includes(realCat)) {
-                        styleSection.style.display = 'block';
-                        const sideDishRadio = document.querySelector('input[name="style"][data-name="เป็นกับข้าว"]');
-                        const sideDishLabel = sideDishRadio ? sideDishRadio.nextElementSibling.querySelector('.text-xs') : null;
-                        if (sideDishRadio) sideDishRadio.value = '15';
-                        if (sideDishLabel) sideDishLabel.textContent = '+ ฿15';
-                    }
-                } else {
-                    renderMeatOptions(meatData[realCat] || meatData['เมนูตามสั่ง']);
-                }
-            } else {
-                renderMeatOptions(meatData[category] || meatData['เมนูตามสั่ง']);
-            }
-        } 
-        else if (['เมนูทอด', 'เมนูน้ำพริกกระปิ'].includes(category)) {
-            styleSection.style.display = 'block';
-            // เมนูทอด กับข้าว = +15
-            const sideDishRadio = document.querySelector('input[name="style"][data-name="เป็นกับข้าว"]');
-            const sideDishLabel = sideDishRadio ? sideDishRadio.nextElementSibling.querySelector('.text-xs') : null;
-            if (sideDishRadio) sideDishRadio.value = '15';
-            if (sideDishLabel) sideDishLabel.textContent = '+ ฿15';
-        }
-        else if (['เมนูเส้น'].includes(category)) {
-            meatSection.style.display = 'block';
-            addonSection.style.display = 'block';
-            renderMeatOptions(meatData['เมนูเส้น']);
-        }
-        // เมนูยำ, เมนูข้าวผัด, เมนูเพิ่มเติม — แสดงแค่ขนาด
-
-        // 4. ฟังก์ชันคำนวณและสรุปราคา
-        function updateSummary() {
-            const summaryDetails = document.getElementById('summary-details');
-            const totalPriceEl = document.getElementById('total-price');
-            let total = 0;
-            summaryDetails.innerHTML = ''; 
-
-            // 4.0 ราคาเริ่มต้นของเมนู (สำหรับหมวดที่มี basePrice เช่น ข้าวผัด)
-            if (effectiveBasePrice > 0) {
-                total += effectiveBasePrice;
-                summaryDetails.innerHTML += `
-                    <div class="flex justify-between text-gray-700">
-                        <span>ราคาเมนู</span>
-                        <span>฿${effectiveBasePrice}</span>
-                    </div>`;
-            }
-
-            // 4.1 ตรวจสอบ เนื้อสัตว์ (ถ้ากำลังแสดงอยู่)
-            if (meatSection.style.display !== 'none') {
-                const meatObj = document.querySelector('input[name="meat"]:checked');
-                if (meatObj) {
-                    const name = meatObj.dataset.name;
-                    const price = parseInt(meatObj.value);
-                    total += price;
-                    summaryDetails.innerHTML += `
-                        <div class="flex justify-between text-gray-700">
-                            <span>เนื้อสัตว์: ${name}</span>
-                            <span>฿${price}</span>
-                        </div>`;
-                }
-            }
-
-            // 4.2 ตรวจสอบ รูปแบบ (ถ้ากำลังแสดงอยู่)
-            if (styleSection.style.display !== 'none') {
-                const styleObj = document.querySelector('input[name="style"]:checked');
-                if (styleObj && parseInt(styleObj.value) > 0) {
-                    const name = styleObj.dataset.name;
-                    const price = parseInt(styleObj.value);
-                    total += price;
-                    summaryDetails.innerHTML += `
-                        <div class="flex justify-between text-gray-500 text-xs">
-                            <span>+ ${name}</span>
-                            <span>฿${price}</span>
-                        </div>`;
-                }
-            }
-
-            // 4.3 ตรวจสอบ ขนาด (หมวดนี้แสดงอยู่เสมอ)
-            const sizeObj = document.querySelector('input[name="size"]:checked');
-            if (sizeObj && parseInt(sizeObj.value) > 0) {
-                const name = sizeObj.dataset.name;
-                const price = parseInt(sizeObj.value);
-                total += price;
-                summaryDetails.innerHTML += `
-                    <div class="flex justify-between text-gray-500 text-xs">
-                        <span>+ ขนาด: ${name}</span>
-                        <span>฿${price}</span>
-                    </div>`;
-            }
-
-            // 4.4 ตรวจสอบ เพิ่มเติม (ถ้ากำลังแสดงอยู่)
-            if (addonSection.style.display !== 'none') {
-                const addonObj = document.querySelector('input[name="addon"]:checked');
-                if (addonObj && parseInt(addonObj.value) > 0) {
-                    const name = addonObj.dataset.name;
-                    const price = parseInt(addonObj.value);
-                    total += price;
-                    summaryDetails.innerHTML += `
-                        <div class="flex justify-between text-gray-500 text-xs">
-                            <span>+ เพิ่ม: ${name}</span>
-                            <span>฿${price}</span>
-                        </div>`;
-                }
-            }
-
-            // อัปเดตยอดรวม
-            totalPriceEl.textContent = `฿${total}`;
-        }
-
-        // 5. จับเหตุการณ์เมื่อลูกค้าคลิกเปลี่ยนตัวเลือก
-        document.querySelectorAll('input[type="radio"]').forEach(radio => {
-            radio.addEventListener('change', updateSummary);
-        });
-
-        // คำนวณครั้งแรกเมื่อเปิดหน้า
-        updateSummary();
-
-        // 6. ปุ่มเพิ่มลงตะกร้า
-        document.getElementById('add-to-cart-btn').addEventListener('click', () => {
-            const totalPriceText = document.getElementById('total-price').textContent;
-            const totalPrice = parseInt(totalPriceText.replace('฿', '')) || 0;
-
-            // สร้างชื่อรายการรวมตัวเลือก
-            let itemLabel = menuName;
-            const meatChecked = document.querySelector('input[name="meat"]:checked');
-            if (meatChecked && meatSection.style.display !== 'none') {
-                itemLabel += ` + ${meatChecked.dataset.name}`;
-            }
-            const sizeChecked = document.querySelector('input[name="size"]:checked');
-            if (sizeChecked && parseInt(sizeChecked.value) > 0) {
-                itemLabel += ` + ${sizeChecked.dataset.name}`;
-            }
-            const addonChecked = document.querySelector('input[name="addon"]:checked');
-            if (addonChecked && parseInt(addonChecked.value) > 0 && addonSection.style.display !== 'none') {
-                itemLabel += ` + ${addonChecked.dataset.name}`;
-            }
-
-            // บันทึกลง localStorage
-            const cart = JSON.parse(localStorage.getItem('cart')) || [];
-            // เช็คว่ามีรายการนี้อยู่แล้วหรือไม่
-            const existing = cart.find(i => i.name === itemLabel && i.price === totalPrice);
-            if (existing) {
-                existing.quantity += 1;
-            } else {
-                cart.push({ id: Date.now(), name: itemLabel, price: totalPrice, quantity: 1 });
-            }
-            localStorage.setItem('cart', JSON.stringify(cart));
-
-            // ไปหน้าตะกร้า
-            window.location.href = '/customer/menu.html';
-        });
-    </script>
+    const cart = JSON.parse(localStorage.getItem('cart')) || [];
+    const existing = cart.find(i => i.name === label && i.price === total);
+    if (existing) existing.quantity++;
+    else cart.push({ id: Date.now(), name: label, price: total, quantity: 1 });
+    localStorage.setItem('cart', JSON.stringify(cart));
+    window.location.href = '/customer/menu.html';
+});
+</script>
 </body>
 </html>
