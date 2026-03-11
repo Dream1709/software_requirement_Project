@@ -155,7 +155,7 @@
         }
 
         // ========= Render =========
-        function renderMenu(data) {
+        function renderMenu(data, isAll=false) {
             const container = document.getElementById('menu-container');
             container.innerHTML = '';
 
@@ -164,20 +164,25 @@
             categories.forEach(cat => {
                 const items = data.filter(item => item.category === cat);
                 const section = document.createElement('div');
+
+                const cardHtml = items.map(item => `
+                    <div class="${isAll ? 'flex-shrink-0 w-40 md:w-48' : ''} cursor-pointer group"
+                        onclick="goToCustom(${item.id}, '${encodeURIComponent(item.name)}', '${encodeURIComponent(item.category)}', ${item.price || 0}, '${(item.img||'').startsWith('data:') ? '' : encodeURIComponent(item.img||'')}')">
+                        <div class="rounded-2xl overflow-hidden aspect-square mb-2 shadow-sm group-hover:shadow-md transition">
+                            <img src="${item.img}" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
+                        </div>
+                        <p class="text-sm font-medium leading-tight">${item.name}</p>
+                        ${item.price ? `<p class="text-xs text-orange-500 font-bold mt-0.5">฿${item.price}.-</p>` : ''}
+                    </div>
+                `).join('');
+
+                const listClass = isAll
+                    ? 'flex overflow-x-auto gap-4 no-scrollbar pb-4'
+                    : 'grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 mb-2';
+
                 section.innerHTML = `
                     <h2 class="text-lg font-bold mb-4">${cat}</h2>
-                    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 mb-2">
-                        ${items.map(item => `
-                            <div class="cursor-pointer group"
-                                onclick="goToCustom(${item.id}, '${encodeURIComponent(item.name)}', '${encodeURIComponent(item.category)}', ${item.price || 0}, '${(item.img||'').startsWith('data:') ? '' : encodeURIComponent(item.img||'')}')">
-                                <div class="rounded-2xl overflow-hidden aspect-square mb-2 shadow-sm group-hover:shadow-md transition">
-                                    <img src="${item.img}" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
-                                </div>
-                                <p class="text-sm font-medium leading-tight">${item.name}</p>
-                                ${item.price ? `<p class="text-xs text-orange-500 font-bold mt-0.5">฿${item.price}.-</p>` : ''}
-                            </div>
-                        `).join('')}
-                    </div>
+                    <div class="${listClass}">${cardHtml}</div>
                 `;
                 container.appendChild(section);
             });
@@ -187,15 +192,15 @@
         function filterMenu(category) {
             const total = buildTotalMenu();
             if (category === 'all') {
-                renderMenu(total);
+                renderMenu(total, true);
             } else {
-                renderMenu(total.filter(item => item.category === category));
+                renderMenu(total.filter(item => item.category === category), false);
             }
         }
 
         // ========= Init =========
         window.onload = function() {
-            renderMenu(buildTotalMenu());
+            renderMenu(buildTotalMenu(), true);
             updateCartCount();
         };
 
