@@ -54,9 +54,11 @@
                     <form id="customer-form" class="space-y-5 text-left" onsubmit="startOrdering(event)">
                         
                         <div>
-                            <label class="block text-sm font-medium text-gray-500 mb-2 ml-1">ชื่อลูกค้า</label>
-                            <input type="text" id="customer-name" placeholder="ระบุชื่อของคุณ..." required 
+                            <label class="block text-sm font-medium text-gray-500 mb-2 ml-1">ชื่อ</label>
+                            <input type="text" id="customer-name" placeholder="ระบุชื่อของคุณ..." required minlength="2"
+                                oninput="var bad=/[0-9!@#$%^&*()_+=\[\]{};':\\|,.<>\/?`~\-]/g; if(bad.test(this.value)){this.value=this.value.replace(bad,'');showNameError('❌ ใส่ได้เฉพาะตัวอักษรเท่านั้น ไม่สามารถใส่ตัวเลขหรืออักขระพิเศษได้');} else if(this.value.length===1){showNameError('❌ ชื่อต้องมีอย่างน้อย 2 ตัวอักษร');} else{document.getElementById('name-error').classList.add('hidden');}"
                                 class="w-full bg-brand-inputBg text-gray-800 placeholder-brand-textMuted/60 rounded-2xl px-6 py-4 focus:outline-none focus:ring-2 focus:ring-brand-orange/50 transition font-medium">
+                            <p id="name-error" class="text-red-400 text-xs mt-1 ml-1 hidden"></p>
                         </div>
 
                         <div>
@@ -89,18 +91,27 @@
     </div>
 
     <script>
+        function showNameError(msg) {
+            const el = document.getElementById('name-error');
+            el.textContent = msg;
+            el.classList.remove('hidden');
+        }
+
         function startOrdering(event) {
             event.preventDefault();
-            const customerName = document.getElementById('customer-name').value;
-            const tableNumber = document.getElementById('table-number').value;
+            const customerName = document.getElementById('customer-name').value.trim();
 
-            // เก็บข้อมูลลง localStorage เพื่อไปใช้ในหน้าเมนูหรือตะกร้า
+            if (customerName.length < 2) {
+                showNameError('❌ ชื่อต้องมีอย่างน้อย 2 ตัวอักษร');
+                document.getElementById('customer-name').focus();
+                return;
+            }
+
+            const tableNumber = document.getElementById('table-number').value;
             localStorage.setItem('customerInfo', JSON.stringify({
                 name: customerName,
                 table: tableNumber
             }));
-
-            // ไปที่หน้าเลือกเมนู
             window.location.href = '/customer/menu.html';
         }
     </script>
