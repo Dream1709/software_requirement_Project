@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ล็อกอินแอดมิน - ร้านเพิ่มข้าว</title>
+    <title>สร้างบัญชีแอดมิน - ร้านเพิ่มข้าว</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script>
@@ -36,7 +36,7 @@
     <!-- Header -->
     <div class="px-8 py-5 border-b border-gray-100 bg-white flex items-center justify-between sticky top-0 z-10">
         <div class="flex items-center gap-3">
-            <button onclick="history.back()" class="text-gray-400 hover:text-gray-600 transition p-1">
+            <button onclick="window.location.href='/admin/login.html'" class="text-gray-400 hover:text-gray-600 transition p-1">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
                 </svg>
@@ -59,104 +59,136 @@
             </div>
 
             <div class="w-full max-w-md mx-auto text-center">
-                <h1 class="text-2xl font-bold text-gray-900 mb-2">ยินดีต้อนรับ</h1>
-                <p class="text-brand-textMuted text-sm mb-8 font-medium">เข้าสู่ระบบสำหรับเจ้าของร้าน / แอดมิน</p>
+                <h1 class="text-2xl font-bold text-gray-900 mb-2">สร้างบัญชีแอดมิน</h1>
+                <p class="text-brand-textMuted text-sm mb-8 font-medium">กรอกข้อมูลเพื่อสร้างบัญชีสำหรับเจ้าของร้าน</p>
 
-                <form id="login-form" class="space-y-5 text-left" onsubmit="event.preventDefault(); doLogin();">
+                <form id="register-form" class="space-y-5 text-left" onsubmit="event.preventDefault(); doRegister();">
                     <div>
                         <label class="block text-sm font-medium text-gray-500 mb-2 ml-1">ชื่อผู้ใช้</label>
-                        <input type="text" id="username" placeholder="ระบุชื่อผู้ใช้..."
+                        <input type="text" id="reg-username" placeholder="ระบุชื่อผู้ใช้ (อย่างน้อย 3 ตัว)..." autocomplete="off"
                             class="w-full bg-brand-inputBg text-gray-800 placeholder-brand-textMuted/60 rounded-2xl px-6 py-4 focus:outline-none focus:ring-2 focus:ring-brand-orange/50 transition font-medium">
+                        <p id="err-username" class="text-red-400 text-xs mt-1.5 ml-1 hidden"></p>
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-gray-500 mb-2 ml-1">รหัสผ่าน</label>
-                        <input type="password" id="password" placeholder="ระบุรหัสผ่าน..."
+                        <input type="password" id="reg-password" placeholder="ระบุรหัสผ่าน (อย่างน้อย 6 ตัว)..."
                             class="w-full bg-brand-inputBg text-gray-800 placeholder-brand-textMuted/60 rounded-2xl px-6 py-4 focus:outline-none focus:ring-2 focus:ring-brand-orange/50 transition font-medium">
+                        <p id="err-password" class="text-red-400 text-xs mt-1.5 ml-1 hidden"></p>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-500 mb-2 ml-1">ยืนยันรหัสผ่าน</label>
+                        <input type="password" id="reg-confirm" placeholder="ระบุรหัสผ่านอีกครั้ง..."
+                            class="w-full bg-brand-inputBg text-gray-800 placeholder-brand-textMuted/60 rounded-2xl px-6 py-4 focus:outline-none focus:ring-2 focus:ring-brand-orange/50 transition font-medium">
+                        <p id="err-confirm" class="text-red-400 text-xs mt-1.5 ml-1 hidden"></p>
                     </div>
                     <div class="pt-4">
                         <button type="submit"
                             class="w-full bg-brand-orange hover:bg-brand-darkOrange text-white font-bold rounded-2xl px-5 py-5 transition shadow-lg transform active:scale-[0.98]">
-                            เข้าสู่ระบบ
+                            สร้างบัญชี
                         </button>
                     </div>
                 </form>
 
                 <p class="text-gray-400 text-sm mt-6">
-                    ยังไม่มีบัญชี?
-                    <a href="/admin/Create_account.html" class="text-orange-500 hover:text-orange-600 font-medium transition">สร้างบัญชีแอดมิน</a>
+                    มีบัญชีอยู่แล้ว?
+                    <a href="/admin/login.html" class="text-orange-500 hover:text-orange-600 font-medium transition">เข้าสู่ระบบ</a>
                 </p>
-
-                <div id="account-info" class="hidden mt-6 bg-brand-inputBg rounded-2xl px-5 py-4 text-left">
-                    <p class="text-xs font-medium text-brand-textMuted mb-2">📋 บัญชีแอดมินที่มีอยู่:</p>
-                    <ul id="account-list" class="text-xs text-gray-500 space-y-1"></ul>
-                </div>
             </div>
         </div>
     </div>
 </div>
 
 <!-- Modal -->
-<div id="modal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm" onclick="closeModal()">
-    <div class="bg-white rounded-[2rem] p-10 max-w-sm w-[90%] shadow-2xl flex flex-col items-center" onclick="event.stopPropagation()">
-        <div class="w-16 h-16 bg-orange-50 rounded-full flex items-center justify-center mb-6">
+<div id="modal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm">
+    <div class="bg-white rounded-[2rem] p-10 max-w-sm w-[90%] shadow-2xl flex flex-col items-center">
+        <div id="modal-icon-ok" class="hidden w-16 h-16 bg-green-50 rounded-full flex items-center justify-center mb-6">
+            <svg class="w-8 h-8 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+            </svg>
+        </div>
+        <div id="modal-icon-warn" class="hidden w-16 h-16 bg-orange-50 rounded-full flex items-center justify-center mb-6">
             <svg class="w-8 h-8 text-brand-orange" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
             </svg>
         </div>
         <h3 id="modal-title" class="text-xl font-bold text-gray-900 mb-2 text-center"></h3>
-        <p id="modal-desc" class="text-gray-400 text-sm text-center"></p>
+        <p id="modal-desc" class="text-gray-400 text-sm text-center mb-6"></p>
+        <button onclick="handleModalClose()"
+            class="w-full bg-brand-orange hover:bg-brand-darkOrange text-white font-bold rounded-2xl px-5 py-3 transition">
+            ตกลง
+        </button>
     </div>
 </div>
 
 <script>
-    function renderAccountInfo() {
+    let registerSuccess = false;
+
+    function showErr(id, msg) {
+        const el = document.getElementById(id);
+        el.textContent = msg;
+        el.classList.remove('hidden');
+    }
+    function hideErr(id) {
+        document.getElementById(id).classList.add('hidden');
+    }
+
+    function doRegister() {
+        const username = document.getElementById('reg-username').value.trim();
+        const password = document.getElementById('reg-password').value;
+        const confirm  = document.getElementById('reg-confirm').value;
+        let valid = true;
+
+        hideErr('err-username'); hideErr('err-password'); hideErr('err-confirm');
+
+        if (!username) {
+            showErr('err-username', '❌ กรุณากรอกชื่อผู้ใช้'); valid = false;
+        } else if (username.length < 3) {
+            showErr('err-username', '❌ ชื่อผู้ใช้ต้องมีอย่างน้อย 3 ตัวอักษร'); valid = false;
+        }
+
+        if (!password) {
+            showErr('err-password', '❌ กรุณากรอกรหัสผ่าน'); valid = false;
+        } else if (password.length < 6) {
+            showErr('err-password', '❌ รหัสผ่านต้องมีอย่างน้อย 6 ตัวอักษร'); valid = false;
+        }
+
+        if (!confirm) {
+            showErr('err-confirm', '❌ กรุณายืนยันรหัสผ่าน'); valid = false;
+        } else if (password && confirm !== password) {
+            showErr('err-confirm', '❌ รหัสผ่านไม่ตรงกัน'); valid = false;
+        }
+
+        if (!valid) {
+            const form = document.getElementById('register-form');
+            form.classList.remove('shake');
+            void form.offsetWidth;
+            form.classList.add('shake');
+            return;
+        }
+
         const accounts = JSON.parse(localStorage.getItem('adminAccounts') || '[]');
-        const infoBox = document.getElementById('account-info');
-        const list    = document.getElementById('account-list');
-        if (accounts.length > 0) {
-            infoBox.classList.remove('hidden');
-            list.innerHTML = accounts.map(a => `<li>• ${a.username}</li>`).join('');
+        if (accounts.find(a => a.username.toLowerCase() === username.toLowerCase())) {
+            showErr('err-username', '❌ ชื่อผู้ใช้นี้มีอยู่แล้ว กรุณาเลือกชื่ออื่น');
+            document.getElementById('reg-username').focus();
+            return;
         }
-    }
-    renderAccountInfo();
 
-    function doLogin() {
-        const username = document.getElementById('username').value.trim();
-        const password = document.getElementById('password').value;
-        if (!username || !password) {
-            showModal('ข้อมูลไม่ครบถ้วน', 'กรุณากรอกชื่อผู้ใช้และรหัสผ่าน');
-            shakeForm(); return;
-        }
-        const accounts = JSON.parse(localStorage.getItem('adminAccounts') || '[]');
-        if (accounts.length === 0) {
-            showModal('ยังไม่มีบัญชี', 'กรุณาสร้างบัญชีแอดมินก่อนเข้าสู่ระบบ'); return;
-        }
-        const match = accounts.find(a =>
-            a.username.toLowerCase() === username.toLowerCase() && a.password === password
-        );
-        if (!match) {
-            showModal('ชื่อหรือรหัสผ่านไม่ถูกต้อง', 'กรุณาตรวจสอบและลองใหม่อีกครั้ง');
-            shakeForm(); return;
-        }
-        sessionStorage.setItem('loggedInAdmin', match.username);
-        window.location.href = '/admin/main.html';
-    }
+        accounts.push({ username, password });
+        localStorage.setItem('adminAccounts', JSON.stringify(accounts));
 
-    function shakeForm() {
-        const form = document.getElementById('login-form');
-        form.classList.remove('shake');
-        void form.offsetWidth;
-        form.classList.add('shake');
-    }
-
-    function showModal(title, desc) {
-        document.getElementById('modal-title').textContent = title;
-        document.getElementById('modal-desc').textContent  = desc;
+        registerSuccess = true;
+        document.getElementById('modal-icon-ok').classList.remove('hidden');
+        document.getElementById('modal-icon-warn').classList.add('hidden');
+        document.getElementById('modal-title').textContent = 'สร้างบัญชีสำเร็จ! 🎉';
+        document.getElementById('modal-desc').textContent  = `บัญชี "${username}" พร้อมใช้งานแล้ว`;
         document.getElementById('modal').classList.remove('hidden');
     }
 
-    function closeModal() {
+    function handleModalClose() {
         document.getElementById('modal').classList.add('hidden');
+        if (registerSuccess) {
+            window.location.href = '/admin/login.html';
+        }
     }
 </script>
 </body>
