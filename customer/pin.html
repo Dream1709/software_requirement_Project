@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ยืนยัน PIN - ร้านเพิ่มข้าว</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Kanit', 'sans-serif'] },
+                    colors: {
+                        brand: {
+                            orange: '#fd6e3b',
+                            darkOrange: '#e55a2b',
+                            inputBg: '#f8ece7',
+                            textMuted: '#b1745f',
+                            bgWhite: '#fcfbf9'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @keyframes shake {
+            0%,100% { transform: translateX(0); }
+            20%,60%  { transform: translateX(-8px); }
+            40%,80%  { transform: translateX(8px); }
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(16px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes popIn {
+            0%   { transform: scale(0.8); opacity: 0; }
+            60%  { transform: scale(1.1); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        @keyframes pulse-ring {
+            0%   { box-shadow: 0 0 0 0 rgba(253,110,59,0.4); }
+            70%  { box-shadow: 0 0 0 10px rgba(253,110,59,0); }
+            100% { box-shadow: 0 0 0 0 rgba(253,110,59,0); }
+        }
+        .fade-in  { animation: fadeIn 0.5s ease forwards; }
+        .pop-in   { animation: popIn 0.3s ease forwards; }
+        .shake    { animation: shake 0.4s ease; }
+
+        .dot {
+            width: 16px; height: 16px;
+            border-radius: 50%;
+            border: 2px solid #d1d5db;
+            transition: all 0.2s ease;
+        }
+        .dot.filled {
+            background: #fd6e3b;
+            border-color: #fd6e3b;
+            animation: popIn 0.2s ease;
+        }
+        .dot.error {
+            background: #ef4444;
+            border-color: #ef4444;
+        }
+
+        .pin-btn {
+            width: 72px; height: 72px;
+            border-radius: 50%;
+            background: white;
+            border: 1px solid #f3f4f6;
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #1f2937;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            display: flex; align-items: center; justify-content: center;
+            flex-direction: column;
+            gap: 1px;
+        }
+        .pin-btn:active {
+            transform: scale(0.93);
+            background: #fff3ee;
+            border-color: #fd6e3b;
+            box-shadow: 0 0 0 3px rgba(253,110,59,0.15);
+        }
+        .pin-btn .sub {
+            font-size: 0.5rem;
+            font-weight: 400;
+            color: #9ca3af;
+            letter-spacing: 0.05em;
+        }
+        .pin-btn.del-btn {
+            background: transparent;
+            border: none;
+            box-shadow: none;
+            color: #9ca3af;
+        }
+        .pin-btn.del-btn:active {
+            background: #f3f4f6;
+            color: #fd6e3b;
+        }
+    </style>
+</head>
+<body class="bg-brand-bgWhite min-h-screen flex items-center justify-center font-sans">
+
+    <!-- background decoration -->
+    <div class="fixed inset-0 overflow-hidden pointer-events-none">
+        <div class="absolute -top-32 -right-32 w-96 h-96 bg-orange-100 rounded-full opacity-40 blur-3xl"></div>
+        <div class="absolute -bottom-32 -left-32 w-96 h-96 bg-orange-50 rounded-full opacity-60 blur-3xl"></div>
+    </div>
+
+    <div class="relative w-full max-w-xs mx-auto px-6 fade-in">
+
+        <!-- Logo -->
+        <div class="text-center mb-10">
+            <div class="inline-flex items-center gap-2 mb-4">
+                <span class="text-brand-orange text-2xl">✦</span>
+                <span class="font-bold text-gray-800 text-xl">ร้านเพิ่มข้าว</span>
+            </div>
+            <h1 class="text-2xl font-bold text-gray-900 mb-1">ใส่รหัส PIN</h1>
+            <p class="text-sm text-brand-textMuted">กรอก PIN 6 หลักเพื่อเข้าสู่ระบบแอดมิน</p>
+        </div>
+
+        <!-- Dots -->
+        <div id="dots-wrap" class="flex justify-center gap-4 mb-10">
+            <div class="dot" id="d0"></div>
+            <div class="dot" id="d1"></div>
+            <div class="dot" id="d2"></div>
+            <div class="dot" id="d3"></div>
+            <div class="dot" id="d4"></div>
+            <div class="dot" id="d5"></div>
+        </div>
+
+        <!-- Error msg -->
+        <p id="error-msg" class="text-center text-red-400 text-sm mb-6 h-5 transition-opacity opacity-0"></p>
+
+        <!-- Hidden input รับตัวเลขจาก keyboard/mobile -->
+        <input id="pin-input" type="password" inputmode="numeric" pattern="[0-9]*"
+            maxlength="6" autocomplete="off"
+            class="opacity-0 absolute w-0 h-0"
+            oninput="onInput(this.value)"
+            onkeydown="onKeyDown(event)">
+
+    
+        <!-- back link -->
+        <div class="text-center mt-10">
+            <a href="/customer/index.html" class="text-xs text-gray-300 hover:text-gray-400 transition">
+                หน้าเลือกโต๊ะ/ลูกค้า
+            </a>
+        </div>
+    </div>
+
+<script>
+    const CORRECT_PIN = '123456';
+
+    function focusInput() {
+        document.getElementById('pin-input').focus();
+    }
+
+    // focus อัตโนมัติเมื่อโหลดหน้า
+    window.addEventListener('load', () => setTimeout(focusInput, 300));
+
+    // กดที่ dots ก็ focus ได้
+    document.getElementById('dots-wrap').addEventListener('click', focusInput);
+
+    function updateDots(len) {
+        for (let i = 0; i < 6; i++) {
+            const dot = document.getElementById('d' + i);
+            dot.classList.remove('error');
+            if (i < len) dot.classList.add('filled');
+            else dot.classList.remove('filled');
+        }
+    }
+
+    function onInput(val) {
+        // กรองเฉพาะตัวเลข
+        const clean = val.replace(/\D/g, '').slice(0, 6);
+        document.getElementById('pin-input').value = clean;
+        updateDots(clean.length);
+        hideError();
+        if (clean.length === 6) setTimeout(() => check(clean), 200);
+    }
+
+    function onKeyDown(e) {
+        if (e.key === 'Enter') {
+            const val = document.getElementById('pin-input').value;
+            if (val.length === 6) check(val);
+        }
+    }
+
+    function check(pin) {
+        if (pin === CORRECT_PIN) {
+            sessionStorage.setItem('pinVerified', '1');
+            window.location.href = '/admin/login.html';
+        } else {
+            showError('PIN ไม่ถูกต้อง กรุณาลองใหม่');
+            const wrap = document.getElementById('dots-wrap');
+            wrap.classList.remove('shake');
+            void wrap.offsetWidth;
+            wrap.classList.add('shake');
+            for (let i = 0; i < 6; i++) {
+                document.getElementById('d' + i).classList.add('error');
+                document.getElementById('d' + i).classList.remove('filled');
+            }
+            setTimeout(() => {
+                document.getElementById('pin-input').value = '';
+                updateDots(0);
+            }, 700);
+        }
+    }
+
+    function showError(msg) {
+        const el = document.getElementById('error-msg');
+        el.textContent = msg;
+        el.style.opacity = '1';
+    }
+
+    function hideError() {
+        document.getElementById('error-msg').style.opacity = '0';
+    }
+</script>
+</body>
+</html>
