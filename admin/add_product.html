@@ -90,8 +90,10 @@
                 
                 <div>
                     <label class="block text-sm font-medium text-gray-500 mb-2 ml-1">ชื่ออาหาร</label>
-                    <input type="text" id="p-name" placeholder="ระบุชื่อเมนู..." required
+                    <input type="text" id="p-name" placeholder="ระบุชื่อเมนู..." required minlength="2"
+                        oninput="var bad=/[0-9!@#$%^&*()_+=\[\]{};':\\|,.<>\/?`~\-]/g; if(bad.test(this.value)){this.value=this.value.replace(bad,'');showFieldError('name-error','❌ ชื่ออาหารใส่ได้เฉพาะตัวอักษรเท่านั้น');} else if(this.value.length===1){showFieldError('name-error','❌ ชื่ออาหารต้องมีอย่างน้อย 2 ตัวอักษร');} else{hideFieldError('name-error');}"
                         class="w-1/2 bg-[#f8ece7] text-gray-800 rounded-2xl px-6 py-4 focus:outline-none focus:ring-2 focus:ring-orange-500/30 transition appearance-none">
+                    <p id="name-error" class="text-red-400 text-xs mt-1 ml-1 hidden"></p>
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -110,9 +112,11 @@
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-gray-500 mb-2 ml-1">ราคาเริ่มต้น (บาท)</label>
-                        <input type="number" id="p-price" placeholder="เช่น 40" min="0"
+                        <input type="text" id="p-price" placeholder="เช่น 40" inputmode="numeric"
+                            oninput="this.value=this.value.replace(/[^0-9]/g,''); var n=parseInt(this.value); if(this.value===''||isNaN(n)){showFieldError('price-error','❌ กรุณากรอกราคา');} else if(n<20){showFieldError('price-error','❌ ราคาขั้นต่ำ 20 บาท');} else{hideFieldError('price-error');}"
                             class="w-full bg-[#f8ece7] text-gray-800 placeholder-[#b1745f]/60 rounded-2xl px-6 py-4 focus:outline-none focus:ring-2 focus:ring-orange-500/30 transition">
-                        <p class="text-xs text-gray-400 mt-1.5 ml-1">ราคาสำหรับแสดงบนหน้าเมนู</p>
+                        <p id="price-error" class="text-red-400 text-xs mt-1 ml-1 hidden"></p>
+                        <p class="text-xs text-gray-400 mt-1 ml-1">ราคาสำหรับแสดงบนหน้าเมนู (ขั้นต่ำ 20 บาท)</p>
                     </div>
                 </div>
 
@@ -174,14 +178,46 @@ fileInput.addEventListener('change', function() {
     }
 });
 
+function showFieldError(id, msg) {
+    var el = document.getElementById(id);
+    el.textContent = msg;
+    el.classList.remove('hidden');
+}
+function hideFieldError(id) {
+    document.getElementById(id).classList.add('hidden');
+}
+
 function saveProduct(event) {
     event.preventDefault();
     
+    const name = document.getElementById('p-name').value.trim();
+    const priceVal = document.getElementById('p-price').value.trim();
+    const price = parseInt(priceVal);
+
+    // Validate ชื่ออาหาร
+    if (name.length < 2) {
+        showFieldError('name-error', '❌ ชื่ออาหารต้องมีอย่างน้อย 2 ตัวอักษร');
+        document.getElementById('p-name').focus();
+        return;
+    }
+
+    // Validate ราคา
+    if (!priceVal || isNaN(price)) {
+        showFieldError('price-error', '❌ กรุณากรอกราคา');
+        document.getElementById('p-price').focus();
+        return;
+    }
+    if (price < 20) {
+        showFieldError('price-error', '❌ ราคาขั้นต่ำ 20 บาท');
+        document.getElementById('p-price').focus();
+        return;
+    }
+
     const newProduct = {
         id: Date.now(),
-        name: document.getElementById('p-name').value.trim(),
+        name: name,
         category: document.getElementById('p-category').value,
-        price: parseInt(document.getElementById('p-price').value) || 0,
+        price: price,
         img: document.getElementById('p-img-data').value 
     };
 
