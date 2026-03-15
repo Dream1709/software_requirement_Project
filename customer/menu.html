@@ -3,45 +3,123 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>เลือกเมนูอาหาร</title>
+    <title>เลือกเมนูอาหาร - ร้านเพิ่มข้าว</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Kanit', sans-serif; background-color: #f9f7f2; }
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+        /* Category tab active */
+        .cat-tab { transition: all 0.2s ease; }
+        .cat-tab.active {
+            background: #fd6e3b;
+            color: white;
+            border-color: #fd6e3b;
+            box-shadow: 0 4px 12px rgba(253,110,59,0.3);
+        }
+
+        /* Section header accent line */
+        .section-accent {
+            display: inline-block;
+            width: 6px; height: 28px;
+            border-radius: 4px;
+            margin-right: 10px;
+            flex-shrink: 0;
+        }
+
+        /* Card hover */
+        .menu-card { transition: transform 0.18s ease, box-shadow 0.18s ease; }
+        .menu-card:active { transform: scale(0.96); }
+
+        /* Smooth scroll for anchor links */
+        html { scroll-behavior: smooth; }
+
+        /* Section background band */
+        .section-band {
+            border-radius: 20px;
+            padding: 20px 16px 16px;
+            margin-bottom: 28px;
+        }
+
+        /* Sticky nav shadow */
+        .sticky-nav {
+            position: sticky;
+            top: 64px;
+            z-index: 20;
+            background: #f9f7f2;
+            padding: 10px 0 8px;
+            border-bottom: 1px solid #ede9e0;
+        }
+
+        /* Badge for item count */
+        .item-badge {
+            display: inline-flex; align-items: center; justify-content: center;
+            width: 20px; height: 20px;
+            border-radius: 50%;
+            font-size: 10px; font-weight: 700;
+            margin-left: 5px;
+        }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(12px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        .fade-up { animation: fadeUp 0.35s ease forwards; }
     </style>
 </head>
-<body class="p-4 md:p-8">
+<body>
 
-    <header class="text-center mb-8 relative">
-        <h1 class="text-xl font-bold text-gray-800">เลือกเมนู</h1>
+    <!-- ===== TOP HEADER ===== -->
+    <header class="bg-white border-b border-gray-100 px-5 py-3 flex justify-between items-center sticky top-0 z-30 shadow-sm">
         <button onclick="showChangeTableModal()"
-            class="absolute left-0 top-0 flex items-center gap-1.5 bg-white border border-gray-200 rounded-full px-4 py-2 shadow-sm hover:bg-orange-50 transition text-sm text-gray-500 font-medium">
+            class="flex items-center gap-1.5 text-sm text-gray-500 font-medium hover:text-orange-500 transition">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/>
             </svg>
             เปลี่ยนโต๊ะ
         </button>
-        <button onclick="window.location.href='/customer/Shopping_cart.html'" 
-            class="absolute right-0 top-0 flex items-center gap-1 bg-white border border-gray-200 rounded-full px-4 py-2 shadow-sm hover:bg-orange-50 transition">
+
+        <div class="flex items-center gap-2 font-bold text-gray-800 text-base">
+            <span class="text-orange-500 text-lg leading-none">✦</span>
+            <span>ร้านเพิ่มข้าว</span>
+        </div>
+
+        <button onclick="window.location.href='/customer/Shopping_cart.html'"
+            class="relative flex items-center gap-1.5 bg-orange-50 border border-orange-200 rounded-full px-4 py-2 hover:bg-orange-100 transition">
             <svg class="w-5 h-5 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/>
             </svg>
             <span id="cart-count" class="text-sm font-bold text-orange-500">0</span>
         </button>
     </header>
 
-    <!-- Modal ยืนยันเปลี่ยนโต๊ะ -->
+    <!-- ===== CATEGORY TABS (sticky) ===== -->
+    <div class="sticky-nav px-4">
+        <div id="cat-tabs" class="flex gap-2 overflow-x-auto no-scrollbar">
+            <!-- rendered by JS -->
+        </div>
+    </div>
+
+    <!-- ===== MAIN CONTENT ===== -->
+    <main class="max-w-3xl mx-auto px-4 pt-6 pb-24" id="menu-container">
+        <!-- rendered by JS -->
+    </main>
+
+    <!-- ===== CHANGE TABLE MODAL ===== -->
     <div id="change-table-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm">
         <div class="bg-white rounded-3xl p-8 w-[90%] max-w-sm shadow-2xl flex flex-col items-center">
             <div class="w-14 h-14 bg-orange-50 rounded-full flex items-center justify-center mb-4">
                 <svg class="w-7 h-7 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
                 </svg>
             </div>
-            <h3 class="text-lg font-bold text-gray-900 mb-1">ออกจากโต๊ะนี้?</h3>
-            <p class="text-gray-400 text-sm mb-6 text-center">ตะกร้าสินค้าของคุณจะถูกล้าง<br>และกลับไปยังหน้าเลือกโต๊ะ</p>
+            <h3 class="text-xl font-bold text-gray-900 mb-1">ออกจากโต๊ะนี้?</h3>
+            <p class="text-gray-400 text-base mb-6 text-center">ตะกร้าสินค้าของคุณจะถูกล้าง<br>และกลับไปยังหน้าเลือกโต๊ะ</p>
             <div class="flex gap-3 w-full">
                 <button onclick="hideChangeTableModal()" class="flex-1 py-3 rounded-2xl bg-gray-100 text-gray-600 font-bold text-sm hover:bg-gray-200 transition">ยกเลิก</button>
                 <button onclick="confirmChangeTable()" class="flex-1 py-3 rounded-2xl bg-orange-500 hover:bg-orange-600 text-white font-bold text-sm transition">ยืนยัน</button>
@@ -49,186 +127,254 @@
         </div>
     </div>
 
-    <nav class="flex flex-wrap justify-center gap-2 mb-10">
-        <button onclick="filterMenu('all')" class="px-4 py-1 text-sm rounded-full bg-white border border-gray-200 shadow-sm hover:bg-orange-100 transition">เมนูทั้งหมด</button>
-        <button onclick="filterMenu('เมนูแนะนำ')" class="px-4 py-1 text-sm rounded-full bg-white border border-gray-200 shadow-sm hover:bg-orange-100 transition">เมนูแนะนำ</button>
-        <button onclick="filterMenu('เมนูต้มแกง')" class="px-4 py-1 text-sm rounded-full bg-white border border-gray-200 shadow-sm hover:bg-orange-100 transition">เมนูต้มแกง</button>
-        <button onclick="filterMenu('เมนูตามสั่ง')" class="px-4 py-1 text-sm rounded-full bg-white border border-gray-200 shadow-sm hover:bg-orange-100 transition">เมนูตามสั่ง</button>
-        <button onclick="filterMenu('เมนูข้าวผัด')" class="px-4 py-1 text-sm rounded-full bg-white border border-gray-200 shadow-sm hover:bg-orange-100 transition">เมนูข้าวผัด</button>
-        <button onclick="filterMenu('เมนูทอด')" class="px-4 py-1 text-sm rounded-full bg-white border border-gray-200 shadow-sm hover:bg-orange-100 transition">เมนูทอด</button>
-        <button onclick="filterMenu('เมนูน้ำพริกกระปิ')" class="px-4 py-1 text-sm rounded-full bg-white border border-gray-200 shadow-sm hover:bg-orange-100 transition">เมนูน้ำพริกกระปิ</button>
-        <button onclick="filterMenu('เมนูเส้น')" class="px-4 py-1 text-sm rounded-full bg-white border border-gray-200 shadow-sm hover:bg-orange-100 transition">เมนูเส้น</button>
-        <button onclick="filterMenu('เมนูยำ')" class="px-4 py-1 text-sm rounded-full bg-white border border-gray-200 shadow-sm hover:bg-orange-100 transition">เมนูยำ</button>
-        <button onclick="filterMenu('เมนูเพิ่มเติม')" class="px-4 py-1 text-sm rounded-full bg-white border border-gray-200 shadow-sm hover:bg-orange-100 transition">เมนูเพิ่มเติม</button>
-    </nav>
+<script>
+    // ===================== DATA =====================
+    const boilMenu = [
+        { id: 3,  name: "แกงเขียวหวาน",   category: "เมนูต้มแกง",      img: "/รูปอาหาร/Kaeng Khiaowan.png",  price: 50 },
+        { id: 4,  name: "ต้มยำ",           category: "เมนูต้มแกง",      img: "/รูปอาหาร/Tomyam.png",          price: 50 },
+        { id: 5,  name: "แกงส้ม",          category: "เมนูต้มแกง",      img: "/รูปอาหาร/Kaengsom.png",        price: 50 },
+        { id: 6,  name: "ต้มข่า",          category: "เมนูต้มแกง",      img: "/รูปอาหาร/Tomkha.png",          price: 50 },
+        { id: 7,  name: "ต้มจืด",          category: "เมนูต้มแกง",      img: "/รูปอาหาร/tom-jed-moo.png",     price: 40 },
+    ];
+    const orderMenu = [
+        { id: 8,  name: "ผัดกะเพรา",       category: "เมนูตามสั่ง",     img: "/รูปอาหาร/krapao-moo.png",      price: 35 },
+        { id: 9,  name: "ผัดคะน้า",        category: "เมนูตามสั่ง",     img: "/รูปอาหาร/Phat Khana.png",      price: 35 },
+        { id: 10, name: "ราดพริก",          category: "เมนูตามสั่ง",     img: "/รูปอาหาร/Kai Rat Phrik.png",   price: 35 },
+        { id: 11, name: "ผัดพริกเผา",       category: "เมนูตามสั่ง",     img: "/รูปอาหาร/Kai Phrik Phao.png",  price: 35 },
+        { id: 12, name: "พะแนง",            category: "เมนูตามสั่ง",     img: "/รูปอาหาร/Pha Nong Kai.png",    price: 35 },
+        { id: 13, name: "พริกแกง",          category: "เมนูตามสั่ง",     img: "/รูปอาหาร/Phrik Kaeng Kai.png", price: 35 },
+        { id: 14, name: "ผัดเผ็ด",          category: "เมนูตามสั่ง",     img: "/รูปอาหาร/Phat Phet Kai.png",   price: 35 },
+        { id: 15, name: "ผัดฉ่า",           category: "เมนูตามสั่ง",     img: "/รูปอาหาร/Phat Cha Kai.png",    price: 35 },
+        { id: 16, name: "ผัดผงกะหรี่",      category: "เมนูตามสั่ง",     img: "/รูปอาหาร/Kai Phat Phong Kra Ri.png", price: 35 },
+        { id: 17, name: "ทอดกะเทียม",       category: "เมนูตามสั่ง",     img: "/รูปอาหาร/Kai Thot Krathiam.png", price: 35 },
+        { id: 18, name: "ผัดผักรวม",        category: "เมนูตามสั่ง",     img: "/รูปอาหาร/Phat Kruam.png",      price: 35 },
+        { id: 19, name: "ผัดพริกสด",        category: "เมนูตามสั่ง",     img: "/รูปอาหาร/Phat Phrik Sot.png",  price: 35 },
+        { id: 20, name: "ไข่ยัดไส้",        category: "เมนูตามสั่ง",     img: "/รูปอาหาร/Khai Yat Sai.png",    price: 40 },
+    ];
+    const friedRiceMenu = [
+        { id: 21, name: "ข้าวผัดไข่",       category: "เมนูข้าวผัด",     img: "/รูปอาหาร/Khaophat Khai.png",   price: 30 },
+        { id: 22, name: "ข้าวผัดแหนม",      category: "เมนูข้าวผัด",     img: "/รูปอาหาร/Khaophat Naem.png",   price: 40 },
+        { id: 23, name: "ข้าวผัดสัปรดแฮม",  category: "เมนูข้าวผัด",     img: "/รูปอาหาร/Khaophat Prot Haem.png", price: 40 },
+        { id: 24, name: "ข้าวผัดไส้กรอก",   category: "เมนูข้าวผัด",     img: "/รูปอาหาร/Khaophat Saikrok.png", price: 40 },
+    ];
+    const friedMenu = [
+        { id: 25, name: "ปีกไก่ทอด",        category: "เมนูทอด",         img: "/รูปอาหาร/Pik Kai Thot.png",    price: 45 },
+        { id: 26, name: "หมูทอด",            category: "เมนูทอด",         img: "/รูปอาหาร/Mu Thot.png",         price: 45 },
+        { id: 27, name: "กุนเชียงทอด",       category: "เมนูทอด",         img: "/รูปอาหาร/Kunchiang Thot.png",  price: 45 },
+        { id: 28, name: "หมูยอทอด",          category: "เมนูทอด",         img: "/รูปอาหาร/MuYo Thot.png",       price: 45 },
+        { id: 29, name: "เนื้อทอด",          category: "เมนูทอด",         img: "/รูปอาหาร/Nuea Thot.png",       price: 50 },
+        { id: 30, name: "กุ้งทอด",           category: "เมนูทอด",         img: "/รูปอาหาร/Kung Thot.png",       price: 50 },
+        { id: 31, name: "ดอลลี่ทอด",         category: "เมนูทอด",         img: "/รูปอาหาร/Donli Thot.png",      price: 50 },
+    ];
+    const namprikMenu = [
+        { id: 32, name: "น้ำพริกกระปิ + ชะอมทอด",      category: "เมนูน้ำพริกกระปิ", img: "/รูปอาหาร/Namphrik Kra Pi ChaOm Thot.png", price: 45 },
+        { id: 33, name: "น้ำพริกกระปิ + ปลาทูทอด",     category: "เมนูน้ำพริกกระปิ", img: "/รูปอาหาร/Namphrik Kra Pi   Phak Thot.png", price: 45 },
+        { id: 34, name: "น้ำพริกกระปิ + ปลานิลทอด",    category: "เมนูน้ำพริกกระปิ", img: "/รูปอาหาร/Namphrik Kra Pi   Pla Nin Thot.png", price: 45 },
+        { id: 35, name: "น้ำพริกกระปิ + ผักทอด",       category: "เมนูน้ำพริกกระปิ", img: "/รูปอาหาร/Namphrik Kra Pi   Phak Thot.png", price: 45 },
+        { id: 36, name: "น้ำพริกกระปิ + มะเขือยาวทอด", category: "เมนูน้ำพริกกระปิ", img: "/รูปอาหาร/Namphrik Kra Pi   MakhueaYao Thot.png", price: 45 },
+    ];
+    const NoodleMenu = [
+        { id: 37, name: "ผัดมาม่า",   category: "เมนูเส้น", img: "/รูปอาหาร/Phat Ma Ma.png",  price: 40 },
+        { id: 38, name: "สุกี้",      category: "เมนูเส้น", img: "/รูปอาหาร/Suk Ki.png",      price: 40 },
+        { id: 39, name: "ราดหน้า",    category: "เมนูเส้น", img: "/รูปอาหาร/Rat Na.png",      price: 40 },
+        { id: 40, name: "ผัดไทย",     category: "เมนูเส้น", img: "/รูปอาหาร/PhatThai.png",    price: 40 },
+        { id: 41, name: "ผัดซีอิ้ว",  category: "เมนูเส้น", img: "/รูปอาหาร/Phat Si Io.png",  price: 40 },
+        { id: 42, name: "สปาเก็ตตี้", category: "เมนูเส้น", img: "/รูปอาหาร/Sapa Ket Ti.png", price: 60 },
+    ];
+    const spicyMenu = [
+        { id: 43, name: "ยำวุ้นเส้นหมูสับ", category: "เมนูยำ", img: "/รูปอาหาร/Yam Wunsen Mu.png",    price: 50 },
+        { id: 44, name: "ยำปลากระป๋อง",     category: "เมนูยำ", img: "/รูปอาหาร/Yam Pla Krapong.png", price: 50 },
+        { id: 45, name: "ยำหมูยอ",           category: "เมนูยำ", img: "/รูปอาหาร/Yam MuYo.png",        price: 50 },
+        { id: 46, name: "ยำรวมมิตร",         category: "เมนูยำ", img: "/รูปอาหาร/Yam Ruam Mit.png",    price: 60 },
+        { id: 47, name: "ยำปลากรอบ",         category: "เมนูยำ", img: "/รูปอาหาร/Yam Pla Krop.png",    price: 60 },
+        { id: 48, name: "ยำกุนเชียง",        category: "เมนูยำ", img: "/รูปอาหาร/Yam Kunchiang.png",   price: 60 },
+        { id: 49, name: "ยำไข่ดาว",          category: "เมนูยำ", img: "/รูปอาหาร/Yam Khaidao.png",     price: 60 },
+    ];
+    const extraMenu = [
+        { id: 50, name: "ข้าวคลุกกะปิ", category: "เมนูเพิ่มเติม", img: "/รูปอาหาร/Khao Khluk Kra Pi.png", price: 50 },
+    ];
 
-    <div id="menu-container" class="max-w-6xl mx-auto space-y-12"></div>
+    // ===================== CATEGORY CONFIG =====================
+    // แต่ละหมวดมี: สี accent, ไอคอน emoji, สี background อ่อน
+    const CAT_CONFIG = {
+        'เมนูแนะนำ':        { accent: '#fd6e3b', bg: '#fff4ef', emoji: '⭐' },
+        'เมนูต้มแกง':       { accent: '#e8734a', bg: '#fff5f0', emoji: '🍲' },
+        'เมนูตามสั่ง':      { accent: '#d97706', bg: '#fffbeb', emoji: '🍳' },
+        'เมนูข้าวผัด':      { accent: '#b45309', bg: '#fef3c7', emoji: '🍚' },
+        'เมนูทอด':          { accent: '#c2410c', bg: '#fff7ed', emoji: '🍗' },
+        'เมนูน้ำพริกกระปิ': { accent: '#7c3aed', bg: '#f5f3ff', emoji: '🌶️' },
+        'เมนูเส้น':         { accent: '#0891b2', bg: '#ecfeff', emoji: '🍜' },
+        'เมนูยำ':           { accent: '#059669', bg: '#ecfdf5', emoji: '🥗' },
+        'เมนูเพิ่มเติม':    { accent: '#6b7280', bg: '#f9fafb', emoji: '➕' },
+    };
+    const DEFAULT_CFG = { accent: '#fd6e3b', bg: '#fff4ef', emoji: '🍽️' };
 
-    <script>
-        // ========= เมนูทั้งหมด (ไม่มี category เมนูแนะนำ แล้ว) =========
-        const boilMenu = [
-            { id: 3,  name: "แกงเขียวหวาน",   category: "เมนูต้มแกง",      img: "/รูปอาหาร/Kaeng Khiaowan.png",  price: 50 },
-            { id: 4,  name: "ต้มยำ",           category: "เมนูต้มแกง",      img: "/รูปอาหาร/Tomyam.png",          price: 50 },
-            { id: 5,  name: "แกงส้ม",          category: "เมนูต้มแกง",      img: "/รูปอาหาร/Kaengsom.png",        price: 50 },
-            { id: 6,  name: "ต้มข่า",          category: "เมนูต้มแกง",      img: "/รูปอาหาร/Tomkha.png",          price: 50 },
-            { id: 7,  name: "ต้มจืด",          category: "เมนูต้มแกง",      img: "/รูปอาหาร/tom-jed-moo.png",     price: 40 },
-        ];
-        const orderMenu = [
-            { id: 8,  name: "ผัดกะเพรา",       category: "เมนูตามสั่ง",     img: "/รูปอาหาร/krapao-moo.png",      price: 35 },
-            { id: 9,  name: "ผัดคะน้า",        category: "เมนูตามสั่ง",     img: "/รูปอาหาร/Phat Khana.png",      price: 35 },
-            { id: 10, name: "ราดพริก",          category: "เมนูตามสั่ง",     img: "/รูปอาหาร/Kai Rat Phrik.png",   price: 35 },
-            { id: 11, name: "ผัดพริกเผา",       category: "เมนูตามสั่ง",     img: "/รูปอาหาร/Kai Phrik Phao.png",  price: 35 },
-            { id: 12, name: "พะแนง",            category: "เมนูตามสั่ง",     img: "/รูปอาหาร/Pha Nong Kai.png",    price: 35 },
-            { id: 13, name: "พริกแกง",          category: "เมนูตามสั่ง",     img: "/รูปอาหาร/Phrik Kaeng Kai.png", price: 35 },
-            { id: 14, name: "ผัดเผ็ด",          category: "เมนูตามสั่ง",     img: "/รูปอาหาร/Phat Phet Kai.png",   price: 35 },
-            { id: 15, name: "ผัดฉ่า",           category: "เมนูตามสั่ง",     img: "/รูปอาหาร/Phat Cha Kai.png",    price: 35 },
-            { id: 16, name: "ผัดผงกะหรี่",      category: "เมนูตามสั่ง",     img: "/รูปอาหาร/Kai Phat Phong Kra Ri.png", price: 35 },
-            { id: 17, name: "ทอดกะเทียม",       category: "เมนูตามสั่ง",     img: "/รูปอาหาร/Kai Thot Krathiam.png", price: 35 },
-            { id: 18, name: "ผัดผักรวม",        category: "เมนูตามสั่ง",     img: "/รูปอาหาร/Phat Kruam.png",      price: 35 },
-            { id: 19, name: "ผัดพริกสด",        category: "เมนูตามสั่ง",     img: "/รูปอาหาร/Phat Phrik Sot.png",  price: 35 },
-            { id: 20, name: "ไข่ยัดไส้",        category: "เมนูตามสั่ง",     img: "/รูปอาหาร/Khai Yat Sai.png",    price: 40 },
-        ];
-        const friedRiceMenu = [
-            { id: 21, name: "ข้าวผัดไข่",       category: "เมนูข้าวผัด",     img: "/รูปอาหาร/Khaophat Khai.png",   price: 30 },
-            { id: 22, name: "ข้าวผัดแหนม",      category: "เมนูข้าวผัด",     img: "/รูปอาหาร/Khaophat Naem.png",   price: 40 },
-            { id: 23, name: "ข้าวผัดสัปรดแฮม",  category: "เมนูข้าวผัด",     img: "/รูปอาหาร/Khaophat Prot Haem.png", price: 40 },
-            { id: 24, name: "ข้าวผัดไส้กรอก",   category: "เมนูข้าวผัด",     img: "/รูปอาหาร/Khaophat Saikrok.png", price: 40 },
-        ];
-        const friedMenu = [
-            { id: 25, name: "ปีกไก่ทอด",        category: "เมนูทอด",         img: "/รูปอาหาร/Pik Kai Thot.png",    price: 45 },
-            { id: 26, name: "หมูทอด",            category: "เมนูทอด",         img: "/รูปอาหาร/Mu Thot.png",         price: 45 },
-            { id: 27, name: "กุนเชียงทอด",       category: "เมนูทอด",         img: "/รูปอาหาร/Kunchiang Thot.png",  price: 45 },
-            { id: 28, name: "หมูยอทอด",          category: "เมนูทอด",         img: "/รูปอาหาร/MuYo Thot.png",       price: 45 },
-            { id: 29, name: "เนื้อทอด",          category: "เมนูทอด",         img: "/รูปอาหาร/Nuea Thot.png",       price: 50 },
-            { id: 30, name: "กุ้งทอด",           category: "เมนูทอด",         img: "/รูปอาหาร/Kung Thot.png",       price: 50 },
-            { id: 31, name: "ดอลลี่ทอด",         category: "เมนูทอด",         img: "/รูปอาหาร/Donli Thot.png",      price: 50 },
-        ];
-        const namprikMenu = [
-            { id: 32, name: "น้ำพริกกระปิ + ชะอมทอด",     category: "เมนูน้ำพริกกระปิ", img: "/รูปอาหาร/Namphrik Kra Pi ChaOm Thot.png",       price: 45 },
-            { id: 33, name: "น้ำพริกกระปิ + ปลาทูทอด",    category: "เมนูน้ำพริกกระปิ", img: "/รูปอาหาร/Namphrik Kra Pi   Phak Thot.png",      price: 45 },
-            { id: 34, name: "น้ำพริกกระปิ + ปลานิลทอด",   category: "เมนูน้ำพริกกระปิ", img: "/รูปอาหาร/Namphrik Kra Pi   Pla Nin Thot.png",   price: 45 },
-            { id: 35, name: "น้ำพริกกระปิ + ผักทอด",      category: "เมนูน้ำพริกกระปิ", img: "/รูปอาหาร/Namphrik Kra Pi   Phak Thot.png",      price: 45 },
-            { id: 36, name: "น้ำพริกกระปิ + มะเขือยาวทอด",category: "เมนูน้ำพริกกระปิ", img: "/รูปอาหาร/Namphrik Kra Pi   MakhueaYao Thot.png", price: 45 },
-        ];
-        const NoodleMenu = [
-            { id: 37, name: "ผัดมาม่า",   category: "เมนูเส้น", img: "/รูปอาหาร/Phat Ma Ma.png",  price: 40 },
-            { id: 38, name: "สุกี้",      category: "เมนูเส้น", img: "/รูปอาหาร/Suk Ki.png",      price: 40 },
-            { id: 39, name: "ราดหน้า",    category: "เมนูเส้น", img: "/รูปอาหาร/Rat Na.png",      price: 40 },
-            { id: 40, name: "ผัดไทย",     category: "เมนูเส้น", img: "/รูปอาหาร/PhatThai.png",    price: 40 },
-            { id: 41, name: "ผัดซีอิ้ว",  category: "เมนูเส้น", img: "/รูปอาหาร/Phat Si Io.png",  price: 40 },
-            { id: 42, name: "สปาเก็ตตี้", category: "เมนูเส้น", img: "/รูปอาหาร/Sapa Ket Ti.png", price: 60 },
-        ];
-        const spicyMenu = [
-            { id: 43, name: "ยำวุ้นเส้นหมูสับ", category: "เมนูยำ", img: "/รูปอาหาร/Yam Wunsen Mu.png",    price: 50 },
-            { id: 44, name: "ยำปลากระป๋อง",     category: "เมนูยำ", img: "/รูปอาหาร/Yam Pla Krapong.png", price: 50 },
-            { id: 45, name: "ยำหมูยอ",           category: "เมนูยำ", img: "/รูปอาหาร/Yam MuYo.png",        price: 50 },
-            { id: 46, name: "ยำรวมมิตร",         category: "เมนูยำ", img: "/รูปอาหาร/Yam Ruam Mit.png",    price: 60 },
-            { id: 47, name: "ยำปลากรอบ",         category: "เมนูยำ", img: "/รูปอาหาร/Yam Pla Krop.png",    price: 60 },
-            { id: 48, name: "ยำกุนเชียง",        category: "เมนูยำ", img: "/รูปอาหาร/Yam Kunchiang.png",   price: 60 },
-            { id: 49, name: "ยำไข่ดาว",          category: "เมนูยำ", img: "/รูปอาหาร/Yam Khaidao.png",     price: 60 },
-        ];
-        const extraMenu = [
-            { id: 50, name: "ข้าวคลุกกะปิ", category: "เมนูเพิ่มเติม", img: "/รูปอาหาร/Khao Khluk Kra Pi.png", price: 50 },
-        ];
+    const allDefaultMenu = [
+        ...boilMenu, ...orderMenu, ...friedRiceMenu, ...friedMenu,
+        ...namprikMenu, ...NoodleMenu, ...spicyMenu, ...extraMenu
+    ];
 
-        // รวมเมนูทั้งหมด (ไม่มี เมนูแนะนำ อยู่ใน array แล้ว)
-        const allDefaultMenu = [
-            ...boilMenu, ...orderMenu, ...friedRiceMenu, ...friedMenu,
-            ...namprikMenu, ...NoodleMenu, ...spicyMenu, ...extraMenu
-        ];
+    function buildTotalMenu() {
+        const adminMenu = JSON.parse(localStorage.getItem('foodMenu')) || [];
+        const baseMenu  = [...allDefaultMenu, ...adminMenu];
+        const recIds    = JSON.parse(localStorage.getItem('recommendedIds')) || [8, 4, 25];
+        const recItems  = recIds
+            .map(id => baseMenu.find(m => m.id === id))
+            .filter(Boolean)
+            .map(m => ({ ...m, category: 'เมนูแนะนำ' }));
+        return [...recItems, ...baseMenu];
+    }
 
-        // ========= สร้าง totalMenu พร้อมหมวด เมนูแนะนำ จาก recommendedIds =========
-        function buildTotalMenu() {
-            const adminMenu = JSON.parse(localStorage.getItem('foodMenu')) || [];
-            const baseMenu  = [...allDefaultMenu, ...adminMenu];
+    // ===================== RENDER TABS =====================
+    function renderTabs(categories, activeCategory) {
+        const wrap = document.getElementById('cat-tabs');
+        wrap.innerHTML = '';
+        const allBtn = document.createElement('button');
+        allBtn.className = `cat-tab flex-shrink-0 px-4 py-2 rounded-full border border-gray-200 bg-white text-sm font-medium text-gray-600 ${activeCategory === 'all' ? 'active' : ''}`;
+        allBtn.textContent = 'ทั้งหมด';
+        allBtn.onclick = () => renderAll();
+        wrap.appendChild(allBtn);
 
-            // ดึง recommendedIds จาก localStorage (default = [8, 4, 25])
-            const recIds   = JSON.parse(localStorage.getItem('recommendedIds')) || [8, 4, 25];
-            // หา item จริงจาก baseMenu แล้ว copy ด้วย category = เมนูแนะนำ
-            const recItems = recIds
-                .map(id => baseMenu.find(m => m.id === id))
-                .filter(Boolean)
-                .map(m => ({ ...m, category: 'เมนูแนะนำ' }));
+        categories.forEach(cat => {
+            const cfg = CAT_CONFIG[cat] || DEFAULT_CFG;
+            const btn = document.createElement('button');
+            btn.className = `cat-tab flex-shrink-0 px-4 py-2 rounded-full border border-gray-200 bg-white text-sm font-medium text-gray-600 ${activeCategory === cat ? 'active' : ''}`;
+            btn.innerHTML = `${cfg.emoji} ${cat.replace('เมนู', '')}`;
+            btn.onclick = () => scrollToSection(cat);
+            wrap.appendChild(btn);
+        });
+    }
 
-            // เมนูแนะนำอยู่ก่อน แล้วตามด้วยเมนูอื่นๆ
-            return [...recItems, ...baseMenu];
-        }
+    // ===================== RENDER SECTIONS =====================
+    function renderAll() {
+        const total = buildTotalMenu();
+        const container = document.getElementById('menu-container');
+        container.innerHTML = '';
 
-        // ========= Render =========
-        function renderMenu(data, isAll=false) {
-            const container = document.getElementById('menu-container');
-            container.innerHTML = '';
+        const categories = [...new Set(total.map(item => item.category))];
+        renderTabs(categories, 'all');
 
-            const categories = [...new Set(data.map(item => item.category))];
+        categories.forEach((cat, idx) => {
+            const items = total.filter(item => item.category === cat);
+            const cfg   = CAT_CONFIG[cat] || DEFAULT_CFG;
 
-            categories.forEach(cat => {
-                const items = data.filter(item => item.category === cat);
-                const section = document.createElement('div');
+            const section = document.createElement('div');
+            section.id    = `sec-${cat}`;
+            section.className = 'fade-up mb-8';
+            section.style.animationDelay = `${idx * 0.04}s`;
+            section.style.opacity = '0';
 
-                const cardHtml = items.map(item => `
-                    <div class="${isAll ? 'flex-shrink-0 w-40 md:w-48' : ''} cursor-pointer group"
-                        onclick="goToCustom(${item.id}, '${encodeURIComponent(item.name)}', '${encodeURIComponent(item.category)}', ${item.price || 0}, '${(item.img||'').startsWith('data:') ? '' : encodeURIComponent(item.img||'')}')">
-                        <div class="rounded-2xl overflow-hidden aspect-square mb-2 shadow-sm group-hover:shadow-md transition">
-                            <img src="${item.img}" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
+            // horizontal scroll for แนะนำ, grid for others
+            const isRec = cat === 'เมนูแนะนำ';
+
+            const cardHtml = items.map(item => isRec
+                ? `<div class="flex-shrink-0 w-36 menu-card cursor-pointer"
+                        onclick="goToCustom(${item.id},'${encodeURIComponent(item.name)}','${encodeURIComponent(item.category)}',${item.price||0},'${(item.img||'').startsWith('data:') ? '' : encodeURIComponent(item.img||'')}')">
+                        <div class="rounded-2xl overflow-hidden aspect-square shadow-sm">
+                            <img src="${item.img}" class="w-full h-full object-cover">
                         </div>
-                        <p class="text-sm font-medium leading-tight">${item.name}</p>
-                        ${item.price ? `<p class="text-xs text-orange-500 font-bold mt-0.5">฿${item.price}.-</p>` : ''}
+                        <p class="text-sm font-semibold mt-2 leading-tight">${item.name}</p>
+                        ${item.price ? `<p class="text-xs font-bold mt-0.5" style="color:${cfg.accent}">฿${item.price}.-</p>` : ''}
+                   </div>`
+                : `<div class="menu-card cursor-pointer"
+                        onclick="goToCustom(${item.id},'${encodeURIComponent(item.name)}','${encodeURIComponent(item.category)}',${item.price||0},'${(item.img||'').startsWith('data:') ? '' : encodeURIComponent(item.img||'')}')">
+                        <div class="rounded-2xl overflow-hidden aspect-square shadow-sm">
+                            <img src="${item.img}" class="w-full h-full object-cover">
+                        </div>
+                        <p class="text-sm font-semibold mt-2 leading-tight text-gray-800">${item.name}</p>
+                        ${item.price ? `<p class="text-xs font-bold mt-0.5" style="color:${cfg.accent}">฿${item.price}.-</p>` : ''}
+                   </div>`
+            ).join('');
+
+            const listHtml = isRec
+                ? `<div class="flex gap-4 overflow-x-auto no-scrollbar pb-3">${cardHtml}</div>`
+                : `<div class="grid grid-cols-3 sm:grid-cols-4 gap-3">${cardHtml}</div>`;
+
+            section.innerHTML = `
+                <div class="section-band" style="background:${cfg.bg}">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="flex items-center gap-2">
+                            <span class="section-accent" style="background:${cfg.accent}"></span>
+                            <span class="text-base font-bold text-gray-800">${cfg.emoji} ${cat}</span>
+                        </div>
+                        <span class="item-badge text-white text-xs" style="background:${cfg.accent}">${items.length}</span>
                     </div>
-                `).join('');
+                    ${listHtml}
+                </div>
+            `;
+            container.appendChild(section);
+        });
 
-                const listClass = isAll
-                    ? 'flex overflow-x-auto gap-4 no-scrollbar pb-4'
-                    : 'grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 mb-2';
+        // intersect observer for active tab highlight while scrolling
+        setupScrollSpy(categories);
+    }
 
-                section.innerHTML = `
-                    <h2 class="text-lg font-bold mb-4">${cat}</h2>
-                    <div class="${listClass}">${cardHtml}</div>
-                `;
-                container.appendChild(section);
+    // ===================== SCROLL SPY =====================
+    function setupScrollSpy(categories) {
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const cat = entry.target.id.replace('sec-', '');
+                    document.querySelectorAll('.cat-tab').forEach(btn => {
+                        const match = btn.textContent.includes(cat.replace('เมนู','')) || btn.textContent === 'ทั้งหมด';
+                        // only highlight exact match
+                        const btnCat = categories.find(c => btn.innerHTML.includes(c.replace('เมนู','')));
+                        if (btnCat === cat) {
+                            btn.classList.add('active');
+                        } else if (btnCat) {
+                            btn.classList.remove('active');
+                        }
+                    });
+                }
             });
-        }
+        }, { rootMargin: '-30% 0px -60% 0px', threshold: 0 });
 
-        // ========= Filter =========
-        function filterMenu(category) {
-            const total = buildTotalMenu();
-            if (category === 'all') {
-                renderMenu(total, true);
-            } else {
-                renderMenu(total.filter(item => item.category === category), false);
-            }
-        }
+        categories.forEach(cat => {
+            const el = document.getElementById(`sec-${cat}`);
+            if (el) observer.observe(el);
+        });
+    }
 
-        // ========= Init =========
-        window.onload = function() {
-            renderMenu(buildTotalMenu(), true);
-            updateCartCount();
-        };
+    function scrollToSection(cat) {
+        const el = document.getElementById(`sec-${cat}`);
+        if (!el) return;
+        const offset = 130; // header + tabs height
+        const top = el.getBoundingClientRect().top + window.scrollY - offset;
+        window.scrollTo({ top, behavior: 'smooth' });
+    }
 
-        function updateCartCount() {
-            const cart  = JSON.parse(localStorage.getItem('cart')) || [];
-            const total = cart.reduce((sum, item) => sum + item.quantity, 0);
-            document.getElementById('cart-count').textContent = total;
-        }
+    // ===================== CART / NAV =====================
+    function updateCartCount() {
+        const cart  = JSON.parse(localStorage.getItem('cart')) || [];
+        const total = cart.reduce((sum, item) => sum + item.quantity, 0);
+        document.getElementById('cart-count').textContent = total;
+    }
 
-        function goToCustom(id, name, cat, price, img) {
-            window.location.href = '/customer/custom.html?id=' + id
-                + '&name=' + name
-                + '&category=' + cat
-                + '&price=' + price
-                + (img ? '&img=' + img : '');
-        }
+    function goToCustom(id, name, cat, price, img) {
+        window.location.href = '/customer/custom.html?id=' + id
+            + '&name=' + name
+            + '&category=' + cat
+            + '&price=' + price
+            + (img ? '&img=' + img : '');
+    }
 
-        function showChangeTableModal() {
-            document.getElementById('change-table-modal').classList.remove('hidden');
-        }
-        function hideChangeTableModal() {
-            document.getElementById('change-table-modal').classList.add('hidden');
-        }
-        function confirmChangeTable() {
-            localStorage.removeItem('cart');
-            localStorage.removeItem('customerInfo');
-            window.location.href = '/customer/index.html';
-        }
-    </script>
+    function showChangeTableModal() {
+        document.getElementById('change-table-modal').classList.remove('hidden');
+    }
+    function hideChangeTableModal() {
+        document.getElementById('change-table-modal').classList.add('hidden');
+    }
+    function confirmChangeTable() {
+        localStorage.removeItem('cart');
+        localStorage.removeItem('customerInfo');
+        window.location.href = '/customer/index.html';
+    }
+
+    // ===================== INIT =====================
+    window.onload = function() {
+        renderAll();
+        updateCartCount();
+    };
+</script>
 </body>
 </html>

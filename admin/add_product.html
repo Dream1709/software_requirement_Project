@@ -5,241 +5,370 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>เพิ่มเมนูใหม่ - Admin</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Kanit', sans-serif; background-color: #fcfbf9; }
-        
-    </style>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['Kanit', 'sans-serif'],
-                    },
-                    colors: {
-                        brand: {
-                            orange: '#fd6e3b',
-                            darkOrange: '#e55a2b',
-                            inputBg: '#f8ece7',
-                            textMuted: '#b1745f',
-                            bgWhite: '#fcfbf9'
-                        }
-                    }
-                }
-            }
+        * { font-family: 'Kanit', sans-serif; }
+
+        body {
+            background-color: #f0ece6;
+            background-image:
+                radial-gradient(ellipse at 20% 20%, rgba(253,110,59,0.06) 0%, transparent 60%),
+                radial-gradient(ellipse at 80% 80%, rgba(229,77,102,0.05) 0%, transparent 60%);
+            min-height: 100vh;
         }
-    </script>
-    
+
+        /* Sidebar */
+        .sidebar {
+            background: #ffffff;
+            box-shadow: 4px 0 24px rgba(0,0,0,0.06);
+        }
+        .sidebar-item { transition: all 0.18s; border-radius: 14px; }
+        .sidebar-item:hover { background: #f5f0ea; }
+        .sidebar-item.active { background: #f5f0ea; color: #1a1a1a; font-weight: 600; }
+
+        /* Card */
+        .form-card {
+            background: #ffffff;
+            border-radius: 28px;
+            box-shadow:
+                0 2px 0 rgba(255,255,255,0.8) inset,
+                0 20px 60px rgba(0,0,0,0.10),
+                0 4px 16px rgba(0,0,0,0.06);
+            border: 1px solid rgba(255,255,255,0.9);
+        }
+
+        /* Section card inside form */
+        .section-block {
+            background: #faf8f5;
+            border-radius: 20px;
+            border: 1px solid #ede8e2;
+            padding: 24px;
+        }
+
+        /* Input fields */
+        .field-input {
+            background: #fff;
+            border: 1.5px solid #e8e0d8;
+            border-radius: 14px;
+            padding: 14px 18px;
+            font-size: 15px;
+            color: #2d2d2d;
+            width: 100%;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            outline: none;
+        }
+        .field-input:focus {
+            border-color: #fd6e3b;
+            box-shadow: 0 0 0 3px rgba(253,110,59,0.12);
+        }
+        .field-input::placeholder { color: #c4b5a8; }
+
+        select.field-input {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23b1745f' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 16px center;
+            padding-right: 44px;
+            cursor: pointer;
+        }
+
+        /* Image upload zone */
+        .img-zone {
+            background: #fff7f4;
+            border: 2px dashed #f0c4b0;
+            border-radius: 20px;
+            height: 200px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: border-color 0.2s, background 0.2s;
+            overflow: hidden;
+            position: relative;
+        }
+        .img-zone:hover {
+            border-color: #fd6e3b;
+            background: #fff2ec;
+        }
+
+        /* Labels */
+        .field-label {
+            font-size: 14px;
+            font-weight: 500;
+            color: #7a6a60;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        /* Buttons */
+        .btn-cancel {
+            background: #f0ece6;
+            color: #6b6058;
+            border: 1px solid #ddd6ce;
+            border-radius: 14px;
+            padding: 14px 28px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.18s;
+        }
+        .btn-cancel:hover { background: #e8e0d8; }
+
+        .btn-save {
+            background: linear-gradient(135deg, #fd6e3b 0%, #e54d66 100%);
+            color: white;
+            border: none;
+            border-radius: 14px;
+            padding: 14px 36px;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.18s;
+            box-shadow: 0 4px 16px rgba(229,77,102,0.30);
+        }
+        .btn-save:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 8px 24px rgba(229,77,102,0.38);
+        }
+        .btn-save:active { transform: scale(0.98); }
+
+        /* Error */
+        .field-error {
+            font-size: 13px;
+            color: #e54d66;
+            margin-top: 6px;
+        }
+
+        /* Section title */
+        .section-title {
+            font-size: 13px;
+            font-weight: 600;
+            color: #b1a49a;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-bottom: 16px;
+        }
+
+        /* Page title breadcrumb area */
+        .page-header {
+            margin-bottom: 32px;
+        }
+    </style>
 </head>
-<body class="min-h-screen flex" style="background-color: #f5f5f0; font-family: 'Kanit', sans-serif;">
+<body class="flex min-h-screen">
 
     <!-- Sidebar -->
-    <aside class="w-56 bg-white border-r border-gray-100 flex flex-col py-6 px-3 fixed h-full z-10">
+    <aside class="sidebar w-56 flex flex-col py-6 px-3 fixed h-full z-10">
         <div class="px-3 mb-8">
             <div class="flex items-center gap-2">
-                <span class="text-orange-500 text-lg">✦</span>
-                <span class="font-bold text-gray-800 text-sm">ร้านเพิ่มข้าว</span>
+                <span class="text-orange-500 text-xl">✦</span>
+                <span class="font-bold text-gray-800 text-base">ร้านเพิ่มข้าว</span>
             </div>
         </div>
         <nav class="space-y-1 flex-1">
-            <a href="/admin/main.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-500 text-sm hover:bg-gray-50 transition">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+            <a href="/admin/main.html" class="sidebar-item flex items-center gap-3 px-3 py-3 text-gray-500 text-sm">
+                <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
                 หน้าหลัก
             </a>
-            <a href="/admin/manage_menu.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-800 font-medium text-sm" style="background-color: #f0ede8;">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"/></svg>
+            <a href="/admin/manage_menu.html" class="sidebar-item active flex items-center gap-3 px-3 py-3 text-sm">
+                <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"/></svg>
                 สินค้า
             </a>
-            <a href="/admin/report.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-500 text-sm hover:bg-gray-50 transition">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+            <a href="/admin/report.html" class="sidebar-item flex items-center gap-3 px-3 py-3 text-gray-500 text-sm">
+                <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
                 รายงาน
             </a>
         </nav>
         <div class="px-3">
-            <button onclick="window.location.href='/admin/login.html'" class="w-full py-2 bg-gray-100 text-gray-500 rounded-xl text-xs hover:bg-gray-200 transition">
+            <button onclick="window.location.href='/admin/login.html'"
+                class="w-full py-2.5 bg-gray-100 text-gray-500 rounded-xl text-sm hover:bg-gray-200 transition">
                 ออกจากระบบ
             </button>
         </div>
     </aside>
 
-    <!-- Main Content -->
-    <div class="flex-1 ml-56 bg-white min-h-screen">
-        <div class="p-8 md:p-12 max-w-3xl">
-            <form id="add-product-form" class="space-y-6" onsubmit="saveProduct(event)">
-                <div>
-                    <h2 class="text-2xl font-bold text-gray-900 mb-6">เพิ่มเมนูใหม่</h2> 
+    <!-- Main area -->
+    <main class="flex-1 ml-56 flex items-start justify-center py-10 px-6 min-h-screen">
+        <div class="w-full max-w-2xl">
+
+            <!-- Page header -->
+            <div class="page-header">
+                <div class="flex items-center gap-2 text-sm text-gray-400 mb-3">
+                    <a href="/admin/manage_menu.html" class="hover:text-orange-500 transition">สินค้า</a>
+                    <span>›</span>
+                    <span class="text-gray-600">เพิ่มเมนูใหม่</span>
                 </div>
-                <div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-500 mb-2 ml-1">รูปภาพอาหาร</label>
-                        <div id="image-container" onclick="document.getElementById('p-img-file').click()" 
-                        class="w-1/2 h-64 bg-[#f8ece7] rounded-[2.5rem] border-2 border-dashed border-[#b1745f]/20 flex items-center justify-center overflow-hidden relative group transition hover:border-orange-500/50 cursor-pointer">
-        
-                        <img id="img-preview" src="" class="hidden w-full h-full object-cover">
-        
-                        <div id="placeholder-text" class="text-center">
-                            <div class="text-4xl text-[#b1745f] mb-2">+</div>
-                            <p class="text-[#b1745f]/60 text-sm px-4">คลิกเพื่อเลือกไฟล์รูปภาพจากเครื่อง</p>
+                <h1 class="text-2xl font-bold text-gray-800">เพิ่มเมนูใหม่</h1>
+                <p class="text-gray-400 text-sm mt-1">กรอกข้อมูลเมนูอาหารที่ต้องการเพิ่มลงในระบบ</p>
+            </div>
+
+            <!-- Form card -->
+            <form id="add-product-form" onsubmit="saveProduct(event)">
+                <div class="form-card p-8 space-y-6">
+
+                    <!-- Image upload -->
+                    <div class="section-block">
+                        <p class="section-title">รูปภาพ</p>
+                        <div class="img-zone" id="image-container"
+                             onclick="document.getElementById('p-img-file').click()">
+                            <img id="img-preview" src="" class="hidden w-full h-full object-cover absolute inset-0">
+                            <div id="placeholder-text" class="text-center pointer-events-none">
+                                <div class="w-12 h-12 bg-orange-100 rounded-2xl flex items-center justify-center mx-auto mb-3">
+                                    <svg class="w-6 h-6 text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                                    </svg>
+                                </div>
+                                <p class="text-gray-500 text-sm font-medium">คลิกเพื่ออัพโหลดรูปภาพ</p>
+                                <p class="text-gray-400 text-xs mt-1">PNG, JPG ขนาดไม่เกิน 5MB</p>
                             </div>
                         </div>
-    
                         <input type="file" id="p-img-file" accept="image/*" class="hidden">
                         <input type="hidden" id="p-img-data">
-                     </div>
-                
-                <div>
-                    <label class="block text-sm font-medium text-gray-500 mb-2 ml-1">ชื่ออาหาร</label>
-                    <input type="text" id="p-name" placeholder="ระบุชื่อเมนู..." required minlength="2"
-                        oninput="var bad=/[0-9!@#$%^&*()_+=\[\]{};':\\|,.<>\/?`~\-]/g; if(bad.test(this.value)){this.value=this.value.replace(bad,'');showFieldError('name-error','❌ ชื่ออาหารใส่ได้เฉพาะตัวอักษรเท่านั้น');} else if(this.value.length===1){showFieldError('name-error','❌ ชื่ออาหารต้องมีอย่างน้อย 2 ตัวอักษร');} else{hideFieldError('name-error');}"
-                        class="w-1/2 bg-[#f8ece7] text-gray-800 rounded-2xl px-6 py-4 focus:outline-none focus:ring-2 focus:ring-orange-500/30 transition appearance-none">
-                    <p id="name-error" class="text-red-400 text-xs mt-1 ml-1 hidden"></p>
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div>
-                        <label class="block text-sm font-medium text-gray-500 mb-2 ml-1">หมวดหมู่</label>
-                        <select id="p-category" class="w-full bg-[#f8ece7] text-gray-800 rounded-2xl px-6 py-4 focus:outline-none focus:ring-2 focus:ring-orange-500/30 transition appearance-none">
-                            <option value="เมนูต้มแกง">เมนูต้มแกง</option>
-                            <option value="เมนูตามสั่ง">เมนูตามสั่ง</option>
-                            <option value="เมนูข้าวผัด">เมนูข้าวผัด</option>
-                            <option value="เมนูทอด">เมนูทอด</option>
-                            <option value="เมนูน้ำพริกกระปิ">เมนูน้ำพริกกระปิ</option>
-                            <option value="เมนูเส้น">เมนูเส้น</option>
-                            <option value="เมนูยำ">เมนูยำ</option>
-                            <option value="เมนูเพิ่มเติม">เมนูเพิ่มเติม</option>
-                        </select>
                     </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-500 mb-2 ml-1">ราคาเริ่มต้น (บาท)</label>
-                        <input type="text" id="p-price" placeholder="เช่น 40" inputmode="numeric"
-                            oninput="this.value=this.value.replace(/[^0-9]/g,''); var n=parseInt(this.value); if(this.value===''||isNaN(n)){showFieldError('price-error','❌ กรุณากรอกราคา');} else if(n<20){showFieldError('price-error','❌ ราคาขั้นต่ำ 20 บาท');} else{hideFieldError('price-error');}"
-                            class="w-full bg-[#f8ece7] text-gray-800 placeholder-[#b1745f]/60 rounded-2xl px-6 py-4 focus:outline-none focus:ring-2 focus:ring-orange-500/30 transition">
-                        <p id="price-error" class="text-red-400 text-xs mt-1 ml-1 hidden"></p>
-                        <p class="text-xs text-gray-400 mt-1 ml-1">ราคาสำหรับแสดงบนหน้าเมนู (ขั้นต่ำ 20 บาท)</p>
+
+                    <!-- Name + Category + Price -->
+                    <div class="section-block space-y-5">
+                        <p class="section-title">ข้อมูลเมนู</p>
+
+                        <!-- Name -->
+                        <div>
+                            <label class="field-label">ชื่ออาหาร</label>
+                            <input type="text" id="p-name" class="field-input" placeholder="เช่น ข้าวผัดกุ้ง, ต้มยำทะเล..."
+                                autocomplete="off"
+                                oninput="var bad=/[0-9!@#$%^&*()_+=\[\]{};':\\|,.<>\/?`~\-]/g; if(bad.test(this.value)){this.value=this.value.replace(bad,'');showFieldError('name-error','❌ ชื่ออาหารใส่ได้เฉพาะตัวอักษรเท่านั้น');} else if(this.value.length===1){showFieldError('name-error','❌ ชื่ออาหารต้องมีอย่างน้อย 2 ตัวอักษร');} else{hideFieldError('name-error');}">
+                            <p id="name-error" class="field-error hidden"></p>
+                        </div>
+
+                        <!-- Category + Price row -->
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="field-label">หมวดหมู่</label>
+                                <select id="p-category" class="field-input">
+                                    <option value="เมนูต้มแกง">เมนูต้มแกง</option>
+                                    <option value="เมนูตามสั่ง">เมนูตามสั่ง</option>
+                                    <option value="เมนูข้าวผัด">เมนูข้าวผัด</option>
+                                    <option value="เมนูทอด">เมนูทอด</option>
+                                    <option value="เมนูน้ำพริกกระปิ">เมนูน้ำพริกกระปิ</option>
+                                    <option value="เมนูเส้น">เมนูเส้น</option>
+                                    <option value="เมนูยำ">เมนูยำ</option>
+                                    <option value="เมนูเพิ่มเติม">เมนูเพิ่มเติม</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="field-label">ราคา (บาท)</label>
+                                <input type="text" id="p-price" class="field-input" placeholder="เช่น 60"
+                                    inputmode="numeric"
+                                    oninput="this.value=this.value.replace(/[^0-9]/g,''); var n=parseInt(this.value); if(this.value===''||isNaN(n)){showFieldError('price-error','❌ กรุณากรอกราคา');} else if(n<20){showFieldError('price-error','❌ ราคาขั้นต่ำ 20 บาท');} else{hideFieldError('price-error');}">
+                                <p id="price-error" class="field-error hidden"></p>
+                                <p class="text-xs text-gray-400 mt-1.5">ขั้นต่ำ 20 บาท</p>
+                            </div>
+                        </div>
                     </div>
-                </div>
 
-                
+                    <!-- Action buttons -->
+                    <div class="flex items-center justify-between pt-2">
+                        <button type="button" class="btn-cancel"
+                            onclick="window.location.href='/admin/manage_menu.html'">
+                            ยกเลิก
+                        </button>
+                        <button type="submit" class="btn-save">
+                            บันทึกเมนู
+                        </button>
+                    </div>
 
-                <div class="pt-6 flex justify-between">
-                    <button type="button" onclick="window.location.href='/admin/manage_menu.html';" 
-                        class=" bg-[#cccccc] hover:bg-[#bbbbbb] text-gray-800 font-bold rounded-2xl px-6 py-5 transition shadow-lg transform active:scale-[0.98]">
-                        ยกเลิก
-                    </button>
-    
-                    <button type="submit" 
-                        class=" bg-[#E54D66]/80 hover:bg-[#E54D66] text-white font-bold rounded-2xl px-6 py-5 transition shadow-lg transform active:scale-[0.98]">
-                        บันทึกรายการเมนู
-                    </button>
                 </div>
             </form>
         </div>
-    </div>
+    </main>
+
     <script>
         const fileInput = document.getElementById('p-img-file');
-const imgPreview = document.getElementById('img-preview');
-const placeholder = document.getElementById('placeholder-text');
-const imgDataInput = document.getElementById('p-img-data');
+        const imgPreview = document.getElementById('img-preview');
+        const placeholder = document.getElementById('placeholder-text');
+        const imgDataInput = document.getElementById('p-img-data');
 
-fileInput.addEventListener('change', function() {
-    const file = this.files[0];
-    if (file) {
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            const img = new Image();
-            img.src = e.target.result;
-            
-            img.onload = function() {
-                // สร้าง Canvas เพื่อใช้บีบอัดรูป
-                const canvas = document.createElement('canvas');
-                const ctx = canvas.getContext('2d');
-                
-                // ตั้งค่าขนาดที่ต้องการ (เช่น กว้างไม่เกิน 800px)
-                const maxWidth = 800;
-                const scale = maxWidth / img.width;
-                canvas.width = maxWidth;
-                canvas.height = img.height * scale;
+        fileInput.addEventListener('change', function() {
+            const file = this.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const img = new Image();
+                    img.src = e.target.result;
+                    img.onload = function() {
+                        const canvas = document.createElement('canvas');
+                        const ctx = canvas.getContext('2d');
+                        const maxWidth = 800;
+                        const scale = maxWidth / img.width;
+                        canvas.width = maxWidth;
+                        canvas.height = img.height * scale;
+                        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                        const compressed = canvas.toDataURL('image/jpeg', 0.7);
+                        imgPreview.src = compressed;
+                        imgPreview.classList.remove('hidden');
+                        placeholder.classList.add('hidden');
+                        imgDataInput.value = compressed;
+                    };
+                };
+                reader.readAsDataURL(file);
+            }
+        });
 
-                // วาดรูปลง Canvas
-                ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+        function showFieldError(id, msg) {
+            const el = document.getElementById(id);
+            el.textContent = msg;
+            el.classList.remove('hidden');
+        }
+        function hideFieldError(id) {
+            document.getElementById(id).classList.add('hidden');
+        }
 
-                // แปลงเป็น Base64 โดยลดคุณภาพเหลือ 0.7 (70%)
-                const compressedBase64 = canvas.toDataURL('image/jpeg', 0.7);
-                
-                // แสดงผลและเก็บข้อมูล
-                imgPreview.src = compressedBase64;
-                imgPreview.classList.remove('hidden');
-                placeholder.classList.add('hidden');
-                imgDataInput.value = compressedBase64;
+        function saveProduct(event) {
+            event.preventDefault();
+            const name = document.getElementById('p-name').value.trim();
+            const priceVal = document.getElementById('p-price').value.trim();
+            const price = parseInt(priceVal);
+
+            if (name.length < 2) {
+                showFieldError('name-error', '❌ ชื่ออาหารต้องมีอย่างน้อย 2 ตัวอักษร');
+                document.getElementById('p-name').focus();
+                return;
+            }
+            if (!priceVal || isNaN(price)) {
+                showFieldError('price-error', '❌ กรุณากรอกราคา');
+                document.getElementById('p-price').focus();
+                return;
+            }
+            if (price < 20) {
+                showFieldError('price-error', '❌ ราคาขั้นต่ำ 20 บาท');
+                document.getElementById('p-price').focus();
+                return;
+            }
+
+            const newProduct = {
+                id: Date.now(),
+                name,
+                category: document.getElementById('p-category').value,
+                price,
+                img: document.getElementById('p-img-data').value
+            };
+
+            if (!newProduct.img) {
+                alert('กรุณาเลือกรูปภาพก่อนบันทึก!');
+                return;
+            }
+
+            try {
+                let adminMenu = JSON.parse(localStorage.getItem('foodMenu')) || [];
+                adminMenu.push(newProduct);
+                localStorage.setItem('foodMenu', JSON.stringify(adminMenu));
+                alert('เพิ่มเมนู "' + newProduct.name + '" เรียบร้อยแล้ว!');
+                window.location.href = '/admin/manage_menu.html';
+            } catch (e) {
+                alert('ไม่สามารถบันทึกได้ พื้นที่จัดเก็บอาจเต็ม (ลองใช้รูปที่เล็กลงนะครับ)');
+                console.error(e);
             }
         }
-        reader.readAsDataURL(file);
-    }
-});
-
-function showFieldError(id, msg) {
-    var el = document.getElementById(id);
-    el.textContent = msg;
-    el.classList.remove('hidden');
-}
-function hideFieldError(id) {
-    document.getElementById(id).classList.add('hidden');
-}
-
-function saveProduct(event) {
-    event.preventDefault();
-    
-    const name = document.getElementById('p-name').value.trim();
-    const priceVal = document.getElementById('p-price').value.trim();
-    const price = parseInt(priceVal);
-
-    // Validate ชื่ออาหาร
-    if (name.length < 2) {
-        showFieldError('name-error', '❌ ชื่ออาหารต้องมีอย่างน้อย 2 ตัวอักษร');
-        document.getElementById('p-name').focus();
-        return;
-    }
-
-    // Validate ราคา
-    if (!priceVal || isNaN(price)) {
-        showFieldError('price-error', '❌ กรุณากรอกราคา');
-        document.getElementById('p-price').focus();
-        return;
-    }
-    if (price < 20) {
-        showFieldError('price-error', '❌ ราคาขั้นต่ำ 20 บาท');
-        document.getElementById('p-price').focus();
-        return;
-    }
-
-    const newProduct = {
-        id: Date.now(),
-        name: name,
-        category: document.getElementById('p-category').value,
-        price: price,
-        img: document.getElementById('p-img-data').value 
-    };
-
-    // เช็คว่าเลือกรูปหรือยัง
-    if (!newProduct.img) {
-        alert("กรุณาเลือกรูปภาพก่อนบันทึก!");
-        return;
-    }
-
-    // บันทึกลง localStorage
-    try {
-        let adminMenu = JSON.parse(localStorage.getItem('foodMenu')) || [];
-        adminMenu.push(newProduct);
-        localStorage.setItem('foodMenu', JSON.stringify(adminMenu));
-        
-        alert('เพิ่มเมนู "' + newProduct.name + '" เรียบร้อยแล้ว!');
-        window.location.href = '/admin/manage_menu.html';
-    } catch (e) {
-        alert("ไม่สามารถบันทึกได้ พื้นที่จัดเก็บอาจเต็ม (ลองใช้รูปที่เล็กลงนะครับ)");
-        console.error(e);
-    }
-}
     </script>
 </body>
 </html>

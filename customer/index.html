@@ -48,23 +48,23 @@
                 </div>
 
                 <div class="w-full max-w-md mx-auto text-center">
-                    <h1 class="text-2xl font-bold text-gray-900 mb-2">ยินดีต้อนรับสู่ร้านเพิ่มข้าว</h1>
-                    <p class="text-brand-textMuted text-sm mb-8 font-medium">กรุณาระบุข้อมูลเพื่อเริ่มต้นสั่งอาหาร</p>
+                    <h1 class="text-3xl font-bold text-gray-900 mb-2">ยินดีต้อนรับสู่ร้านเพิ่มข้าว</h1>
+                    <p class="text-brand-textMuted text-base mb-8 font-medium">กรุณาระบุข้อมูลเพื่อเริ่มต้นสั่งอาหาร</p>
                     
                     <form id="customer-form" class="space-y-5 text-left" onsubmit="startOrdering(event)">
                         
                         <div>
-                            <label class="block text-sm font-medium text-gray-500 mb-2 ml-1">ชื่อ</label>
+                            <label class="block text-base font-medium text-gray-500 mb-2 ml-1">ชื่อ</label>
                             <input type="text" id="customer-name" placeholder="ระบุชื่อของคุณ..." required minlength="2"
                                 oninput="var bad=/[0-9!@#$%^&*()_+=\[\]{};':\\|,.<>\/?`~\-]/g; if(bad.test(this.value)){this.value=this.value.replace(bad,'');showNameError('❌ ใส่ได้เฉพาะตัวอักษรเท่านั้น ไม่สามารถใส่ตัวเลขหรืออักขระพิเศษได้');} else if(this.value.length===1){showNameError('❌ ชื่อต้องมีอย่างน้อย 2 ตัวอักษร');} else{document.getElementById('name-error').classList.add('hidden');}"
-                                class="w-full bg-brand-inputBg text-gray-800 placeholder-brand-textMuted/60 rounded-2xl px-6 py-4 focus:outline-none focus:ring-2 focus:ring-brand-orange/50 transition font-medium">
-                            <p id="name-error" class="text-red-400 text-xs mt-1 ml-1 hidden"></p>
+                                class="w-full bg-brand-inputBg text-gray-800 placeholder-brand-textMuted/60 rounded-2xl px-6 py-4 text-base focus:outline-none focus:ring-2 focus:ring-brand-orange/50 transition font-medium">
+                            <p id="name-error" class="text-red-400 text-sm mt-1 ml-1 hidden"></p>
                         </div>
 
                         <div>
-                            <label class="block text-sm font-medium text-gray-500 mb-2 ml-1">เลขโต๊ะ</label>
+                            <label class="block text-base font-medium text-gray-500 mb-2 ml-1">เลขโต๊ะ</label>
                             <select id="table-number" required 
-                                class="w-full bg-brand-inputBg text-gray-800 rounded-2xl px-6 py-4 focus:outline-none focus:ring-2 focus:ring-brand-orange/50 transition font-medium appearance-none cursor-pointer">
+                                class="w-full bg-brand-inputBg text-gray-800 rounded-2xl px-6 py-4 text-base focus:outline-none focus:ring-2 focus:ring-brand-orange/50 transition font-medium appearance-none cursor-pointer">
                                 <option value="" disabled selected>กรุณาเลือกโต๊ะ</option>
                                 <option value="1">โต๊ะ 1</option>
                                 <option value="2">โต๊ะ 2</option>

@@ -32,7 +32,7 @@
     <nav class="bg-white border-b border-gray-100 sticky top-0 z-50 shadow-sm">
         <div class="max-w-5xl mx-auto px-4 py-3.5 flex items-center gap-3">
             <button onclick="window.location.href='/customer/menu.html'"
-                class="flex items-center gap-2 text-gray-500 hover:text-brand-orange transition font-medium text-sm">
+                class="flex items-center gap-2 text-gray-500 hover:text-brand-orange transition font-medium text-base">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
                 </svg>
@@ -46,8 +46,8 @@
         <!-- Left: Options -->
         <div class="lg:col-span-2 space-y-7">
             <div>
-                <span id="menu-category" class="text-xs text-brand-orange font-semibold uppercase tracking-wide"></span>
-                <h1 id="menu-title" class="text-2xl font-bold text-gray-900 mt-1 mb-4"></h1>
+                <span id="menu-category" class="text-sm text-brand-orange font-semibold uppercase tracking-wide"></span>
+                <h1 id="menu-title" class="text-3xl font-bold text-gray-900 mt-1 mb-4"></h1>
                 <div class="rounded-2xl overflow-hidden shadow-sm h-52 md:h-72 w-full">
                     <img id="menu-image" src="" alt="" class="w-full h-full object-cover bg-gray-100" onerror="this.style.opacity='0.3'">
                 </div>
@@ -55,25 +55,25 @@
 
             <!-- รูปแบบ ราดข้าว/กับข้าว -->
             <div id="style-section" class="hidden">
-                <h2 class="font-bold text-gray-800 mb-3">รูปแบบ <span class="text-xs text-gray-400 font-normal">(เลือก 1 อย่าง)</span></h2>
+                <h2 class="font-bold text-gray-800 mb-3 text-lg">รูปแบบ<span class="text-sm text-gray-400 font-normal">(เลือก 1 อย่าง)</span></h2>
                 <div id="style-options" class="grid grid-cols-2 gap-3"></div>
             </div>
 
             <!-- ขนาด ธรรมดา/พิเศษ -->
             <div id="size-section" class="hidden">
-                <h2 class="font-bold text-gray-800 mb-3">ขนาด <span class="text-xs text-gray-400 font-normal">(เลือก 1 อย่าง)</span></h2>
+                <h2 class="font-bold text-gray-800 mb-3 text-lg">ขนาด<span class="text-sm text-gray-400 font-normal">(เลือก 1 อย่าง)</span></h2>
                 <div id="size-options" class="grid grid-cols-2 gap-3"></div>
             </div>
 
             <!-- เนื้อสัตว์/ตัวเลือกหลัก -->
             <div id="meat-section" class="hidden">
-                <h2 id="meat-label" class="font-bold text-gray-800 mb-3">เนื้อสัตว์ <span class="text-xs text-gray-400 font-normal">(เลือก 1 อย่าง)</span></h2>
+                <h2 id="meat-label" class="font-bold text-gray-800 mb-3 text-lg">เนื้อสัตว์ <span class="text-xs text-gray-400 font-normal">(เลือก 1 อย่าง)</span></h2>
                 <div id="meat-options" class="grid grid-cols-2 md:grid-cols-3 gap-3"></div>
             </div>
 
             <!-- เพิ่มเติม -->
             <div id="addon-section">
-                <h2 class="font-bold text-gray-800 mb-3">เพิ่มเติม <span class="text-xs text-gray-400 font-normal">(เลือกได้หลายอย่าง)</span></h2>
+                <h2 class="font-bold text-gray-800 mb-3 text-lg">เพิ่มเติม<span class="text-sm text-gray-400 font-normal">(เลือกได้หลายอย่าง)</span></h2>
                 <div id="addon-options" class="grid grid-cols-2 gap-3"></div>
             </div>
         </div>
@@ -81,15 +81,15 @@
         <!-- Right: Summary -->
         <div class="lg:col-span-1">
             <div class="sticky top-20 bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
-                <h2 class="font-bold text-gray-800 mb-4">สรุปรายการ</h2>
-                <p id="summary-name" class="font-semibold text-gray-700 text-sm mb-3"></p>
-                <div id="summary-details" class="space-y-2 text-sm text-gray-500 mb-4"></div>
+                <h2 class="font-bold text-gray-800 mb-4 text-lg">สรุปรายการ</h2>
+                <p id="summary-name" class="font-semibold text-gray-700 text-base mb-3"></p>
+                <div id="summary-details" class="space-y-2 text-base text-gray-500 mb-4"></div>
                 <div class="border-t border-gray-100 pt-4 flex justify-between items-center font-bold text-gray-900">
                     <span>ยอดรวม</span>
                     <span id="total-price" class="text-brand-orange text-xl">฿0</span>
                 </div>
                 <button id="add-btn"
-                    class="mt-4 w-full bg-brand-orange hover:bg-brand-darkOrange text-white font-bold py-3.5 rounded-xl transition shadow-md active:scale-[0.98]">
+                    class="mt-4 w-full bg-brand-orange hover:bg-brand-darkOrange text-white font-bold py-4 text-base rounded-xl transition shadow-md active:scale-[0.98]">
                     เพิ่มลงตะกร้า
                 </button>
             </div>

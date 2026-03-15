@@ -7,57 +7,82 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Kanit', sans-serif; background-color: #f5f5f0; }
+        body {
+            font-family: 'Kanit', sans-serif;
+            background-color: #ede9e2;
+            background-image:
+                radial-gradient(ellipse 80% 60% at 10% 0%, rgba(253,110,59,0.08) 0%, transparent 60%),
+                radial-gradient(ellipse 60% 50% at 90% 100%, rgba(253,110,59,0.06) 0%, transparent 55%),
+                repeating-linear-gradient(
+                    0deg,
+                    transparent,
+                    transparent 39px,
+                    rgba(180,160,140,0.07) 39px,
+                    rgba(180,160,140,0.07) 40px
+                ),
+                repeating-linear-gradient(
+                    90deg,
+                    transparent,
+                    transparent 39px,
+                    rgba(180,160,140,0.07) 39px,
+                    rgba(180,160,140,0.07) 40px
+                );
+        }
         .sidebar-item { transition: all 0.2s; }
         .sidebar-item:hover { background-color: #f0ede8; }
-        .sidebar-item.active { background-color: #f0ede8; }
+        .sidebar-item.active { background-color: #fff0ea; color: #fd6e3b; }
         .progress-bar { transition: width 0.8s ease; }
         .fade-in { animation: fadeIn 0.4s ease forwards; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
-        .stat-card { transition: transform 0.2s, box-shadow 0.2s; }
-        .stat-card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.08); }
+        .stat-card {
+            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 2px 0px rgba(0,0,0,0.06), 0 4px 16px rgba(0,0,0,0.05);
+        }
+        .stat-card:hover { transform: translateY(-3px); box-shadow: 0 8px 32px rgba(0,0,0,0.10); }
+        aside { box-shadow: 4px 0 20px rgba(0,0,0,0.06); }
+        .table-card { box-shadow: 0 2px 0px rgba(0,0,0,0.06), 0 4px 20px rgba(0,0,0,0.05); }
     </style>
 </head>
 <body class="min-h-screen flex">
 
     <!-- Sidebar -->
-    <aside class="w-56 bg-white border-r border-gray-100 flex flex-col py-6 px-3 fixed h-full z-10">
-        <div class="px-3 mb-8">
-            <div class="flex items-center gap-2">
-                <span class="text-orange-500 text-lg">✦</span>
-                <span class="font-bold text-gray-800 text-sm">ร้านเพิ่มข้าว</span>
+    <aside class="w-60 bg-white border-r border-gray-100 flex flex-col py-7 px-4 fixed h-full z-10">
+        <div class="px-3 mb-9">
+            <div class="flex items-center gap-2.5">
+                <span class="text-orange-500 text-xl">✦</span>
+                <span class="font-bold text-gray-800 text-base">ร้านเพิ่มข้าว</span>
             </div>
         </div>
         <nav class="space-y-1 flex-1">
-            <a href="/admin/main.html" class="sidebar-item flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-500 text-sm">
+            <a href="/admin/main.html" class="sidebar-item flex items-center gap-3 px-3 py-3 rounded-xl text-gray-500 text-sm hover:text-gray-700">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
                 หน้าหลัก
             </a>
-            <a href="/admin/manage_menu.html" class="sidebar-item flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-500 text-sm">
+            <a href="/admin/manage_menu.html" class="sidebar-item flex items-center gap-3 px-3 py-3 rounded-xl text-gray-500 text-sm hover:text-gray-700">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"/></svg>
                 สินค้า
             </a>
-            <a href="#" class="sidebar-item active flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-800 font-medium text-sm">
+            <a href="#" class="sidebar-item active flex items-center gap-3 px-3 py-3 rounded-xl font-semibold text-sm">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
                 รายงาน
             </a>
         </nav>
         <div class="px-3">
-            <button onclick="window.location.href='/admin/login.html'" class="w-full py-2 bg-gray-100 text-gray-500 rounded-xl text-xs hover:bg-gray-200 transition">
+            <button onclick="window.location.href='/admin/login.html'" class="w-full py-2.5 bg-gray-100 text-gray-500 rounded-xl text-sm hover:bg-gray-200 transition font-medium">
                 ออกจากระบบ
             </button>
         </div>
     </aside>
 
     <!-- Main Content -->
-    <main class="flex-1 ml-56 p-8">
+    <main class="flex-1 ml-60 p-8">
 
         <div class="max-w-6xl mx-auto">
 
             <!-- Header -->
-            <div class="flex items-center gap-2 mb-8">
+            <div class="flex items-center gap-2.5 mb-8">
                 <svg class="w-5 h-5 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
-                <h1 class="text-lg font-bold text-gray-800">รายงานยอดขายประจำวัน</h1>
+                <h1 class="text-xl font-bold text-gray-800">รายงานยอดขายประจำวัน</h1>
             </div>
 
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -68,43 +93,43 @@
                     <!-- Date Navigation -->
                     <div class="flex items-center gap-3">
                         <button onclick="changeDay(-1)" title="วันก่อนหน้า"
-                            class="w-9 h-9 bg-white border border-gray-200 rounded-full flex items-center justify-center hover:bg-orange-50 hover:border-orange-300 transition text-gray-500 text-lg font-bold shadow-sm">‹</button>
-                        <span id="date-badge" class="inline-block bg-white border border-gray-200 text-gray-600 text-sm font-medium px-5 py-2 rounded-full shadow-sm min-w-[160px] text-center"></span>
+                            class="w-10 h-10 bg-white border border-gray-200 rounded-full flex items-center justify-center hover:bg-orange-50 hover:border-orange-300 transition text-gray-500 text-xl font-bold shadow-sm">‹</button>
+                        <span id="date-badge" class="inline-block bg-white border border-gray-200 text-gray-600 text-sm font-medium px-5 py-2.5 rounded-full shadow-sm min-w-[170px] text-center"></span>
                         <button onclick="changeDay(1)" id="btn-next" title="วันถัดไป"
-                            class="w-9 h-9 bg-white border border-gray-200 rounded-full flex items-center justify-center hover:bg-orange-50 hover:border-orange-300 transition text-gray-500 text-lg font-bold shadow-sm disabled:opacity-30 disabled:cursor-not-allowed">›</button>
+                            class="w-10 h-10 bg-white border border-gray-200 rounded-full flex items-center justify-center hover:bg-orange-50 hover:border-orange-300 transition text-gray-500 text-xl font-bold shadow-sm disabled:opacity-30 disabled:cursor-not-allowed">›</button>
                     </div>
 
                     <!-- Stat Cards -->
                     <div class="grid grid-cols-2 gap-4">
-                        <div class="stat-card bg-white rounded-2xl p-6 border border-gray-100 shadow-sm">
-                            <p class="text-xs text-gray-400 mb-1">ยอดขายรวม</p>
-                            <p id="stat-total" class="text-3xl font-bold text-gray-900">0 บาท</p>
+                        <div class="stat-card bg-white rounded-2xl p-6 border border-gray-100">
+                            <p class="text-sm text-gray-400 mb-1.5">ยอดขายรวม</p>
+                            <p id="stat-total" class="text-4xl font-bold text-gray-900">0 บาท</p>
                         </div>
-                        <div class="stat-card bg-white rounded-2xl p-6 border border-gray-100 shadow-sm">
-                            <p class="text-xs text-gray-400 mb-1">จำนวนออเดอร์</p>
-                            <p id="stat-count" class="text-3xl font-bold text-gray-900">0 ออเดอร์</p>
+                        <div class="stat-card bg-white rounded-2xl p-6 border border-gray-100">
+                            <p class="text-sm text-gray-400 mb-1.5">จำนวนออเดอร์</p>
+                            <p id="stat-count" class="text-4xl font-bold text-gray-900">0 ออเดอร์</p>
                         </div>
                     </div>
 
                     <!-- Recent Sales Table -->
-                    <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+                    <div class="table-card bg-white rounded-2xl border border-gray-100 overflow-hidden">
                         <div class="px-6 py-4 border-b border-gray-50">
-                            <h2 class="font-bold text-gray-800 text-sm">รายการขายล่าสุด</h2>
+                            <h2 class="font-bold text-gray-800 text-base">รายการขายล่าสุด</h2>
                         </div>
                         <table class="w-full text-sm">
                             <thead>
-                                <tr class="border-b border-gray-50">
-                                    <th class="px-6 py-3 text-left text-xs text-gray-400 font-medium">เวลา</th>
-                                    <th class="px-6 py-3 text-left text-xs text-gray-400 font-medium">รายการอาหาร</th>
-                                    <th class="px-6 py-3 text-right text-xs text-gray-400 font-medium">ยอดรวม</th>
+                                <tr class="border-b border-gray-50 bg-gray-50">
+                                    <th class="px-6 py-3.5 text-left text-xs text-gray-400 font-semibold tracking-wide">เวลา</th>
+                                    <th class="px-6 py-3.5 text-left text-xs text-gray-400 font-semibold tracking-wide">รายการอาหาร</th>
+                                    <th class="px-6 py-3.5 text-right text-xs text-gray-400 font-semibold tracking-wide">ยอดรวม</th>
                                 </tr>
                             </thead>
                             <tbody id="sales-tbody" class="divide-y divide-gray-50"></tbody>
                         </table>
                         <div id="empty-state" class="hidden py-12 text-center text-gray-400">
                             <div class="text-4xl mb-3">📋</div>
-                            <p class="text-sm">ยังไม่มีรายการขาย</p>
-                            <p class="text-xs mt-1 text-gray-300">ออเดอร์ที่ลูกค้าส่งมาจะแสดงที่นี่</p>
+                            <p class="text-base">ยังไม่มีรายการขาย</p>
+                            <p class="text-sm mt-1 text-gray-300">ออเดอร์ที่ลูกค้าส่งมาจะแสดงที่นี่</p>
                         </div>
                     </div>
 
@@ -112,7 +137,7 @@
 
                 <!-- Right Column — Popular Items -->
                 <div class="space-y-4">
-                    <h2 class="font-bold text-gray-800 text-sm px-1">เมนูยอดนิยม</h2>
+                    <h2 class="font-bold text-gray-800 text-base px-1">เมนูยอดนิยม</h2>
                     <div id="popular-container" class="space-y-4">
                         <div class="text-center text-gray-300 text-sm py-8">ยังไม่มีข้อมูล</div>
                     </div>
@@ -177,12 +202,12 @@
                     tr.className = 'fade-in hover:bg-gray-50 transition';
                     tr.style.animationDelay = `${i * 0.05}s`;
                     tr.innerHTML = `
-                        <td class="px-6 py-3.5 text-gray-400 text-xs whitespace-nowrap">${order.time}</td>
-                        <td class="px-6 py-3.5 text-gray-700 max-w-xs">
-                            <p class="truncate">${itemSummary}</p>
-                            <p class="text-xs text-gray-400">${order.customerName} · โต๊ะ ${order.table}</p>
+                        <td class="px-6 py-4 text-gray-400 text-sm whitespace-nowrap">${order.time}</td>
+                        <td class="px-6 py-4 text-gray-700 max-w-xs">
+                            <p class="truncate text-sm font-medium">${itemSummary}</p>
+                            <p class="text-sm text-gray-400 mt-0.5">${order.customerName} · โต๊ะ ${order.table}</p>
                         </td>
-                        <td class="px-6 py-3.5 text-right font-medium text-gray-800">${order.total} บาท</td>
+                        <td class="px-6 py-4 text-right font-semibold text-gray-800 text-base">${order.total} บาท</td>
                     `;
                     tbody.appendChild(tr);
                 });
@@ -217,20 +242,20 @@
                 const imgSrc = menuItem?.img || '';
 
                 const div = document.createElement('div');
-                div.className = 'fade-in bg-white rounded-2xl p-4 border border-gray-100 shadow-sm';
-                div.style.animationDelay = `${i * 0.1}s`;
+                div.className = 'fade-in bg-white rounded-2xl p-4 border border-gray-100';
+                div.style.cssText = `animation-delay: ${i * 0.1}s; box-shadow: 0 2px 0px rgba(0,0,0,0.06), 0 4px 16px rgba(0,0,0,0.05);`;
                 div.innerHTML = `
                     <div class="flex items-center gap-3 mb-3">
-                        <div class="w-12 h-12 rounded-xl overflow-hidden bg-gray-100 flex-shrink-0">
+                        <div class="w-13 h-13 rounded-xl overflow-hidden bg-gray-100 flex-shrink-0" style="width:52px;height:52px">
                             ${imgSrc ? `<img src="${imgSrc}" class="w-full h-full object-cover">` : `<div class="w-full h-full flex items-center justify-center text-xl">🍽️</div>`}
                         </div>
                         <div class="flex-1 min-w-0">
-                            <p class="font-semibold text-gray-800 text-sm truncate">${name}</p>
-                            <p class="text-xs text-gray-400">${count} จาน</p>
+                            <p class="font-semibold text-gray-800 text-base truncate">${name}</p>
+                            <p class="text-sm text-gray-400">${count} จาน</p>
                         </div>
-                        <span class="text-sm font-bold text-gray-500">${percent}%</span>
+                        <span class="text-base font-bold text-gray-500">${percent}%</span>
                     </div>
-                    <div class="h-1.5 bg-gray-100 rounded-full overflow-hidden">
+                    <div class="h-2 bg-gray-100 rounded-full overflow-hidden">
                         <div class="progress-bar h-full bg-orange-400 rounded-full" style="width: 0%" data-width="${percent}%"></div>
                     </div>
                 `;
