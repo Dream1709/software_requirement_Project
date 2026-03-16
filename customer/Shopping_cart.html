@@ -46,9 +46,9 @@
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
                     </button>
                     <span class="text-xl leading-none text-gray-800">✦</span>
-                    <span class="font-bold text-gray-800 text-lg">ตะกร้าสินค้า</span>
+                    <span class="font-bold text-gray-800 text-xl">ตะกร้าสินค้า</span>
                 </div>
-                <span id="header-qty" class="text-sm text-brand-textMuted font-medium"></span>
+                <span id="header-qty" class="text-base text-brand-textMuted font-medium"></span>
             </div>
 
             <div class="p-6 flex-1">
@@ -57,8 +57,8 @@
                 <div class="flex items-center gap-3 bg-brand-inputBg rounded-2xl px-5 py-4 mb-6">
                     <div class="w-10 h-10 bg-brand-orange rounded-full flex items-center justify-center text-white text-lg flex-shrink-0">✦</div>
                     <div>
-                        <p class="font-semibold text-gray-800 text-sm" id="customer-name-display">กำลังโหลด...</p>
-                        <p class="text-brand-textMuted text-xs" id="table-display">โต๊ะ: -</p>
+                        <p class="font-semibold text-gray-800 text-base" id="customer-name-display">กำลังโหลด...</p>
+                        <p class="text-brand-textMuted text-sm" id="table-display">โต๊ะ: -</p>
                     </div>
                 </div>
 
@@ -68,8 +68,8 @@
                 <!-- Empty State -->
                 <div id="empty-cart" class="hidden text-center py-16 text-gray-300">
                     <div class="text-6xl mb-4">🛒</div>
-                    <p class="font-medium text-sm">ตะกร้าว่างเปล่า</p>
-                    <p class="text-xs mt-1">กลับไปเลือกเมนูที่ชอบได้เลย</p>
+                    <p class="font-medium text-base">ตะกร้าว่างเปล่า</p>
+                    <p class="text-sm mt-1">กลับไปเลือกเมนูที่ชอบได้เลย</p>
                 </div>
 
                 <!-- Summary -->
@@ -87,11 +87,11 @@
                 <!-- Buttons -->
                 <div class="flex gap-3">
                     <button onclick="window.location.href='/customer/menu.html'"
-                        class="flex-1 py-4 bg-brand-inputBg text-brand-textMuted font-bold rounded-2xl text-sm hover:bg-orange-100 transition active:scale-[0.98]">
+                        class="flex-1 py-4 bg-brand-inputBg text-brand-textMuted font-bold rounded-2xl text-base hover:bg-orange-100 transition active:scale-[0.98]">
                         + เพิ่มเมนู
                     </button>
                     <button onclick="goToPayment()"
-                        class="flex-2 px-8 py-4 bg-brand-orange hover:bg-brand-darkOrange text-white font-bold rounded-2xl text-sm shadow-lg transition active:scale-[0.98]">
+                        class="flex-2 px-8 py-4 bg-brand-orange hover:bg-brand-darkOrange text-white font-bold rounded-2xl text-base shadow-lg transition active:scale-[0.98]">
                         ส่งออเดอร์ →
                     </button>
                 </div>
@@ -109,9 +109,9 @@
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
                     </button>
                     <span class="text-xl leading-none text-gray-800">✦</span>
-                    <span class="font-bold text-gray-800 text-lg">ชำระเงิน</span>
+                    <span class="font-bold text-gray-800 text-xl">ชำระเงิน</span>
                 </div>
-                <button id="back-to-home-btn" onclick="resetApp()" class="hidden text-xs text-brand-textMuted hover:text-brand-orange transition font-medium">
+                <button id="back-to-home-btn" onclick="resetApp()" class="hidden text-sm text-brand-textMuted hover:text-brand-orange transition font-medium">
                     กลับหน้าแรก
                 </button>
             </div>
@@ -121,8 +121,8 @@
                 <!-- Order Summary -->
                 <div class="bg-brand-inputBg rounded-2xl p-5 mb-6">
                     <div class="flex items-center gap-2 mb-4">
-                        <span class="text-sm font-bold text-gray-800">สรุปรายการ</span>
-                        <span class="text-xs text-brand-textMuted" id="payment-customer-info"></span>
+                        <span class="text-base font-bold text-gray-800">สรุปรายการ</span>
+                        <span class="text-sm text-brand-textMuted" id="payment-customer-info"></span>
                     </div>
                     <div id="payment-items-container" class="space-y-2 mb-4 pb-4 border-b border-brand-textMuted/20"></div>
                     <div class="flex justify-between items-center font-bold text-gray-800">
@@ -133,7 +133,7 @@
 
                 <!-- QR Code -->
                 <div class="flex flex-col items-center">
-                    <p class="text-sm text-gray-500 mb-5">สแกน QR Code เพื่อชำระเงิน</p>
+                    <p class="text-base text-gray-500 mb-5">สแกน QR Code เพื่อชำระเงิน</p>
 
                     <div id="qr-wrapper" class="bg-brand-inputBg p-6 rounded-[2.5rem] shadow-sm transition-colors duration-500 w-full max-w-[280px]">
                         <div class="bg-white rounded-2xl p-4 shadow-inner">
@@ -143,7 +143,7 @@
                     </div>
 
                     <button id="simulate-btn" onclick="completePayment()"
-                        class="mt-6 px-6 py-3 bg-gray-800 hover:bg-black text-white text-sm font-medium rounded-2xl transition shadow-sm active:scale-[0.98]">
+                        class="mt-6 px-6 py-3.5 bg-gray-800 hover:bg-black text-white text-base font-medium rounded-2xl transition shadow-sm active:scale-[0.98]">
                         (จำลอง) สแกนจ่ายสำเร็จ
                     </button>
                 </div>
@@ -157,8 +157,8 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/>
                     </svg>
                 </div>
-                <h2 class="text-2xl font-bold text-gray-800 mb-2">ส่งออเดอร์แล้ว!</h2>
-                <p class="text-brand-textMuted text-sm mb-8">ขอบคุณที่ใช้บริการร้านเพิ่มข้าว</p>
+                <h2 class="text-3xl font-bold text-gray-800 mb-2">ส่งออเดอร์แล้ว!</h2>
+                <p class="text-brand-textMuted text-base mb-8">ขอบคุณที่ใช้บริการร้านเพิ่มข้าว</p>
                 <button onclick="resetApp()"
                     class="px-8 py-4 bg-brand-orange hover:bg-brand-darkOrange text-white font-bold rounded-2xl shadow-lg transition active:scale-[0.98]">
                     กลับหน้าแรก
@@ -177,8 +177,8 @@
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
                 </svg>
             </div>
-            <h3 class="text-lg font-bold text-gray-900 mb-1">ลบรายการนี้?</h3>
-            <p class="text-gray-400 text-sm mb-6 text-center">รายการนี้จะถูกนำออกจากตะกร้า</p>
+            <h3 class="text-xl font-bold text-gray-900 mb-1">ลบรายการนี้?</h3>
+            <p class="text-gray-400 text-base mb-6 text-center">รายการนี้จะถูกนำออกจากตะกร้า</p>
             <div class="flex gap-3 w-full">
                 <button onclick="hideDeleteModal()" class="flex-1 py-3 rounded-2xl bg-brand-inputBg text-brand-textMuted font-bold text-sm hover:bg-orange-100 transition">ยกเลิก</button>
                 <button onclick="confirmDelete()" class="flex-1 py-3 rounded-2xl bg-brand-orange hover:bg-brand-darkOrange text-white font-bold text-sm transition">ลบ</button>

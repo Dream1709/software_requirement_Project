@@ -23,64 +23,64 @@
         .picker-card.is-selected .picker-overlay { background: rgba(253,110,59,0.55); }
         .picker-card.not-selected .picker-overlay { background: rgba(0,0,0,0.22); }
         .picker-card.not-selected:hover .picker-overlay { background: rgba(253,110,59,0.3); }
-        .picker-label { font-size:0.65rem; text-align:center; color:#555; margin-top:4px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+        .picker-label { font-size:0.75rem; text-align:center; color:#555; margin-top:4px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
     </style>
 </head>
 <body class="min-h-screen flex">
 
 <!-- ========= SIDEBAR ========= -->
-<aside class="w-56 bg-white border-r border-gray-100 flex flex-col py-6 px-3 fixed h-full z-10">
+<aside class="w-60 bg-white border-r border-gray-100 flex flex-col py-7 px-4 fixed h-full z-10">
     <div class="px-3 mb-8 flex items-center gap-2">
-        <span class="text-orange-500 text-lg">✦</span>
-        <span class="font-bold text-gray-800 text-sm">ร้านเพิ่มข้าว</span>
+        <span class="text-orange-500 text-xl">✦</span>
+        <span class="font-bold text-gray-800 text-base">ร้านเพิ่มข้าว</span>
     </div>
     <nav class="space-y-1 flex-1">
-        <a href="/admin/main.html" class="sidebar-item flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-500 text-sm">
+        <a href="/admin/main.html" class="sidebar-item flex items-center gap-3 px-3 py-3 rounded-xl text-gray-500 text-sm">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
             หน้าหลัก
         </a>
-        <a href="/admin/manage_menu.html" class="sidebar-item flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-800 font-medium text-sm" style="background-color:#f0ede8">
+        <a href="/admin/manage_menu.html" class="sidebar-item flex items-center gap-3 px-3 py-3 rounded-xl text-gray-800 font-semibold text-sm" style="background-color:#fff0ea">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"/></svg>
             รายการอาหาร
         </a>
-        <a href="/admin/report.html" class="sidebar-item flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-500 text-sm">
+        <a href="/admin/report.html" class="sidebar-item flex items-center gap-3 px-3 py-3 rounded-xl text-gray-500 text-sm">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
             รายงาน
         </a>
     </nav>
     <div class="px-3">
-        <button onclick="window.location.href='/admin/login.html'" class="w-full py-2 bg-gray-100 text-gray-500 rounded-xl text-xs hover:bg-gray-200 transition">ออกจากระบบ</button>
+        <button onclick="window.location.href='/admin/login.html'" class="w-full py-2.5 bg-gray-100 text-gray-500 rounded-xl text-sm font-medium hover:bg-gray-200 transition">ออกจากระบบ</button>
     </div>
 </aside>
 
 <!-- ========= MAIN ========= -->
-<main class="flex-1 ml-56 p-8 min-h-screen">
+<main class="flex-1 ml-60 p-8 min-h-screen">
 <div class="max-w-3xl mx-auto">
 
     <!-- ===== VIEW 1: รายการปัจจุบัน ===== -->
     <div id="view-current">
         <!-- Breadcrumb -->
-        <p class="text-xs text-gray-400 mb-1">
+        <p class="text-sm text-gray-400 mb-1">
             <a href="/admin/manage_menu.html" class="hover:text-orange-400 transition">รายการอาหาร</a>
             <span class="mx-1">/</span>
             <span id="bc-title">แก้ไขเมนู</span>
         </p>
         <!-- Header -->
         <div class="flex items-center justify-between mb-8">
-            <h1 id="page-title" class="text-2xl font-bold text-gray-800">แก้ไขหมวดหมู่</h1>
+            <h1 id="page-title" class="text-3xl font-bold text-gray-800">แก้ไขหมวดหมู่</h1>
             <div class="flex gap-3">
                 <button onclick="window.location.href='/admin/manage_menu.html'"
-                    class="px-5 py-2 rounded-full border border-gray-200 bg-white text-gray-600 text-sm font-medium hover:bg-gray-50 transition shadow-sm">
+                    class="px-5 py-2.5 rounded-full border border-gray-200 bg-white text-gray-600 text-base font-medium hover:bg-gray-50 transition shadow-sm">
                     ยกเลิก
                 </button>
                 <button onclick="saveChanges()"
-                    class="px-5 py-2 rounded-full bg-[#E54D66] hover:bg-[#d03d57] text-white text-sm font-bold transition shadow-sm">
+                    class="px-5 py-2.5 rounded-full bg-[#E54D66] hover:bg-[#d03d57] text-white text-base font-bold transition shadow-sm">
                     บันทึกการแก้ไข
                 </button>
             </div>
         </div>
 
-        <h2 class="text-lg font-bold text-gray-800 mb-4">รายการปัจจุบัน</h2>
+        <h2 class="text-xl font-bold text-gray-800 mb-4">รายการปัจจุบัน</h2>
         <div id="items-container" class="space-y-3 mb-5"></div>
 
         <!-- ปุ่มเพิ่ม (เมนูแนะนำ) -->
@@ -88,9 +88,9 @@
             <div class="w-10 h-10 bg-pink-50 rounded-full flex items-center justify-center mb-3">
                 <svg class="w-5 h-5 text-pink-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
             </div>
-            <p class="font-bold text-gray-700 text-sm">เพิ่มรายการเมนูแนะนำ</p>
-            <p class="text-gray-400 text-xs mt-1">คลิกเพื่อเลือกเมนูเข้ารายการแนะนำ</p>
-            <span class="mt-4 px-5 py-2 bg-pink-100 text-pink-500 text-sm font-medium rounded-full">เพิ่มรายการ</span>
+            <p class="font-bold text-gray-700 text-base">เพิ่มรายการเมนูแนะนำ</p>
+            <p class="text-gray-400 text-sm mt-1">คลิกเพื่อเลือกเมนูเข้ารายการแนะนำ</p>
+            <span class="mt-4 px-5 py-2.5 bg-pink-100 text-pink-500 text-base font-medium rounded-full">เพิ่มรายการ</span>
         </div>
 
         <!-- ปุ่มเพิ่ม (หมวดทั่วไป) ถูกลบออกแล้ว - หน้านี้ทำได้เพียงแค่ลบเมนู -->
@@ -102,9 +102,9 @@
             <button onclick="showCurrentView()" class="text-gray-400 hover:text-gray-700 transition">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
             </button>
-            <h1 class="text-xl font-bold text-gray-800">เพิ่มรายการเมนูแนะนำ</h1>
+            <h1 class="text-2xl font-bold text-gray-800">เพิ่มรายการเมนูแนะนำ</h1>
         </div>
-        <p class="text-xs text-gray-400 mb-6 ml-8">เมนูที่มีกรอบสีส้ม = แนะนำอยู่แล้ว (กดเพื่อนำออก) · เมนูอื่น กดเพื่อเพิ่ม</p>
+        <p class="text-sm text-gray-400 mb-6 ml-8">เมนูที่มีกรอบสีส้ม = แนะนำอยู่แล้ว (กดเพื่อนำออก) · เมนูอื่น กดเพื่อเพิ่ม</p>
         <div id="picker-container" class="space-y-7 pb-10"></div>
     </div>
 
@@ -117,11 +117,11 @@
         <div class="w-12 h-12 bg-red-50 rounded-full flex items-center justify-center mb-4">
             <svg class="w-6 h-6 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
         </div>
-        <h3 class="text-lg font-bold text-gray-900 mb-1">ลบเมนูนี้ใช่ไหม?</h3>
-        <p id="delete-item-name" class="text-gray-400 text-sm mb-6 text-center"></p>
+        <h3 class="text-xl font-bold text-gray-900 mb-1">ลบเมนูนี้ใช่ไหม?</h3>
+        <p id="delete-item-name" class="text-gray-400 text-base mb-6 text-center"></p>
         <div class="flex gap-3 w-full">
-            <button onclick="hideDeleteModal()" class="flex-1 py-2.5 rounded-xl bg-gray-100 text-gray-600 font-medium text-sm hover:bg-gray-200 transition">ยกเลิก</button>
-            <button onclick="confirmDelete()" class="flex-1 py-2.5 rounded-xl bg-red-400 hover:bg-red-500 text-white font-medium text-sm transition">ลบ</button>
+            <button onclick="hideDeleteModal()" class="flex-1 py-2.5 rounded-xl bg-gray-100 text-gray-600 font-medium text-base hover:bg-gray-200 transition">ยกเลิก</button>
+            <button onclick="confirmDelete()" class="flex-1 py-2.5 rounded-xl bg-red-400 hover:bg-red-500 text-white font-medium text-base transition">ลบ</button>
         </div>
     </div>
 </div>
@@ -235,10 +235,10 @@ function renderCurrentList() {
                     onerror="this.src='https://placehold.co/64x64/f8ece7/b1745f?text=🍽'">
             </div>
             <div class="flex-1 min-w-0">
-                <p class="font-medium text-gray-800 text-sm truncate">${item.name}</p>
-                <p class="text-xs text-gray-400 mt-0.5">${item.category}</p>
+                <p class="font-medium text-gray-800 text-base truncate">${item.name}</p>
+                <p class="text-sm text-gray-400 mt-0.5">${item.category}</p>
             </div>
-            <span class="text-sm font-medium text-[#b1745f] flex-shrink-0 mr-4">${item.price ? item.price + " บาท" : "-"}</span>
+            <span class="text-base font-medium text-[#b1745f] flex-shrink-0 mr-4">${item.price ? item.price + " บาท" : "-"}</span>
             <button onclick="${isRec ? `removeFromRec(${item.id})` : `showDeleteModal(${item.id},'${item.name.replace(/'/g,"\\'")}') `}"
                 class="text-gray-300 hover:text-red-400 transition flex-shrink-0">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -303,7 +303,7 @@ function renderPicker() {
         const selCount = items.filter(i => recommendedIds.includes(i.id)).length;
         section.innerHTML = `
             <div class="flex items-center gap-2 mb-3">
-                <h3 class="text-sm font-bold text-gray-700">${cat}</h3>
+                <h3 class="text-base font-bold text-gray-700">${cat}</h3>
                 <span id="cnt-${CSS.escape(cat)}" class="text-xs text-gray-400 bg-gray-100 rounded-full px-2 py-0.5">${selCount > 0 ? selCount + ' เลือก' : ''}</span>
             </div>
             <div class="grid grid-cols-4 sm:grid-cols-5 md:grid-cols-6 gap-2">${cardsHtml}</div>
